@@ -1,0 +1,811 @@
+fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.
+#INFO: **** input file is /share/home/srwang/pyscf_addon/examples/10-Cu2O2-mix.py ****
+from pyscf import lib
+import guess
+
+lib.num_threads(8)
+
+# structure from dx.doi.org/10.1021/ct300689e | J. Chem. Theory Comput. 2012, 8, 4944−4949
+xyz = '''
+ Cu                 1.4    0.0     0.0
+ Cu                -1.4    0.0     0.0
+ O                  0.0    1.15    0.0
+ O                  0.0   -1.15    0.0
+'''
+mf = guess.mix(xyz, 'def2-tzvp', charge=2)
+# stability check of UHF will be performed
+
+#mf2 = util.SUHF(mf)
+#mf2.level_shift = 0.3
+#mf2.max_cycle = 100
+#mf2.conv_tol = 1e-6
+#mf2.kernel()
+# E = -3426.9194811
+
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='xn01', release='3.10.0-1127.el7.x86_64', version='#1 SMP Tue Feb 18 16:39:12 EST 2020', machine='x86_64', processor='x86_64')  Threads 8
+Python 3.8.3 (default, May 19 2020, 18:47:26) 
+[GCC 7.3.0]
+numpy 1.18.5  scipy 1.5.0
+Date: Fri Apr 23 11:04:09 2021
+PySCF version 1.7.6a1
+PySCF path  /share/home/srwang/pyscf/pyscf
+GIT HEAD      ref: refs/heads/master
+GIT master branch  80f71dfe77ac5f9caae26788acf76446987635bd
+
+[CONFIG] conf_file None
+[INPUT] verbose = 4
+[INPUT] num. atoms = 4
+[INPUT] num. electrons = 72
+[INPUT] charge = 2
+[INPUT] spin (= nelec alpha-beta = 2S) = 0
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 Cu     1.400000000000   0.000000000000   0.000000000000 AA    2.645616574391   0.000000000000   0.000000000000 Bohr
+[INPUT]  2 Cu    -1.400000000000   0.000000000000   0.000000000000 AA   -2.645616574391   0.000000000000   0.000000000000 Bohr
+[INPUT]  3 O      0.000000000000   1.150000000000   0.000000000000 AA    0.000000000000   2.173185043250   0.000000000000 Bohr
+[INPUT]  4 O      0.000000000000  -1.150000000000   0.000000000000 AA    0.000000000000  -2.173185043250   0.000000000000 Bohr
+
+nuclear repulsion = 444.71541996192
+number of shells = 52
+number of NR pGTOs = 276
+number of NR cGTOs = 152
+basis = def2-tzvp
+ecp = {}
+CPU time:         0.44
+
+
+******** <class 'pyscf.scf.hf.RHF'> ********
+method = RHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-05
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyscf_addon/examples/tmp8bxeche5
+max_memory 4000 MB (current use 71 MB)
+Set gradient conv threshold to 0.00316228
+init E= -3426.65751445459
+  HOMO = -0.321937791461469  LUMO = -0.256769518934491
+cycle= 1 E= -3425.40259372256  delta_E= 1.25  |g|= 3.57  |ddm|= 2.13
+  HOMO = -0.848664689654616  LUMO = -0.722554210128411
+cycle= 2 E= -3424.05952509318  delta_E= 1.34  |g|= 5.51  |ddm|= 2.65
+  HOMO = -0.998135496428832  LUMO = -0.620723478883066
+cycle= 3 E= -3426.53867611467  delta_E= -2.48  |g|= 0.486  |ddm|=  1.7
+  HOMO = -0.934926736461441  LUMO = -0.538781776573278
+cycle= 4 E= -3426.56201987874  delta_E= -0.0233  |g|= 0.105  |ddm|= 0.184
+  HOMO = -0.950942234978806  LUMO = -0.547482833293714
+cycle= 5 E= -3426.56367605768  delta_E= -0.00166  |g|= 0.0392  |ddm|= 0.0512
+  HOMO = -0.946796714264598  LUMO = -0.544526986973406
+cycle= 6 E= -3426.56410887327  delta_E= -0.000433  |g|= 0.0201  |ddm|= 0.0314
+  HOMO = -0.945899271471958  LUMO = -0.544278069925522
+cycle= 7 E= -3426.56423966751  delta_E= -0.000131  |g|= 0.00923  |ddm|= 0.0206
+  HOMO = -0.945190968159194  LUMO = -0.544082937810256
+cycle= 8 E= -3426.5642642825  delta_E= -2.46e-05  |g|= 0.0029  |ddm|= 0.0103
+  HOMO = -0.945031812927779  LUMO = -0.544044473219436
+cycle= 9 E= -3426.56426611732  delta_E= -1.83e-06  |g|= 0.000352  |ddm|= 0.00269
+  HOMO = -0.945042156972105  LUMO = -0.544051768376153
+Extra cycle  E= -3426.56426615968  delta_E= -4.24e-08  |g|= 0.000276  |ddm|= 0.000291
+converged SCF energy = -3426.56426615968
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0.0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 100
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyscf_addon/examples/tmpo6_orx5l
+max_memory 4000 MB (current use 635 MB)
+number electrons alpha = 36  beta = 36
+Set gradient conv threshold to 3.16228e-05
+init E= -3773.08809666458
+  alpha nocc = 36  HOMO = 20.6883819333712  LUMO = 20.7697679092119
+  beta  nocc = 36  HOMO = 20.6883819333711  LUMO = 20.7697679092118
+cycle= 1 E= -1937.50805557135  delta_E= 1.84e+03  |g|= 19.3  |ddm|=  693
+  alpha nocc = 36  HOMO = -14.6220109660192  LUMO = -14.6178502498527
+  beta  nocc = 36  HOMO = -14.6220109660192  LUMO = -14.6178502498527
+cycle= 2 E= -3260.9087934431  delta_E= -1.32e+03  |g|= 15.2  |ddm|=  692
+  alpha nocc = 36  HOMO = -4.58521050604283  LUMO = -4.41919768001255
+  beta  nocc = 36  HOMO = -4.58521050604283  LUMO = -4.41919768001256
+cycle= 3 E= -3388.66392814375  delta_E= -128  |g|= 13.5  |ddm|= 18.7
+  alpha nocc = 36  HOMO = -2.80906390741932  LUMO = -2.69550168812032
+  beta  nocc = 36  HOMO = -2.80906390741932  LUMO = -2.69550168812032
+cycle= 4 E= -3399.59791934313  delta_E= -10.9  |g|=   12  |ddm|= 2.78
+  alpha nocc = 36  HOMO = -2.85036236591705  LUMO = -2.55570452865552
+  beta  nocc = 36  HOMO = -2.85036236591704  LUMO = -2.55570452865552
+cycle= 5 E= -3402.50460058975  delta_E= -2.91  |g|= 11.5  |ddm|= 0.51
+  alpha nocc = 36  HOMO = -2.42433359895058  LUMO = -1.97005667080199
+  beta  nocc = 36  HOMO = -2.42433359895058  LUMO = -1.97005667080201
+cycle= 6 E= -3410.37235816464  delta_E= -7.87  |g|= 9.84  |ddm|= 1.19
+  alpha nocc = 36  HOMO = -2.0321087253951  LUMO = -1.40871931616785
+  beta  nocc = 36  HOMO = -2.03210872539509  LUMO = -1.40871931616793
+cycle= 7 E= -3415.1579831678  delta_E= -4.79  |g|= 8.51  |ddm|= 1.11
+  alpha nocc = 36  HOMO = -1.92533494916898  LUMO = -1.2488023292943
+  beta  nocc = 36  HOMO = -1.92533494916897  LUMO = -1.24880232929438
+cycle= 8 E= -3417.60071622278  delta_E= -2.44  |g|= 7.61  |ddm|= 0.515
+  alpha nocc = 36  HOMO = -1.45146810346739  LUMO = -0.776568228783446
+  beta  nocc = 36  HOMO = -1.45146810346741  LUMO = -0.776568228783462
+cycle= 9 E= -3419.49389405563  delta_E= -1.89  |g|=  6.9  |ddm|= 0.881
+  alpha nocc = 36  HOMO = -0.940350151209269  LUMO = -0.31563134902693
+  beta  nocc = 36  HOMO = -0.940350151209281  LUMO = -0.315631349026914
+cycle= 10 E= -3426.39272746755  delta_E= -6.9  |g|= 0.695  |ddm|= 1.76
+  alpha nocc = 36  HOMO = -0.879812030011545  LUMO = -0.500285741603102
+  beta  nocc = 36  HOMO = -0.879812030011561  LUMO = -0.50028574160305
+cycle= 11 E= -3426.59584940516  delta_E= -0.203  |g|= 0.516  |ddm|= 0.53
+  alpha nocc = 36  HOMO = -0.969190324507492  LUMO = -0.464706463020466
+  beta  nocc = 36  HOMO = -0.969190324507503  LUMO = -0.464706463020476
+cycle= 12 E= -3426.64592109502  delta_E= -0.0501  |g|= 0.0759  |ddm|= 0.183
+  alpha nocc = 36  HOMO = -0.968896941010698  LUMO = -0.469936191926142
+  beta  nocc = 36  HOMO = -0.968896941010704  LUMO = -0.469936191926154
+cycle= 13 E= -3426.65701305519  delta_E= -0.0111  |g|= 0.0578  |ddm|= 0.132
+  alpha nocc = 36  HOMO = -0.967299642278628  LUMO = -0.466131873115461
+  beta  nocc = 36  HOMO = -0.967299642278633  LUMO = -0.466131873115474
+cycle= 14 E= -3426.66420188877  delta_E= -0.00719  |g|= 0.0225  |ddm|= 0.145
+  alpha nocc = 36  HOMO = -0.962960582892775  LUMO = -0.471549497019526
+  beta  nocc = 36  HOMO = -0.962960582892772  LUMO = -0.471549497019532
+cycle= 15 E= -3426.66637445506  delta_E= -0.00217  |g|= 0.0185  |ddm|= 0.0925
+  alpha nocc = 36  HOMO = -0.958795305712755  LUMO = -0.472547281334811
+  beta  nocc = 36  HOMO = -0.958795305712754  LUMO = -0.472547281334813
+cycle= 16 E= -3426.66691857408  delta_E= -0.000544  |g|= 0.00671  |ddm|= 0.0425
+  alpha nocc = 36  HOMO = -0.956626794999068  LUMO = -0.472569598195111
+  beta  nocc = 36  HOMO = -0.956626794999081  LUMO = -0.472569598195121
+cycle= 17 E= -3426.66707186017  delta_E= -0.000153  |g|= 0.00281  |ddm|= 0.0303
+  alpha nocc = 36  HOMO = -0.955642912789538  LUMO = -0.472748887615494
+  beta  nocc = 36  HOMO = -0.955642912789551  LUMO = -0.472748887615496
+cycle= 18 E= -3426.66708736482  delta_E= -1.55e-05  |g|= 0.00116  |ddm|= 0.00682
+  alpha nocc = 36  HOMO = -0.955348922971716  LUMO = -0.472572186046462
+  beta  nocc = 36  HOMO = -0.955348922971757  LUMO = -0.472572186046463
+cycle= 19 E= -3426.66709053205  delta_E= -3.17e-06  |g|= 0.000531  |ddm|= 0.00299
+  alpha nocc = 36  HOMO = -0.955348973130507  LUMO = -0.472549569115195
+  beta  nocc = 36  HOMO = -0.955348973130554  LUMO = -0.472549569115197
+cycle= 20 E= -3426.66709128119  delta_E= -7.49e-07  |g|= 0.000274  |ddm|= 0.00141
+  alpha nocc = 36  HOMO = -0.95539075965398  LUMO = -0.472559313421013
+  beta  nocc = 36  HOMO = -0.955390759654046  LUMO = -0.472559313421012
+cycle= 21 E= -3426.66709149514  delta_E= -2.14e-07  |g|= 0.000154  |ddm|= 0.000723
+  alpha nocc = 36  HOMO = -0.95537368046245  LUMO = -0.472537697922169
+  beta  nocc = 36  HOMO = -0.955373680462544  LUMO = -0.472537697922171
+cycle= 22 E= -3426.66709157314  delta_E= -7.8e-08  |g|= 0.000115  |ddm|= 0.000469
+  alpha nocc = 36  HOMO = -0.955402396002024  LUMO = -0.472551214873241
+  beta  nocc = 36  HOMO = -0.955402396002156  LUMO = -0.472551214873245
+cycle= 23 E= -3426.66709160654  delta_E= -3.34e-08  |g|= 4.07e-05  |ddm|= 0.000413
+  alpha nocc = 36  HOMO = -0.955398889332728  LUMO = -0.472545373288536
+  beta  nocc = 36  HOMO = -0.955398889332892  LUMO = -0.472545373288531
+cycle= 24 E= -3426.6670916108  delta_E= -4.26e-09  |g|= 3.26e-05  |ddm|= 0.000181
+  alpha nocc = 36  HOMO = -0.955400214109343  LUMO = -0.472547093043753
+  beta  nocc = 36  HOMO = -0.955400214109529  LUMO = -0.472547093043748
+cycle= 25 E= -3426.66709161122  delta_E= -4.2e-10  |g|= 2e-05  |ddm|= 4.06e-05
+  alpha nocc = 36  HOMO = -0.955400688380798  LUMO = -0.472548637283342
+  beta  nocc = 36  HOMO = -0.95540068838102  LUMO = -0.472548637283333
+Extra cycle  E= -3426.66709161129  delta_E= -6.91e-11  |g|= 2.84e-05  |ddm|= 1.58e-05
+converged SCF energy = -3426.66709161129  <S^2> = 1.863551  2S+1 = 2.9076114
+checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 4.19  e= [2.72285631]  max|de|= 2.72  lindep= 0.981
+davidson 1 2  |r|= 0.825  e= [2.19284913]  max|de|= -0.53  lindep=    1
+davidson 2 3  |r|= 0.248  e= [1.80546924]  max|de|= -0.387  lindep=    1
+davidson 3 4  |r|= 0.308  e= [1.39103745]  max|de|= -0.414  lindep=    1
+davidson 4 5  |r|= 0.435  e= [0.90592343]  max|de|= -0.485  lindep= 0.998
+davidson 5 6  |r|= 1.35  e= [0.52366778]  max|de|= -0.382  lindep= 0.984
+davidson 6 7  |r|= 0.497  e= [0.27878895]  max|de|= -0.245  lindep= 0.971
+davidson 7 8  |r|= 0.296  e= [0.06862746]  max|de|= -0.21  lindep= 0.991
+davidson 8 9  |r|= 0.264  e= [0.02813915]  max|de|= -0.0405  lindep= 0.951
+davidson 9 10  |r|= 0.177  e= [0.01524558]  max|de|= -0.0129  lindep= 0.968
+davidson 10 11  |r|= 0.11  e= [0.00708295]  max|de|= -0.00816  lindep= 0.928
+davidson 11 12  |r|= 0.0669  e= [0.00206843]  max|de|= -0.00501  lindep= 0.951
+davidson 12 1  |r|= 0.0669  e= [0.00206843]  max|de|= 2.12e-16  lindep=    1
+davidson 13 2  |r|= 0.0833  e= [-0.0002574]  max|de|= -0.00233  lindep= 0.898
+davidson 14 3  |r|= 0.164  e= [-0.00575928]  max|de|= -0.0055  lindep= 0.952
+davidson 15 4  |r|= 0.321  e= [-0.0253615]  max|de|= -0.0196  lindep= 0.99
+davidson 16 5  |r|= 0.304  e= [-0.07560922]  max|de|= -0.0502  lindep= 0.937
+davidson 17 6  |r|= 0.228  e= [-0.12148487]  max|de|= -0.0459  lindep= 0.937
+davidson 18 7  |r|= 0.272  e= [-0.15604095]  max|de|= -0.0346  lindep= 0.954
+davidson 19 8  |r|= 0.226  e= [-0.17071663]  max|de|= -0.0147  lindep= 0.904
+davidson 20 9  |r|= 0.0987  e= [-0.18106589]  max|de|= -0.0103  lindep= 0.959
+davidson 21 10  |r|= 0.0495  e= [-0.18406518]  max|de|= -0.003  lindep= 0.954
+davidson 22 11  |r|= 0.0228  e= [-0.18474444]  max|de|= -0.000679  lindep= 0.926
+davidson 23 12  |r|= 0.012  e= [-0.18491574]  max|de|= -0.000171  lindep= 0.907
+davidson 24 1  |r|= 0.012  e= [-0.18491574]  max|de|= 1.86e-15  lindep=    1
+root 0 converged  |r|= 0.00782  e= -0.18495333085840368  max|de|= -3.76e-05
+converged 25 2  |r|= 0.00782  e= [-0.18495333]  max|de|= -3.76e-05
+UHF/UKS wavefunction has an internal instability.
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0.0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 100
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyscf_addon/examples/tmpo6_orx5l
+max_memory 4000 MB (current use 1246 MB)
+number electrons alpha = 36  beta = 36
+Set gradient conv threshold to 3.16228e-05
+init E= -3426.66098360295
+  alpha nocc = 36  HOMO = -0.948378599756171  LUMO = -0.413231090656744
+  beta  nocc = 36  HOMO = -0.880751064146497  LUMO = -0.420243674425266
+cycle= 1 E= -3426.73500189463  delta_E= -0.074  |g|= 0.342  |ddm|= 0.288
+  alpha nocc = 36  HOMO = -0.968120322069469  LUMO = -0.427748012208286
+  beta  nocc = 36  HOMO = -0.885664747941651  LUMO = -0.369361834805093
+cycle= 2 E= -3426.76487973778  delta_E= -0.0299  |g|= 0.489  |ddm|= 0.285
+  alpha nocc = 36  HOMO = -0.950472165701185  LUMO = -0.418641431772537
+  beta  nocc = 36  HOMO = -0.899911157197096  LUMO = -0.378762761204595
+cycle= 3 E= -3426.80619426237  delta_E= -0.0413  |g|= 0.124  |ddm|= 0.117
+  alpha nocc = 36  HOMO = -0.910543241111795  LUMO = -0.407553252068171
+  beta  nocc = 36  HOMO = -0.940018684972466  LUMO = -0.388958778386011
+cycle= 4 E= -3426.84501787544  delta_E= -0.0388  |g|= 0.0664  |ddm|= 0.258
+  alpha nocc = 36  HOMO = -0.913372136230835  LUMO = -0.417592593712747
+  beta  nocc = 36  HOMO = -0.949041710016018  LUMO = -0.393120169431746
+cycle= 5 E= -3426.85662588132  delta_E= -0.0116  |g|= 0.0495  |ddm|= 0.155
+  alpha nocc = 36  HOMO = -0.914324180867046  LUMO = -0.417148716611716
+  beta  nocc = 36  HOMO = -0.951635006000219  LUMO = -0.38819942461398
+cycle= 6 E= -3426.85884005131  delta_E= -0.00221  |g|= 0.0473  |ddm|= 0.0534
+  alpha nocc = 36  HOMO = -0.906014742301845  LUMO = -0.416074026000917
+  beta  nocc = 36  HOMO = -0.948832330772327  LUMO = -0.39065088085901
+cycle= 7 E= -3426.86288782352  delta_E= -0.00405  |g|= 0.0241  |ddm|= 0.0883
+  alpha nocc = 36  HOMO = -0.908138432172666  LUMO = -0.418462329478069
+  beta  nocc = 36  HOMO = -0.953126058912889  LUMO = -0.388948705822412
+cycle= 8 E= -3426.86549090323  delta_E= -0.0026  |g|= 0.0236  |ddm|= 0.0599
+  alpha nocc = 36  HOMO = -0.909626913700938  LUMO = -0.417002728309942
+  beta  nocc = 36  HOMO = -0.957163624096146  LUMO = -0.386926819894183
+cycle= 9 E= -3426.86898931415  delta_E= -0.0035  |g|= 0.0251  |ddm|= 0.0967
+  alpha nocc = 36  HOMO = -0.905143887387977  LUMO = -0.41218849101734
+  beta  nocc = 36  HOMO = -0.955460165193409  LUMO = -0.387479930482931
+cycle= 10 E= -3426.87204765754  delta_E= -0.00306  |g|= 0.0162  |ddm|= 0.103
+  alpha nocc = 36  HOMO = -0.904865361827196  LUMO = -0.414849759777247
+  beta  nocc = 36  HOMO = -0.954579562124607  LUMO = -0.387575917442035
+cycle= 11 E= -3426.87305298787  delta_E= -0.00101  |g|= 0.0143  |ddm|= 0.0427
+  alpha nocc = 36  HOMO = -0.907648835619359  LUMO = -0.407929805754862
+  beta  nocc = 36  HOMO = -0.955877968011221  LUMO = -0.386506410450134
+cycle= 12 E= -3426.87567399733  delta_E= -0.00262  |g|= 0.0148  |ddm|= 0.163
+  alpha nocc = 36  HOMO = -0.908458224370191  LUMO = -0.414858122155149
+  beta  nocc = 36  HOMO = -0.955332369939406  LUMO = -0.386655752791693
+cycle= 13 E= -3426.87592525763  delta_E= -0.000251  |g|= 0.00925  |ddm|= 0.0168
+  alpha nocc = 36  HOMO = -0.90897024660697  LUMO = -0.410724760980348
+  beta  nocc = 36  HOMO = -0.955012137776881  LUMO = -0.38642252992981
+cycle= 14 E= -3426.8765829206  delta_E= -0.000658  |g|= 0.0105  |ddm|= 0.0762
+  alpha nocc = 36  HOMO = -0.909154118094599  LUMO = -0.418203335136841
+  beta  nocc = 36  HOMO = -0.954557432945133  LUMO = -0.386622070457256
+cycle= 15 E= -3426.8768155145  delta_E= -0.000233  |g|= 0.00524  |ddm|= 0.0228
+  alpha nocc = 36  HOMO = -0.909401397643517  LUMO = -0.424486198935483
+  beta  nocc = 36  HOMO = -0.954029614831331  LUMO = -0.386761088090492
+cycle= 16 E= -3426.87715959706  delta_E= -0.000344  |g|= 0.00524  |ddm|= 0.0622
+  alpha nocc = 36  HOMO = -0.909279511185403  LUMO = -0.422923283419965
+  beta  nocc = 36  HOMO = -0.954322422927756  LUMO = -0.38669836019971
+cycle= 17 E= -3426.87719091798  delta_E= -3.13e-05  |g|= 0.00404  |ddm|= 0.00533
+  alpha nocc = 36  HOMO = -0.908982233161564  LUMO = -0.424105005149112
+  beta  nocc = 36  HOMO = -0.954455106517824  LUMO = -0.386704366502297
+cycle= 18 E= -3426.87729137094  delta_E= -0.0001  |g|= 0.00444  |ddm|= 0.02
+  alpha nocc = 36  HOMO = -0.908974380298426  LUMO = -0.421647136841154
+  beta  nocc = 36  HOMO = -0.95476027029362  LUMO = -0.386639884403381
+cycle= 19 E= -3426.87734764608  delta_E= -5.63e-05  |g|= 0.00284  |ddm|= 0.0105
+  alpha nocc = 36  HOMO = -0.908931248593061  LUMO = -0.419994472315984
+  beta  nocc = 36  HOMO = -0.954810260682238  LUMO = -0.386589843028198
+cycle= 20 E= -3426.87742510406  delta_E= -7.75e-05  |g|= 0.00223  |ddm|= 0.0168
+  alpha nocc = 36  HOMO = -0.908987529300045  LUMO = -0.420140935139538
+  beta  nocc = 36  HOMO = -0.95472653061687  LUMO = -0.386595465157945
+cycle= 21 E= -3426.8774531239  delta_E= -2.8e-05  |g|= 0.00209  |ddm|= 0.00663
+  alpha nocc = 36  HOMO = -0.909042135591959  LUMO = -0.419934924034945
+  beta  nocc = 36  HOMO = -0.954744448821065  LUMO = -0.386590873776246
+cycle= 22 E= -3426.87745630726  delta_E= -3.18e-06  |g|= 0.00209  |ddm|= 0.00195
+  alpha nocc = 36  HOMO = -0.909023275671514  LUMO = -0.4199108164621
+  beta  nocc = 36  HOMO = -0.954820111398717  LUMO = -0.386585216270666
+cycle= 23 E= -3426.87744782879  delta_E= 8.48e-06  |g|= 0.00207  |ddm|= 0.00372
+  alpha nocc = 36  HOMO = -0.908909885694384  LUMO = -0.419949418450685
+  beta  nocc = 36  HOMO = -0.954778994674838  LUMO = -0.386591057527978
+cycle= 24 E= -3426.87743479057  delta_E= 1.3e-05  |g|= 0.00207  |ddm|= 0.00849
+  alpha nocc = 36  HOMO = -0.908918072556948  LUMO = -0.419972281066647
+  beta  nocc = 36  HOMO = -0.954713195585644  LUMO = -0.386570314177153
+cycle= 25 E= -3426.87743138472  delta_E= 3.41e-06  |g|= 0.00185  |ddm|= 0.00706
+  alpha nocc = 36  HOMO = -0.909123042977385  LUMO = -0.420107233145661
+  beta  nocc = 36  HOMO = -0.954712063593762  LUMO = -0.386593720231437
+cycle= 26 E= -3426.87741476006  delta_E= 1.66e-05  |g|= 0.00163  |ddm|= 0.00804
+  alpha nocc = 36  HOMO = -0.90911127766731  LUMO = -0.419950447947137
+  beta  nocc = 36  HOMO = -0.954444564054745  LUMO = -0.38659150145647
+cycle= 27 E= -3426.87742886979  delta_E= -1.41e-05  |g|= 0.000801  |ddm|= 0.0248
+  alpha nocc = 36  HOMO = -0.909245543471666  LUMO = -0.419988389356205
+  beta  nocc = 36  HOMO = -0.954503732966604  LUMO = -0.386605070588435
+cycle= 28 E= -3426.8774304169  delta_E= -1.55e-06  |g|= 0.00033  |ddm|= 0.0128
+  alpha nocc = 36  HOMO = -0.909093012883111  LUMO = -0.420076645802627
+  beta  nocc = 36  HOMO = -0.954549077358059  LUMO = -0.386599050788718
+cycle= 29 E= -3426.87743119839  delta_E= -7.81e-07  |g|= 0.000197  |ddm|= 0.00422
+  alpha nocc = 36  HOMO = -0.909100008971606  LUMO = -0.420074762834833
+  beta  nocc = 36  HOMO = -0.954574761476699  LUMO = -0.386595904954557
+cycle= 30 E= -3426.87743132101  delta_E= -1.23e-07  |g|= 0.000127  |ddm|= 0.00147
+  alpha nocc = 36  HOMO = -0.909109252555937  LUMO = -0.420074269398294
+  beta  nocc = 36  HOMO = -0.954586152785474  LUMO = -0.386594776122894
+cycle= 31 E= -3426.87743138531  delta_E= -6.43e-08  |g|= 0.000103  |ddm|= 0.000701
+  alpha nocc = 36  HOMO = -0.909098904939546  LUMO = -0.42007145633329
+  beta  nocc = 36  HOMO = -0.95458823097577  LUMO = -0.386594015741173
+cycle= 32 E= -3426.87743141433  delta_E= -2.9e-08  |g|= 9.76e-05  |ddm|= 0.000236
+  alpha nocc = 36  HOMO = -0.909095175235398  LUMO = -0.420070285587956
+  beta  nocc = 36  HOMO = -0.954589613155899  LUMO = -0.386593908296852
+cycle= 33 E= -3426.87743144193  delta_E= -2.76e-08  |g|= 9.47e-05  |ddm|= 0.000187
+  alpha nocc = 36  HOMO = -0.909092061964747  LUMO = -0.420070163808823
+  beta  nocc = 36  HOMO = -0.954592759980026  LUMO = -0.386593639051435
+cycle= 34 E= -3426.87743147774  delta_E= -3.58e-08  |g|= 9.22e-05  |ddm|= 0.000209
+  alpha nocc = 36  HOMO = -0.909092061999327  LUMO = -0.420070356461811
+  beta  nocc = 36  HOMO = -0.954592940507152  LUMO = -0.386593666597952
+cycle= 35 E= -3426.87743149042  delta_E= -1.27e-08  |g|= 9.18e-05  |ddm|= 6.55e-05
+  alpha nocc = 36  HOMO = -0.909092281896871  LUMO = -0.420070529312629
+  beta  nocc = 36  HOMO = -0.954593080399403  LUMO = -0.386593775033609
+cycle= 36 E= -3426.87743147128  delta_E= 1.91e-08  |g|= 9.24e-05  |ddm|= 9.67e-05
+  alpha nocc = 36  HOMO = -0.909090146022755  LUMO = -0.420069598541889
+  beta  nocc = 36  HOMO = -0.954592542534419  LUMO = -0.386593621436536
+cycle= 37 E= -3426.87743142485  delta_E= 4.64e-08  |g|= 9.34e-05  |ddm|= 0.000241
+  alpha nocc = 36  HOMO = -0.909090525146636  LUMO = -0.420070615843173
+  beta  nocc = 36  HOMO = -0.954595185577216  LUMO = -0.38659357847131
+cycle= 38 E= -3426.87743136614  delta_E= 5.87e-08  |g|= 9.38e-05  |ddm|= 0.00032
+  alpha nocc = 36  HOMO = -0.909088634919528  LUMO = -0.420069483684614
+  beta  nocc = 36  HOMO = -0.95459474320709  LUMO = -0.386592934813074
+cycle= 39 E= -3426.87743129751  delta_E= 6.86e-08  |g|= 9.13e-05  |ddm|= 0.000542
+  alpha nocc = 36  HOMO = -0.909092381970656  LUMO = -0.420070339713695
+  beta  nocc = 36  HOMO = -0.954596185884867  LUMO = -0.38659268351766
+cycle= 40 E= -3426.87743123795  delta_E= 5.96e-08  |g|= 8.67e-05  |ddm|= 0.000695
+  alpha nocc = 36  HOMO = -0.909096080761292  LUMO = -0.420071180074653
+  beta  nocc = 36  HOMO = -0.954595365610465  LUMO = -0.38659282566506
+cycle= 41 E= -3426.87743120106  delta_E= 3.69e-08  |g|= 8.15e-05  |ddm|= 0.000699
+  alpha nocc = 36  HOMO = -0.909092264471324  LUMO = -0.420069156594911
+  beta  nocc = 36  HOMO = -0.95458953720171  LUMO = -0.386593420140558
+cycle= 42 E= -3426.87743118893  delta_E= 1.21e-08  |g|= 7.76e-05  |ddm|= 0.000499
+  alpha nocc = 36  HOMO = -0.909092648657494  LUMO = -0.420069745063834
+  beta  nocc = 36  HOMO = -0.954589462621026  LUMO = -0.386593886430943
+cycle= 43 E= -3426.87743119595  delta_E= -7.01e-09  |g|= 7.37e-05  |ddm|= 0.000227
+  alpha nocc = 36  HOMO = -0.909092973605404  LUMO = -0.420070426986505
+  beta  nocc = 36  HOMO = -0.954591221009311  LUMO = -0.386593910483041
+cycle= 44 E= -3426.87743121146  delta_E= -1.55e-08  |g|= 7.1e-05  |ddm|= 0.000153
+  alpha nocc = 36  HOMO = -0.909091640550838  LUMO = -0.420070168511822
+  beta  nocc = 36  HOMO = -0.954592289222433  LUMO = -0.386593957677721
+cycle= 45 E= -3426.87743123471  delta_E= -2.32e-08  |g|= 6.85e-05  |ddm|= 0.000189
+  alpha nocc = 36  HOMO = -0.909091403920462  LUMO = -0.420069981977485
+  beta  nocc = 36  HOMO = -0.954592225407632  LUMO = -0.386593794801036
+cycle= 46 E= -3426.87743124498  delta_E= -1.03e-08  |g|= 6.75e-05  |ddm|= 7.27e-05
+  alpha nocc = 36  HOMO = -0.909090679438493  LUMO = -0.420069515538999
+  beta  nocc = 36  HOMO = -0.954591260004667  LUMO = -0.386593785509458
+cycle= 47 E= -3426.87743123809  delta_E= 6.88e-09  |g|= 6.78e-05  |ddm|= 5.05e-05
+  alpha nocc = 36  HOMO = -0.909091940037595  LUMO = -0.420070850986846
+  beta  nocc = 36  HOMO = -0.954595452480794  LUMO = -0.386593958411899
+cycle= 48 E= -3426.8774312178  delta_E= 2.03e-08  |g|= 6.52e-05  |ddm|= 0.000227
+  alpha nocc = 36  HOMO = -0.909088168650565  LUMO = -0.420068655740554
+  beta  nocc = 36  HOMO = -0.954595624788526  LUMO = -0.386593612137432
+cycle= 49 E= -3426.87743119508  delta_E= 2.27e-08  |g|= 5.49e-05  |ddm|= 0.000631
+  alpha nocc = 36  HOMO = -0.909087282001662  LUMO = -0.420067961046518
+  beta  nocc = 36  HOMO = -0.954596865049742  LUMO = -0.386593174891652
+cycle= 50 E= -3426.8774311851  delta_E= 9.98e-09  |g|= 4.19e-05  |ddm|= 0.000811
+  alpha nocc = 36  HOMO = -0.909091927301151  LUMO = -0.420070639196709
+  beta  nocc = 36  HOMO = -0.954599153808573  LUMO = -0.386592961878249
+cycle= 51 E= -3426.87743118628  delta_E= -1.18e-09  |g|= 2.87e-05  |ddm|= 0.000615
+  alpha nocc = 36  HOMO = -0.909091327099144  LUMO = -0.420070372359781
+  beta  nocc = 36  HOMO = -0.954596094642002  LUMO = -0.38659303688159
+cycle= 52 E= -3426.87743118704  delta_E= -7.67e-10  |g|= 2.38e-05  |ddm|= 0.000157
+  alpha nocc = 36  HOMO = -0.90909112795025  LUMO = -0.420070239117426
+  beta  nocc = 36  HOMO = -0.954594690279491  LUMO = -0.386593235390766
+Extra cycle  E= -3426.87743118803  delta_E= -9.89e-10  |g|= 2.28e-05  |ddm|= 2.25e-05
+converged SCF energy = -3426.87743118803  <S^2> = 1.9502213  2S+1 = 2.9666286
+checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 4.37  e= [3.04193763]  max|de|= 3.04  lindep= 0.995
+davidson 1 2  |r|= 0.46  e= [2.57415769]  max|de|= -0.468  lindep= 0.999
+davidson 2 3  |r|= 0.349  e= [2.0348288]  max|de|= -0.539  lindep= 0.999
+davidson 3 4  |r|= 0.323  e= [1.54335149]  max|de|= -0.491  lindep= 0.999
+davidson 4 5  |r|= 0.497  e= [1.09202975]  max|de|= -0.451  lindep=    1
+davidson 5 6  |r|= 0.624  e= [0.86436687]  max|de|= -0.228  lindep= 0.892
+davidson 6 7  |r|= 0.308  e= [0.66902559]  max|de|= -0.195  lindep= 0.958
+davidson 7 8  |r|= 0.537  e= [0.38960703]  max|de|= -0.279  lindep= 0.944
+davidson 8 9  |r|= 0.555  e= [0.11677892]  max|de|= -0.273  lindep= 0.976
+davidson 9 10  |r|= 0.314  e= [0.07093155]  max|de|= -0.0458  lindep= 0.962
+davidson 10 11  |r|=  0.1  e= [0.05276887]  max|de|= -0.0182  lindep= 0.932
+davidson 11 12  |r|= 0.0673  e= [0.04962046]  max|de|= -0.00315  lindep= 0.888
+davidson 12 1  |r|= 0.0673  e= [0.04962046]  max|de|= 1.26e-15  lindep= 0.998
+davidson 13 2  |r|= 0.102  e= [0.04759182]  max|de|= -0.00203  lindep= 0.82
+davidson 14 3  |r|= 0.448  e= [0.00431502]  max|de|= -0.0433  lindep= 0.965
+davidson 15 4  |r|= 0.248  e= [-0.03354401]  max|de|= -0.0379  lindep= 0.96
+davidson 16 5  |r|= 0.111  e= [-0.04286129]  max|de|= -0.00932  lindep= 0.949
+davidson 17 6  |r|= 0.0785  e= [-0.04589645]  max|de|= -0.00304  lindep= 0.912
+davidson 18 7  |r|= 0.0983  e= [-0.04955973]  max|de|= -0.00366  lindep= 0.941
+davidson 19 8  |r|= 0.137  e= [-0.05555384]  max|de|= -0.00599  lindep= 0.878
+davidson 20 9  |r|= 0.0398  e= [-0.05840072]  max|de|= -0.00285  lindep= 0.882
+davidson 21 10  |r|= 0.0295  e= [-0.05892681]  max|de|= -0.000526  lindep= 0.948
+davidson 22 11  |r|= 0.0352  e= [-0.0591784]  max|de|= -0.000252  lindep=  0.9
+davidson 23 12  |r|= 0.0565  e= [-0.05974136]  max|de|= -0.000563  lindep= 0.92
+davidson 24 1  |r|= 0.0565  e= [-0.05974136]  max|de|= 1.52e-15  lindep= 0.997
+davidson 25 2  |r|= 0.0213  e= [-0.06002176]  max|de|= -0.00028  lindep= 0.947
+davidson 26 3  |r|= 0.021  e= [-0.06012191]  max|de|= -0.0001  lindep= 0.929
+davidson 27 4  |r|= 0.0143  e= [-0.06020582]  max|de|= -8.39e-05  lindep= 0.912
+davidson 28 5  |r|= 0.0311  e= [-0.0603468]  max|de|= -0.000141  lindep= 0.898
+davidson 29 6  |r|= 0.0114  e= [-0.0604674]  max|de|= -0.000121  lindep= 0.895
+root 0 converged  |r|= 0.00919  e= -0.06050639057542119  max|de|= -3.9e-05
+converged 30 7  |r|= 0.00919  e= [-0.06050639]  max|de|= -3.9e-05
+UHF/UKS wavefunction has an internal instability.
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0.0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 100
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyscf_addon/examples/tmpo6_orx5l
+max_memory 4000 MB (current use 1247 MB)
+number electrons alpha = 36  beta = 36
+Set gradient conv threshold to 3.16228e-05
+init E= -3426.8858634145
+  alpha nocc = 36  HOMO = -0.916091159212811  LUMO = -0.396658025699556
+  beta  nocc = 36  HOMO = -0.965595411601201  LUMO = -0.387069291418838
+cycle= 1 E= -3426.89373645434  delta_E= -0.00787  |g|= 0.0383  |ddm|= 0.0735
+  alpha nocc = 36  HOMO = -0.913794977682748  LUMO = -0.397129812376845
+  beta  nocc = 36  HOMO = -0.970832440545131  LUMO = -0.387270191637312
+cycle= 2 E= -3426.89449528277  delta_E= -0.000759  |g|= 0.0201  |ddm|= 0.0261
+  alpha nocc = 36  HOMO = -0.913204357850485  LUMO = -0.396865125243631
+  beta  nocc = 36  HOMO = -0.973472073190315  LUMO = -0.386888546402338
+cycle= 3 E= -3426.8947333938  delta_E= -0.000238  |g|= 0.0222  |ddm|= 0.0166
+  alpha nocc = 36  HOMO = -0.912338317692275  LUMO = -0.39714088796849
+  beta  nocc = 36  HOMO = -0.973437783241946  LUMO = -0.387242787667694
+cycle= 4 E= -3426.89491181091  delta_E= -0.000178  |g|= 0.0074  |ddm|= 0.00917
+  alpha nocc = 36  HOMO = -0.910956568697685  LUMO = -0.396937726394193
+  beta  nocc = 36  HOMO = -0.973029615915403  LUMO = -0.387223965133808
+cycle= 5 E= -3426.89513895355  delta_E= -0.000227  |g|= 0.00654  |ddm|= 0.0142
+  alpha nocc = 36  HOMO = -0.909565378684867  LUMO = -0.396680701866263
+  beta  nocc = 36  HOMO = -0.972663878522881  LUMO = -0.387321977119307
+cycle= 6 E= -3426.89550367626  delta_E= -0.000365  |g|= 0.00567  |ddm|= 0.0256
+  alpha nocc = 36  HOMO = -0.906049837443648  LUMO = -0.395559683656485
+  beta  nocc = 36  HOMO = -0.968396363649232  LUMO = -0.387426731446687
+cycle= 7 E= -3426.89622188714  delta_E= -0.000718  |g|= 0.00331  |ddm|= 0.0747
+  alpha nocc = 36  HOMO = -0.903498997366361  LUMO = -0.395376815120237
+  beta  nocc = 36  HOMO = -0.967336660469051  LUMO = -0.387470764285905
+cycle= 8 E= -3426.89634746294  delta_E= -0.000126  |g|= 0.00216  |ddm|= 0.0253
+  alpha nocc = 36  HOMO = -0.900955295896942  LUMO = -0.395172396863834
+  beta  nocc = 36  HOMO = -0.965848965524913  LUMO = -0.387580934420097
+cycle= 9 E= -3426.89642057082  delta_E= -7.31e-05  |g|= 0.000989  |ddm|= 0.0311
+  alpha nocc = 36  HOMO = -0.900275298086851  LUMO = -0.395091253157191
+  beta  nocc = 36  HOMO = -0.965297190336253  LUMO = -0.387599773224354
+cycle= 10 E= -3426.89642522656  delta_E= -4.66e-06  |g|= 0.000398  |ddm|= 0.00848
+  alpha nocc = 36  HOMO = -0.899943811586162  LUMO = -0.395076553609787
+  beta  nocc = 36  HOMO = -0.96528176209801  LUMO = -0.387599657510406
+cycle= 11 E= -3426.8964255519  delta_E= -3.25e-07  |g|= 0.000257  |ddm|= 0.0015
+  alpha nocc = 36  HOMO = -0.900212043440416  LUMO = -0.395070315278473
+  beta  nocc = 36  HOMO = -0.96530898310377  LUMO = -0.387598033697957
+cycle= 12 E= -3426.89642568377  delta_E= -1.32e-07  |g|= 0.000231  |ddm|= 0.000523
+  alpha nocc = 36  HOMO = -0.900056888648546  LUMO = -0.395073157373385
+  beta  nocc = 36  HOMO = -0.965311238774665  LUMO = -0.387598669409862
+cycle= 13 E= -3426.89642580187  delta_E= -1.18e-07  |g|= 0.000205  |ddm|= 0.000371
+  alpha nocc = 36  HOMO = -0.90010787967616  LUMO = -0.395068220661656
+  beta  nocc = 36  HOMO = -0.96531000826299  LUMO = -0.387597306912177
+cycle= 14 E= -3426.89642597944  delta_E= -1.78e-07  |g|= 0.000182  |ddm|= 0.000479
+  alpha nocc = 36  HOMO = -0.900172779018185  LUMO = -0.395067697546181
+  beta  nocc = 36  HOMO = -0.965310297994132  LUMO = -0.387599881296878
+cycle= 15 E= -3426.89642619203  delta_E= -2.13e-07  |g|= 0.000163  |ddm|= 0.000641
+  alpha nocc = 36  HOMO = -0.900151030001619  LUMO = -0.395066988747827
+  beta  nocc = 36  HOMO = -0.965305669346848  LUMO = -0.387599613862488
+cycle= 16 E= -3426.89642642114  delta_E= -2.29e-07  |g|= 0.000136  |ddm|= 0.000799
+  alpha nocc = 36  HOMO = -0.900152420597051  LUMO = -0.395066823086603
+  beta  nocc = 36  HOMO = -0.965310315088393  LUMO = -0.387600040774021
+cycle= 17 E= -3426.89642659701  delta_E= -1.76e-07  |g|= 0.000122  |ddm|= 0.000726
+  alpha nocc = 36  HOMO = -0.900146205733726  LUMO = -0.395067731476157
+  beta  nocc = 36  HOMO = -0.965322168027123  LUMO = -0.387599424489777
+cycle= 18 E= -3426.89642670875  delta_E= -1.12e-07  |g|= 0.000116  |ddm|= 0.00045
+  alpha nocc = 36  HOMO = -0.900140613395387  LUMO = -0.39506759850902
+  beta  nocc = 36  HOMO = -0.965323830184539  LUMO = -0.387599332380736
+cycle= 19 E= -3426.89642677127  delta_E= -6.25e-08  |g|= 0.000114  |ddm|= 0.000252
+  alpha nocc = 36  HOMO = -0.900144889442453  LUMO = -0.395068074574183
+  beta  nocc = 36  HOMO = -0.965333739832744  LUMO = -0.387599066227128
+cycle= 20 E= -3426.89642685246  delta_E= -8.12e-08  |g|= 0.000111  |ddm|= 0.000327
+  alpha nocc = 36  HOMO = -0.90014776031848  LUMO = -0.39506802327387
+  beta  nocc = 36  HOMO = -0.965336476529245  LUMO = -0.38759906115275
+cycle= 21 E= -3426.89642695159  delta_E= -9.91e-08  |g|= 0.00011  |ddm|= 0.0004
+  alpha nocc = 36  HOMO = -0.900148190833694  LUMO = -0.395068030546868
+  beta  nocc = 36  HOMO = -0.965336587968184  LUMO = -0.387599083610544
+cycle= 22 E= -3426.89642696338  delta_E= -1.18e-08  |g|= 0.000109  |ddm|= 4.74e-05
+  alpha nocc = 36  HOMO = -0.900147322026332  LUMO = -0.39506806084532
+  beta  nocc = 36  HOMO = -0.96533623183175  LUMO = -0.387599113213731
+cycle= 23 E= -3426.89642696029  delta_E= 3.09e-09  |g|= 0.00011  |ddm|= 1.54e-05
+  alpha nocc = 36  HOMO = -0.900143064707754  LUMO = -0.395067892577404
+  beta  nocc = 36  HOMO = -0.965334386860141  LUMO = -0.387599072718222
+cycle= 24 E= -3426.8964269321  delta_E= 2.82e-08  |g|= 0.00011  |ddm|= 0.000123
+  alpha nocc = 36  HOMO = -0.900141493565795  LUMO = -0.395067937173007
+  beta  nocc = 36  HOMO = -0.965333197546732  LUMO = -0.387599324168863
+cycle= 25 E= -3426.89642692129  delta_E= 1.08e-08  |g|= 0.00011  |ddm|= 6.07e-05
+  alpha nocc = 36  HOMO = -0.900139309018405  LUMO = -0.39506759983948
+  beta  nocc = 36  HOMO = -0.965330624918212  LUMO = -0.387599338901603
+cycle= 26 E= -3426.89642691972  delta_E= 1.57e-09  |g|= 0.00011  |ddm|= 3.9e-05
+  alpha nocc = 36  HOMO = -0.900136745884932  LUMO = -0.395066866085203
+  beta  nocc = 36  HOMO = -0.965324929623177  LUMO = -0.387599689129512
+cycle= 27 E= -3426.89642689424  delta_E= 2.55e-08  |g|= 0.000109  |ddm|= 0.000143
+  alpha nocc = 36  HOMO = -0.900131485341009  LUMO = -0.395065900941736
+  beta  nocc = 36  HOMO = -0.965319346939579  LUMO = -0.387599979355624
+cycle= 28 E= -3426.8964268494  delta_E= 4.48e-08  |g|= 0.000109  |ddm|= 0.00023
+  alpha nocc = 36  HOMO = -0.900124315664675  LUMO = -0.395065140507278
+  beta  nocc = 36  HOMO = -0.965311745395158  LUMO = -0.38760017286746
+cycle= 29 E= -3426.89642677278  delta_E= 7.66e-08  |g|= 0.000108  |ddm|= 0.000319
+  alpha nocc = 36  HOMO = -0.900121557790171  LUMO = -0.395064957363873
+  beta  nocc = 36  HOMO = -0.96531095643348  LUMO = -0.387600288277581
+cycle= 30 E= -3426.89642671912  delta_E= 5.37e-08  |g|= 0.000108  |ddm|= 0.000225
+  alpha nocc = 36  HOMO = -0.90011696334313  LUMO = -0.395064813667106
+  beta  nocc = 36  HOMO = -0.965309620334131  LUMO = -0.38760012261331
+cycle= 31 E= -3426.89642663547  delta_E= 8.36e-08  |g|= 0.000108  |ddm|= 0.000353
+  alpha nocc = 36  HOMO = -0.900112400524985  LUMO = -0.395065057772742
+  beta  nocc = 36  HOMO = -0.965309225358575  LUMO = -0.387600188174851
+cycle= 32 E= -3426.89642648234  delta_E= 1.53e-07  |g|= 0.000108  |ddm|= 0.000671
+  alpha nocc = 36  HOMO = -0.900108234853287  LUMO = -0.395064196888483
+  beta  nocc = 36  HOMO = -0.965307576615967  LUMO = -0.387599357230352
+cycle= 33 E= -3426.89642586687  delta_E= 6.15e-07  |g|= 0.000109  |ddm|= 0.00294
+  alpha nocc = 36  HOMO = -0.900110587741224  LUMO = -0.395064844532877
+  beta  nocc = 36  HOMO = -0.965302773920913  LUMO = -0.387600653881378
+cycle= 34 E= -3426.89642531834  delta_E= 5.49e-07  |g|= 0.000104  |ddm|= 0.00309
+  alpha nocc = 36  HOMO = -0.900104220370119  LUMO = -0.395063170506352
+  beta  nocc = 36  HOMO = -0.965289454947785  LUMO = -0.387600422531748
+cycle= 35 E= -3426.89642491385  delta_E= 4.04e-07  |g|= 9.46e-05  |ddm|= 0.00279
+  alpha nocc = 36  HOMO = -0.900095547311627  LUMO = -0.395063512128489
+  beta  nocc = 36  HOMO = -0.965291318188514  LUMO = -0.387601340710726
+cycle= 36 E= -3426.89642456244  delta_E= 3.51e-07  |g|= 8.57e-05  |ddm|= 0.00339
+  alpha nocc = 36  HOMO = -0.900087707016269  LUMO = -0.395062390484567
+  beta  nocc = 36  HOMO = -0.965290449455322  LUMO = -0.387601679823674
+cycle= 37 E= -3426.89642433951  delta_E= 2.23e-07  |g|= 6.94e-05  |ddm|= 0.00359
+  alpha nocc = 36  HOMO = -0.900104805707147  LUMO = -0.395061052572001
+  beta  nocc = 36  HOMO = -0.965287027967946  LUMO = -0.387601566660304
+cycle= 38 E= -3426.89642424176  delta_E= 9.78e-08  |g|= 5.54e-05  |ddm|= 0.00259
+  alpha nocc = 36  HOMO = -0.90009282254101  LUMO = -0.39506190752396
+  beta  nocc = 36  HOMO = -0.965298763653705  LUMO = -0.387601252356753
+cycle= 39 E= -3426.89642422414  delta_E= 1.76e-08  |g|= 4.64e-05  |ddm|= 0.00149
+  alpha nocc = 36  HOMO = -0.900090595518685  LUMO = -0.395062938371138
+  beta  nocc = 36  HOMO = -0.965308702075996  LUMO = -0.387600765628912
+cycle= 40 E= -3426.89642422762  delta_E= -3.48e-09  |g|= 4.24e-05  |ddm|= 0.000788
+  alpha nocc = 36  HOMO = -0.900106814522479  LUMO = -0.395064192752355
+  beta  nocc = 36  HOMO = -0.965318607979141  LUMO = -0.387600728083802
+cycle= 41 E= -3426.89642423575  delta_E= -8.12e-09  |g|= 3.87e-05  |ddm|= 0.000982
+  alpha nocc = 36  HOMO = -0.900107215832806  LUMO = -0.39506569280999
+  beta  nocc = 36  HOMO = -0.965330168792117  LUMO = -0.387600011458339
+cycle= 42 E= -3426.89642425824  delta_E= -2.25e-08  |g|= 3.19e-05  |ddm|= 0.00102
+  alpha nocc = 36  HOMO = -0.900115242869258  LUMO = -0.395067379818626
+  beta  nocc = 36  HOMO = -0.965339278626485  LUMO = -0.387600248629092
+cycle= 43 E= -3426.89642427421  delta_E= -1.6e-08  |g|= 3.09e-05  |ddm|= 0.000553
+  alpha nocc = 36  HOMO = -0.900115404189934  LUMO = -0.395068430702256
+  beta  nocc = 36  HOMO = -0.965350384934904  LUMO = -0.387599607522772
+cycle= 44 E= -3426.89642428366  delta_E= -9.45e-09  |g|= 1.91e-05  |ddm|= 0.000219
+  alpha nocc = 36  HOMO = -0.900132746913841  LUMO = -0.395068552373039
+  beta  nocc = 36  HOMO = -0.965355614378746  LUMO = -0.387599424750959
+cycle= 45 E= -3426.896424279  delta_E= 4.66e-09  |g|= 1.4e-05  |ddm|= 0.000412
+  alpha nocc = 36  HOMO = -0.900138061111356  LUMO = -0.395069264424162
+  beta  nocc = 36  HOMO = -0.96536091402656  LUMO = -0.387599052580196
+cycle= 46 E= -3426.89642427258  delta_E= 6.41e-09  |g|= 9.95e-06  |ddm|= 0.000669
+  alpha nocc = 36  HOMO = -0.90014317918522  LUMO = -0.395069573664179
+  beta  nocc = 36  HOMO = -0.96536452152135  LUMO = -0.387598975963448
+cycle= 47 E= -3426.89642427051  delta_E= 2.08e-09  |g|= 7.32e-06  |ddm|= 0.000332
+  alpha nocc = 36  HOMO = -0.900143645540509  LUMO = -0.395069812533187
+  beta  nocc = 36  HOMO = -0.965364821263757  LUMO = -0.387598987453842
+cycle= 48 E= -3426.8964242697  delta_E= 8.1e-10  |g|= 6.26e-06  |ddm|= 0.000186
+  alpha nocc = 36  HOMO = -0.900143667242171  LUMO = -0.395069820896634
+  beta  nocc = 36  HOMO = -0.965364681570818  LUMO = -0.38759898869806
+Extra cycle  E= -3426.89642426977  delta_E= -7.59e-11  |g|= 5.98e-06  |ddm|= 5.85e-06
+converged SCF energy = -3426.89642426977  <S^2> = 1.9791941  2S+1 = 2.9860972
+checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 4.37  e= [3.00583949]  max|de|= 3.01  lindep= 0.995
+davidson 1 2  |r|= 0.557  e= [2.43719844]  max|de|= -0.569  lindep=    1
+davidson 2 3  |r|= 0.307  e= [1.98694012]  max|de|= -0.45  lindep= 0.999
+davidson 3 4  |r|= 0.319  e= [1.48955594]  max|de|= -0.497  lindep=    1
+davidson 4 5  |r|= 0.307  e= [1.08125063]  max|de|= -0.408  lindep=    1
+davidson 5 6  |r|= 0.254  e= [0.63621184]  max|de|= -0.445  lindep=    1
+davidson 6 7  |r|= 0.223  e= [0.52080492]  max|de|= -0.115  lindep= 0.986
+davidson 7 8  |r|= 0.63  e= [0.29112031]  max|de|= -0.23  lindep= 0.984
+davidson 8 9  |r|= 0.391  e= [0.16759974]  max|de|= -0.124  lindep= 0.97
+davidson 9 10  |r|= 0.194  e= [0.12653613]  max|de|= -0.0411  lindep= 0.957
+davidson 10 11  |r|= 0.0901  e= [0.12073545]  max|de|= -0.0058  lindep= 0.932
+davidson 11 12  |r|= 0.0869  e= [0.11745455]  max|de|= -0.00328  lindep= 0.917
+davidson 12 1  |r|= 0.0869  e= [0.11745455]  max|de|= -7.63e-16  lindep= 0.998
+davidson 13 2  |r|= 0.102  e= [0.11480362]  max|de|= -0.00265  lindep= 0.874
+davidson 14 3  |r|= 0.577  e= [0.08836945]  max|de|= -0.0264  lindep= 0.968
+davidson 15 4  |r|= 0.263  e= [0.01496992]  max|de|= -0.0734  lindep= 0.891
+davidson 16 5  |r|= 0.113  e= [0.00098714]  max|de|= -0.014  lindep= 0.909
+davidson 17 6  |r|= 0.0436  e= [-0.00149697]  max|de|= -0.00248  lindep= 0.904
+davidson 18 7  |r|= 0.0476  e= [-0.00251231]  max|de|= -0.00102  lindep= 0.887
+davidson 19 8  |r|= 0.0646  e= [-0.004472]  max|de|= -0.00196  lindep= 0.935
+davidson 20 9  |r|= 0.0501  e= [-0.00575235]  max|de|= -0.00128  lindep= 0.949
+davidson 21 10  |r|= 0.0289  e= [-0.00605631]  max|de|= -0.000304  lindep= 0.906
+davidson 22 11  |r|= 0.00819  e= [-0.00617104]  max|de|= -0.000115  lindep= 0.875
+root 0 converged  |r|= 0.00359  e= -0.006182934851129654  max|de|= -1.19e-05
+converged 23 12  |r|= 0.00359  e= [-0.00618293]  max|de|= -1.19e-05
+UHF/UKS wavefunction has an internal instability.
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0.0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 100
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyscf_addon/examples/tmpo6_orx5l
+max_memory 4000 MB (current use 1247 MB)
+number electrons alpha = 36  beta = 36
+Set gradient conv threshold to 3.16228e-05
+init E= -3426.88087323478
+  alpha nocc = 36  HOMO = -0.922618285132406  LUMO = -0.394326552979615
+  beta  nocc = 36  HOMO = -0.956481414232298  LUMO = -0.387816509526239
+cycle= 1 E= -3426.89533988471  delta_E= -0.0145  |g|= 0.0459  |ddm|= 0.0926
+  alpha nocc = 36  HOMO = -0.915501625051046  LUMO = -0.394283496817486
+  beta  nocc = 36  HOMO = -0.95113746445559  LUMO = -0.387564834526825
+cycle= 2 E= -3426.89705569342  delta_E= -0.00172  |g|= 0.02  |ddm|= 0.0379
+  alpha nocc = 36  HOMO = -0.918315791820777  LUMO = -0.394470597599158
+  beta  nocc = 36  HOMO = -0.959599991215943  LUMO = -0.387701933877699
+cycle= 3 E= -3426.897410935  delta_E= -0.000355  |g|= 0.0136  |ddm|= 0.0199
+  alpha nocc = 36  HOMO = -0.91483677797206  LUMO = -0.39435094287855
+  beta  nocc = 36  HOMO = -0.958316500249227  LUMO = -0.387544947254895
+cycle= 4 E= -3426.89754197062  delta_E= -0.000131  |g|= 0.00591  |ddm|= 0.0113
+  alpha nocc = 36  HOMO = -0.913677880900473  LUMO = -0.394495803729644
+  beta  nocc = 36  HOMO = -0.959057113569899  LUMO = -0.387670540465346
+cycle= 5 E= -3426.89758551256  delta_E= -4.35e-05  |g|= 0.00488  |ddm|= 0.00648
+  alpha nocc = 36  HOMO = -0.912863805637764  LUMO = -0.394447946589745
+  beta  nocc = 36  HOMO = -0.960006741497626  LUMO = -0.387619078158557
+cycle= 6 E= -3426.89762685047  delta_E= -4.13e-05  |g|= 0.00289  |ddm|= 0.00717
+  alpha nocc = 36  HOMO = -0.912503539322399  LUMO = -0.394455084694248
+  beta  nocc = 36  HOMO = -0.959991240182899  LUMO = -0.387626387424107
+cycle= 7 E= -3426.89766515208  delta_E= -3.83e-05  |g|= 0.00254  |ddm|= 0.00688
+  alpha nocc = 36  HOMO = -0.912903441614674  LUMO = -0.394472731947972
+  beta  nocc = 36  HOMO = -0.960400521738305  LUMO = -0.387624586251897
+cycle= 8 E= -3426.89770718514  delta_E= -4.2e-05  |g|= 0.00225  |ddm|= 0.00821
+  alpha nocc = 36  HOMO = -0.913512121109714  LUMO = -0.39447329708128
+  beta  nocc = 36  HOMO = -0.960316346092508  LUMO = -0.387591640033595
+cycle= 9 E= -3426.89779238169  delta_E= -8.52e-05  |g|= 0.00153  |ddm|= 0.022
+  alpha nocc = 36  HOMO = -0.914509533238826  LUMO = -0.394501105823993
+  beta  nocc = 36  HOMO = -0.960430593150173  LUMO = -0.387579452411358
+cycle= 10 E= -3426.89783489692  delta_E= -4.25e-05  |g|= 0.000923  |ddm|= 0.0203
+  alpha nocc = 36  HOMO = -0.914373453471427  LUMO = -0.394488470554799
+  beta  nocc = 36  HOMO = -0.960404728154916  LUMO = -0.387578423698725
+cycle= 11 E= -3426.89784229348  delta_E= -7.4e-06  |g|= 0.000663  |ddm|= 0.00675
+  alpha nocc = 36  HOMO = -0.914458698851172  LUMO = -0.394479445187231
+  beta  nocc = 36  HOMO = -0.960409444077333  LUMO = -0.38758511672451
+cycle= 12 E= -3426.89784488087  delta_E= -2.59e-06  |g|= 0.000581  |ddm|= 0.0029
+  alpha nocc = 36  HOMO = -0.914529548409217  LUMO = -0.394473276780649
+  beta  nocc = 36  HOMO = -0.960417676692016  LUMO = -0.3875880314046
+cycle= 13 E= -3426.89784634165  delta_E= -1.46e-06  |g|= 0.000561  |ddm|= 0.00125
+  alpha nocc = 36  HOMO = -0.914526659851777  LUMO = -0.394466307783344
+  beta  nocc = 36  HOMO = -0.9604132617858  LUMO = -0.387587879702547
+cycle= 14 E= -3426.89784845442  delta_E= -2.11e-06  |g|= 0.000543  |ddm|= 0.00178
+  alpha nocc = 36  HOMO = -0.914556510929483  LUMO = -0.394466276104783
+  beta  nocc = 36  HOMO = -0.960407894611248  LUMO = -0.387591196577845
+cycle= 15 E= -3426.89785158544  delta_E= -3.13e-06  |g|= 0.000509  |ddm|= 0.00278
+  alpha nocc = 36  HOMO = -0.914712090119098  LUMO = -0.394464304739428
+  beta  nocc = 36  HOMO = -0.960417112389079  LUMO = -0.387589102424146
+cycle= 16 E= -3426.89785911622  delta_E= -7.53e-06  |g|= 0.000425  |ddm|= 0.00761
+  alpha nocc = 36  HOMO = -0.91475135843812  LUMO = -0.39446452787185
+  beta  nocc = 36  HOMO = -0.960335016249772  LUMO = -0.387588020841916
+cycle= 17 E= -3426.89786468594  delta_E= -5.57e-06  |g|= 0.00038  |ddm|= 0.00685
+  alpha nocc = 36  HOMO = -0.914795352367795  LUMO = -0.394467100611093
+  beta  nocc = 36  HOMO = -0.960336619876602  LUMO = -0.387587408030166
+cycle= 18 E= -3426.89786739897  delta_E= -2.71e-06  |g|= 0.00037  |ddm|= 0.00366
+  alpha nocc = 36  HOMO = -0.914820752167299  LUMO = -0.39446638469207
+  beta  nocc = 36  HOMO = -0.960323960208868  LUMO = -0.387586646405567
+cycle= 19 E= -3426.89786923494  delta_E= -1.84e-06  |g|= 0.000366  |ddm|= 0.00233
+  alpha nocc = 36  HOMO = -0.914895559835339  LUMO = -0.394465562808596
+  beta  nocc = 36  HOMO = -0.960317125584213  LUMO = -0.387585777492753
+cycle= 20 E= -3426.89787213513  delta_E= -2.9e-06  |g|= 0.000359  |ddm|= 0.00364
+  alpha nocc = 36  HOMO = -0.915198798030033  LUMO = -0.394460532206928
+  beta  nocc = 36  HOMO = -0.960299337377043  LUMO = -0.387582373700801
+cycle= 21 E= -3426.89788043653  delta_E= -8.3e-06  |g|= 0.000345  |ddm|= 0.0114
+  alpha nocc = 36  HOMO = -0.915490560039887  LUMO = -0.394456798243652
+  beta  nocc = 36  HOMO = -0.960239870145482  LUMO = -0.38758280188756
+cycle= 22 E= -3426.89788767425  delta_E= -7.24e-06  |g|= 0.000321  |ddm|= 0.0118
+  alpha nocc = 36  HOMO = -0.915422522783064  LUMO = -0.39445607152501
+  beta  nocc = 36  HOMO = -0.960238285399194  LUMO = -0.387582185386842
+cycle= 23 E= -3426.89788856161  delta_E= -8.87e-07  |g|= 0.000297  |ddm|= 0.00162
+  alpha nocc = 36  HOMO = -0.915448927708736  LUMO = -0.394459040671558
+  beta  nocc = 36  HOMO = -0.960231310357618  LUMO = -0.387588315587584
+cycle= 24 E= -3426.89789475947  delta_E= -6.2e-06  |g|= 0.000268  |ddm|= 0.0129
+  alpha nocc = 36  HOMO = -0.915697491946029  LUMO = -0.394450056314287
+  beta  nocc = 36  HOMO = -0.960185528951428  LUMO = -0.387586412989689
+cycle= 25 E= -3426.8978984661  delta_E= -3.71e-06  |g|= 0.000261  |ddm|= 0.0104
+  alpha nocc = 36  HOMO = -0.91544220350606  LUMO = -0.394454116534574
+  beta  nocc = 36  HOMO = -0.960200307023532  LUMO = -0.387588170098933
+cycle= 26 E= -3426.89790031065  delta_E= -1.84e-06  |g|= 0.000183  |ddm|= 0.00639
+  alpha nocc = 36  HOMO = -0.915478820419073  LUMO = -0.394454208557471
+  beta  nocc = 36  HOMO = -0.960251436500379  LUMO = -0.387586439230012
+cycle= 27 E= -3426.89790246624  delta_E= -2.16e-06  |g|= 0.000139  |ddm|= 0.0111
+  alpha nocc = 36  HOMO = -0.915338679344508  LUMO = -0.394456604846403
+  beta  nocc = 36  HOMO = -0.960258783804483  LUMO = -0.387585127235144
+cycle= 28 E= -3426.89790312324  delta_E= -6.57e-07  |g|= 0.000122  |ddm|= 0.00588
+  alpha nocc = 36  HOMO = -0.915582979558972  LUMO = -0.394453202239444
+  beta  nocc = 36  HOMO = -0.9602275095015  LUMO = -0.387584646901725
+cycle= 29 E= -3426.89790330598  delta_E= -1.83e-07  |g|= 0.000107  |ddm|= 0.00285
+  alpha nocc = 36  HOMO = -0.915486563993697  LUMO = -0.39445547055365
+  beta  nocc = 36  HOMO = -0.960242048279272  LUMO = -0.387584871775393
+cycle= 30 E= -3426.89790339097  delta_E= -8.5e-08  |g|= 8.86e-05  |ddm|= 0.00152
+  alpha nocc = 36  HOMO = -0.915391974838472  LUMO = -0.394457560948497
+  beta  nocc = 36  HOMO = -0.960249275193662  LUMO = -0.38758508991417
+cycle= 31 E= -3426.8979034255  delta_E= -3.45e-08  |g|= 8.68e-05  |ddm|= 0.000378
+  alpha nocc = 36  HOMO = -0.915470869528598  LUMO = -0.394456565325941
+  beta  nocc = 36  HOMO = -0.960224884162347  LUMO = -0.387585885830795
+cycle= 32 E= -3426.89790347986  delta_E= -5.44e-08  |g|= 6.93e-05  |ddm|= 0.000693
+  alpha nocc = 36  HOMO = -0.915539565722686  LUMO = -0.394453478617909
+  beta  nocc = 36  HOMO = -0.960207240526258  LUMO = -0.387585406658516
+cycle= 33 E= -3426.89790355817  delta_E= -7.83e-08  |g|= 5.65e-05  |ddm|= 0.000921
+  alpha nocc = 36  HOMO = -0.915539183239122  LUMO = -0.394453652755762
+  beta  nocc = 36  HOMO = -0.960210738723124  LUMO = -0.3875862776274
+cycle= 34 E= -3426.89790358765  delta_E= -2.95e-08  |g|= 4.41e-05  |ddm|= 0.000796
+  alpha nocc = 36  HOMO = -0.915479421725834  LUMO = -0.394454179470835
+  beta  nocc = 36  HOMO = -0.960221767869752  LUMO = -0.387585941490303
+cycle= 35 E= -3426.89790359716  delta_E= -9.5e-09  |g|= 2.98e-05  |ddm|= 0.000292
+  alpha nocc = 36  HOMO = -0.915480506477801  LUMO = -0.394454498477312
+  beta  nocc = 36  HOMO = -0.960230346013677  LUMO = -0.387585718213375
+cycle= 36 E= -3426.89790360421  delta_E= -7.06e-09  |g|= 2.46e-05  |ddm|= 0.000347
+  alpha nocc = 36  HOMO = -0.915475279971939  LUMO = -0.394454864886937
+  beta  nocc = 36  HOMO = -0.960232815634344  LUMO = -0.387585610448732
+cycle= 37 E= -3426.8979036071  delta_E= -2.89e-09  |g|= 1.99e-05  |ddm|= 0.000218
+  alpha nocc = 36  HOMO = -0.915474429691286  LUMO = -0.394455059368786
+  beta  nocc = 36  HOMO = -0.960231648324673  LUMO = -0.387585469122183
+cycle= 38 E= -3426.89790360889  delta_E= -1.79e-09  |g|= 1.73e-05  |ddm|= 6.35e-05
+  alpha nocc = 36  HOMO = -0.915476251786517  LUMO = -0.39445518648263
+  beta  nocc = 36  HOMO = -0.960232513786905  LUMO = -0.387585483705176
+cycle= 39 E= -3426.8979036099  delta_E= -1.01e-09  |g|= 1.51e-05  |ddm|= 0.000161
+  alpha nocc = 36  HOMO = -0.915475455516814  LUMO = -0.39445514170987
+  beta  nocc = 36  HOMO = -0.960229826906844  LUMO = -0.387585536847744
+cycle= 40 E= -3426.89790361085  delta_E= -9.51e-10  |g|= 1.39e-05  |ddm|= 7.56e-05
+  alpha nocc = 36  HOMO = -0.91547653316723  LUMO = -0.394455112647265
+  beta  nocc = 36  HOMO = -0.960230698999211  LUMO = -0.387585570743641
+Extra cycle  E= -3426.89790361115  delta_E= -3.03e-10  |g|= 1.34e-05  |ddm|= 1.22e-05
+converged SCF energy = -3426.89790361115  <S^2> = 1.9680469  2S+1 = 2.9786218
+checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 4.37  e= [3.04979456]  max|de|= 3.05  lindep= 0.999
+davidson 1 2  |r|= 0.32  e= [2.59285684]  max|de|= -0.457  lindep=    1
+davidson 2 3  |r|= 0.65  e= [1.86517587]  max|de|= -0.728  lindep=    1
+davidson 3 4  |r|= 0.342  e= [1.32406552]  max|de|= -0.541  lindep= 0.999
+davidson 4 5  |r|= 0.366  e= [0.84149169]  max|de|= -0.483  lindep= 0.997
+davidson 5 6  |r|= 0.515  e= [0.20914845]  max|de|= -0.632  lindep= 0.998
+davidson 6 7  |r|= 0.464  e= [0.08000528]  max|de|= -0.129  lindep= 0.974
+davidson 7 8  |r|= 0.13  e= [0.05478736]  max|de|= -0.0252  lindep= 0.968
+davidson 8 9  |r|= 0.0702  e= [0.04967526]  max|de|= -0.00511  lindep= 0.935
+davidson 9 10  |r|= 0.0965  e= [0.04617285]  max|de|= -0.0035  lindep= 0.935
+davidson 10 11  |r|= 0.214  e= [0.03056542]  max|de|= -0.0156  lindep= 0.983
+davidson 11 12  |r|= 0.125  e= [0.01290253]  max|de|= -0.0177  lindep= 0.955
+davidson 12 1  |r|= 0.125  e= [0.01290253]  max|de|= -1.49e-15  lindep= 0.999
+davidson 13 2  |r|= 0.0704  e= [0.00913785]  max|de|= -0.00376  lindep= 0.967
+davidson 14 3  |r|= 0.0405  e= [0.00807276]  max|de|= -0.00107  lindep= 0.968
+davidson 15 4  |r|= 0.0239  e= [0.00774341]  max|de|= -0.000329  lindep= 0.921
+davidson 16 5  |r|= 0.025  e= [0.00748819]  max|de|= -0.000255  lindep= 0.967
+davidson 17 6  |r|= 0.041  e= [0.00697864]  max|de|= -0.00051  lindep= 0.885
+davidson 18 7  |r|= 0.0179  e= [0.00629381]  max|de|= -0.000685  lindep= 0.968
+davidson 19 8  |r|= 0.00788  e= [0.00612826]  max|de|= -0.000166  lindep= 0.984
+root 0 converged  |r|= 0.00748  e= 0.006098106267788911  max|de|= -3.02e-05
+converged 20 9  |r|= 0.00748  e= [0.00609811]  max|de|= -3.02e-05
+UHF/UKS wavefunction is stable in the internal stability analysis
+time for guess: 32.008

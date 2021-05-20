@@ -1,0 +1,82 @@
+fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.
+generating fragment guess
+fragments: [('N', [0.0, 0.0, 0.0])] [('N', [0.0, 0.0, 1.9])]
+converged SCF energy = -54.3911145621998  <S^2> = 3.7540306  2S+1 = 4.0020148
+converged SCF energy = -54.3911145621998  <S^2> = 3.7540306  2S+1 = 4.0020148
+       na   nb
+atom1   5    2
+atom2   2    5
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyscf_addon/examples/tmphhrdth_p
+max_memory 4000 MB (current use 79 MB)
+number electrons alpha = 7  beta = 7
+Set gradient conv threshold to 3.16228e-05
+init E= -108.900143275272
+  alpha nocc = 7  HOMO = -0.476464499402215  LUMO = 0.166732176142525
+  beta  nocc = 7  HOMO = -0.476464499402215  LUMO = 0.166732176142528
+cycle= 1 E= -108.762288631731  delta_E= 0.138  |g|= 0.0527  |ddm|= 0.373
+  alpha nocc = 7  HOMO = -0.530330642057186  LUMO = 0.162348570448284
+  beta  nocc = 7  HOMO = -0.530330642057186  LUMO = 0.162348570448285
+cycle= 2 E= -108.765642733546  delta_E= -0.00335  |g|= 0.0253  |ddm|= 0.0587
+  alpha nocc = 7  HOMO = -0.529049671912861  LUMO = 0.15926151280259
+  beta  nocc = 7  HOMO = -0.52904967191286  LUMO = 0.159261512802596
+cycle= 3 E= -108.767085606679  delta_E= -0.00144  |g|= 0.0126  |ddm|= 0.0548
+  alpha nocc = 7  HOMO = -0.528710372834679  LUMO = 0.156378931797925
+  beta  nocc = 7  HOMO = -0.528710372834678  LUMO = 0.156378931797929
+cycle= 4 E= -108.767469881852  delta_E= -0.000384  |g|= 0.00324  |ddm|= 0.0393
+  alpha nocc = 7  HOMO = -0.527321353128723  LUMO = 0.156905650680727
+  beta  nocc = 7  HOMO = -0.527321353128725  LUMO = 0.156905650680732
+cycle= 5 E= -108.767488344339  delta_E= -1.85e-05  |g|= 0.000626  |ddm|= 0.0078
+  alpha nocc = 7  HOMO = -0.527670443529377  LUMO = 0.156831110667578
+  beta  nocc = 7  HOMO = -0.527670443529382  LUMO = 0.15683111066758
+cycle= 6 E= -108.767488867958  delta_E= -5.24e-07  |g|= 0.000143  |ddm|= 0.00108
+  alpha nocc = 7  HOMO = -0.527603375860151  LUMO = 0.156896336092535
+  beta  nocc = 7  HOMO = -0.527603375860149  LUMO = 0.156896336092542
+cycle= 7 E= -108.767488893983  delta_E= -2.6e-08  |g|= 4.93e-05  |ddm|= 0.000239
+  alpha nocc = 7  HOMO = -0.527650705153181  LUMO = 0.156872500788266
+  beta  nocc = 7  HOMO = -0.527650705153184  LUMO = 0.156872500788268
+cycle= 8 E= -108.767488898007  delta_E= -4.02e-09  |g|= 1.06e-05  |ddm|= 9.2e-05
+  alpha nocc = 7  HOMO = -0.527658756971656  LUMO = 0.156874706934981
+  beta  nocc = 7  HOMO = -0.527658756971657  LUMO = 0.156874706934989
+cycle= 9 E= -108.76748889822  delta_E= -2.14e-10  |g|= 1.78e-06  |ddm|= 2.85e-05
+  alpha nocc = 7  HOMO = -0.5276584372482  LUMO = 0.15687466313335
+  beta  nocc = 7  HOMO = -0.527658437248198  LUMO = 0.15687466313335
+Extra cycle  E= -108.767488898223  delta_E= -2.49e-12  |g|= 6.81e-07  |ddm|= 2.47e-06
+converged SCF energy = -108.767488898223  <S^2> = 2.6423741  2S+1 = 3.4013963
+checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.36  e= [2.25644324]  max|de|= 2.26  lindep= 0.683
+davidson 1 2  |r|= 1.22  e= [1.3347399]  max|de|= -0.922  lindep= 0.858
+davidson 2 3  |r|= 0.354  e= [0.7386657]  max|de|= -0.596  lindep= 0.989
+davidson 3 4  |r|= 0.299  e= [0.59837909]  max|de|= -0.14  lindep= 0.951
+davidson 4 5  |r|= 0.123  e= [0.54958883]  max|de|= -0.0488  lindep= 0.991
+davidson 5 6  |r|= 0.0483  e= [0.54306827]  max|de|= -0.00652  lindep= 0.95
+davidson 6 7  |r|= 0.0333  e= [0.54145174]  max|de|= -0.00162  lindep= 0.912
+davidson 7 8  |r|= 0.0244  e= [0.54047029]  max|de|= -0.000981  lindep= 0.947
+davidson 8 9  |r|= 0.0492  e= [0.53924218]  max|de|= -0.00123  lindep= 0.948
+davidson 9 10  |r|= 0.0344  e= [0.53752939]  max|de|= -0.00171  lindep= 0.956
+davidson 10 11  |r|= 0.0352  e= [0.53638543]  max|de|= -0.00114  lindep= 0.957
+davidson 11 12  |r|= 0.0458  e= [0.53534675]  max|de|= -0.00104  lindep= 0.885
+davidson 12 1  |r|= 0.0458  e= [0.53534675]  max|de|= 8.88e-16  lindep= 0.998
+davidson 13 2  |r|= 0.0261  e= [0.5348062]  max|de|= -0.000541  lindep= 0.856
+davidson 14 3  |r|= 0.0175  e= [0.53440434]  max|de|= -0.000402  lindep= 0.966
+davidson 15 4  |r|= 0.0193  e= [0.53410161]  max|de|= -0.000303  lindep= 0.894
+davidson 16 5  |r|= 0.0128  e= [0.53392077]  max|de|= -0.000181  lindep= 0.945
+root 0 converged  |r|= 0.0095  e= 0.5338242081234514  max|de|= -9.66e-05
+converged 17 6  |r|= 0.0095  e= [0.53382421]  max|de|= -9.66e-05
+UHF/UKS wavefunction is stable in the internal stability analysis
