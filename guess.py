@@ -5,7 +5,7 @@ try:
     import gaussian
 except:
     print('fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.')
-from pyphf import stability
+import stability
 import time
 import copy
 
