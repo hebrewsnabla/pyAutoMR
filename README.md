@@ -7,9 +7,9 @@ The method used by this program is quite similar to [MOKIT](https://gitlab.com/j
 
 ## Utilities
 * guess for UHF
- + mix
- + fragment
- + from_fch
+  + mix
+  + fragment
+  + from_fch
 * UHF stability
 * dump CASCI coefficients
 
