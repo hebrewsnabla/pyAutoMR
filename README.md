@@ -4,3 +4,12 @@ The method used by this program is quite similar to [MOKIT](https://gitlab.com/j
 
 ## Features
 * UHF -> UNO -> CASSCF
+
+## Utilities
+* guess for UHF
+ + mix
+ + fragment
+ + from_fch
+* UHF stability
+* dump CASCI coefficients
+
