@@ -20,3 +20,4 @@ The method used by this program is quite similar to [MOKIT](https://gitlab.com/j
 ## TODO
 * remove pyuno dependence
 * CASSCF example
+* CASSCF -> NEVPT2
