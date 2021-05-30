@@ -17,3 +17,6 @@ The method used by this program is quite similar to [MOKIT](https://gitlab.com/j
 * UHF stability
 * dump CASCI coefficients
 
+## TODO
+* remove pyuno dependence
+* CASSCF example
