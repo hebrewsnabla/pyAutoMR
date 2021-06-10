@@ -1,0 +1,116 @@
+converged SCF energy = -75.7759969946171  <S^2> = 0.75264634  2S+1 = 2.0026446
+**** checking UHF/UKS internal stability ...
+nelec by numeric integration = [5.         4.00000001]
+    CPU time for vxc      2.50 sec, wall time      0.16 sec
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.49  e= [1.73236213]  max|de|= 1.73  lindep= 0.809
+davidson 1 2  |r|= 1.65  e= [1.69613719]  max|de|= -0.0362  lindep= 0.986
+davidson 2 3  |r|= 0.101  e= [1.61527622]  max|de|= -0.0809  lindep= 0.994
+davidson 3 4  |r|= 0.328  e= [1.53599719]  max|de|= -0.0793  lindep= 0.997
+davidson 4 5  |r|= 0.394  e= [1.4613957]  max|de|= -0.0746  lindep= 0.996
+davidson 5 6  |r|= 0.201  e= [1.3854238]  max|de|= -0.076  lindep= 0.996
+davidson 6 7  |r|= 0.259  e= [1.33562907]  max|de|= -0.0498  lindep= 0.992
+davidson 7 8  |r|= 0.152  e= [1.26100245]  max|de|= -0.0746  lindep= 0.995
+davidson 8 9  |r|= 0.189  e= [1.24072697]  max|de|= -0.0203  lindep= 0.852
+davidson 9 10  |r|= 0.188  e= [1.1042217]  max|de|= -0.137  lindep= 0.998
+davidson 10 11  |r|= 0.268  e= [1.01184323]  max|de|= -0.0924  lindep= 0.948
+davidson 11 12  |r|= 0.185  e= [0.93083518]  max|de|= -0.081  lindep= 0.986
+davidson 12 1  |r|= 0.185  e= [0.93083518]  max|de|= 4.76e-14  lindep=    1
+davidson 13 2  |r|= 0.288  e= [0.85381229]  max|de|= -0.077  lindep= 0.999
+davidson 14 3  |r|= 0.189  e= [0.77607202]  max|de|= -0.0777  lindep= 0.995
+davidson 15 4  |r|= 0.248  e= [0.73911029]  max|de|= -0.037  lindep= 0.997
+davidson 16 5  |r|= 0.169  e= [0.67864008]  max|de|= -0.0605  lindep= 0.64
+davidson 17 6  |r|= 0.0899  e= [0.66257436]  max|de|= -0.0161  lindep= 0.968
+davidson 18 7  |r|= 0.027  e= [0.65290585]  max|de|= -0.00967  lindep= 0.988
+davidson 19 8  |r|= 0.0409  e= [0.65185191]  max|de|= -0.00105  lindep= 0.591
+davidson 20 9  |r|= 0.147  e= [0.57751105]  max|de|= -0.0743  lindep= 0.939
+davidson 21 10  |r|= 0.513  e= [0.3608193]  max|de|= -0.217  lindep= 0.954
+davidson 22 11  |r|= 0.163  e= [0.30228855]  max|de|= -0.0585  lindep= 0.89
+davidson 23 12  |r|= 0.0473  e= [0.29361662]  max|de|= -0.00867  lindep= 0.936
+davidson 24 1  |r|= 0.0473  e= [0.29361662]  max|de|= 1.58e-14  lindep=    1
+davidson 25 2  |r|= 0.36  e= [0.02535196]  max|de|= -0.268  lindep=    1
+davidson 26 3  |r|= 0.0443  e= [0.00027191]  max|de|= -0.0251  lindep= 0.853
+davidson 27 4  |r|= 0.00353  e= [-2.16269786e-05]  max|de|= -0.000294  lindep= 0.986
+root 0 converged  |r|= 0.000985  e= -2.406665187482224e-05  max|de|= -2.44e-06
+converged 28 5  |r|= 0.000985  e= [-2.40666519e-05]  max|de|= -2.44e-06
+UHF/UKS wavefunction has an internal instability.
+
+
+******** <class 'pyscf.dft.uks.UKS'> ********
+method = UKS-UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/tmpdp9r9z17
+max_memory 12000 MB (current use 3234 MB)
+number electrons alpha = 5  beta = 4
+XC functionals = b3lypg
+small_rho_cutoff = 1e-07
+Set gradient conv threshold to 3.16228e-05
+init E= -75.769290261982
+  alpha nocc = 5  HOMO = -0.356548949529902  LUMO = -0.0217713566827108
+  beta  nocc = 4  HOMO = -0.334291207857046  LUMO = -0.18428801551694
+cycle= 1 E= -75.7759139328834  delta_E= -0.00662  |g|= 0.015  |ddm|= 0.0386
+  alpha nocc = 5  HOMO = -0.355125314732163  LUMO = -0.0214799112010866
+  beta  nocc = 4  HOMO = -0.330155568618721  LUMO = -0.183593739681013
+cycle= 2 E= -75.775986912621  delta_E= -7.3e-05  |g|= 0.00533  |ddm|= 0.0051
+  alpha nocc = 5  HOMO = -0.358299051173061  LUMO = -0.0216891239762397
+  beta  nocc = 4  HOMO = -0.332744766625992  LUMO = -0.186311958836181
+cycle= 3 E= -75.7759875612548  delta_E= -6.49e-07  |g|= 0.00538  |ddm|= 0.00331
+  alpha nocc = 5  HOMO = -0.356943386792504  LUMO = -0.0215946866546527
+  beta  nocc = 4  HOMO = -0.33124807803241  LUMO = -0.185040018211352
+cycle= 4 E= -75.7759973866382  delta_E= -9.83e-06  |g|= 0.000154  |ddm|= 0.00171
+  alpha nocc = 5  HOMO = -0.356993603978931  LUMO = -0.021592507076868
+  beta  nocc = 4  HOMO = -0.331222514090807  LUMO = -0.185060388205563
+cycle= 5 E= -75.7759974019401  delta_E= -1.53e-08  |g|= 2.66e-05  |ddm|= 8.52e-05
+  alpha nocc = 5  HOMO = -0.357004595229329  LUMO = -0.0215942539222245
+  beta  nocc = 4  HOMO = -0.331217689168969  LUMO = -0.185062066682381
+cycle= 6 E= -75.775997402458  delta_E= -5.18e-10  |g|= 8.65e-06  |ddm|= 1.62e-05
+  alpha nocc = 5  HOMO = -0.357005007172802  LUMO = -0.0215935705322466
+  beta  nocc = 4  HOMO = -0.331215458171213  LUMO = -0.18506066427098
+Extra cycle  E= -75.7759974024966  delta_E= -3.86e-11  |g|= 3.8e-06  |ddm|= 4.48e-06
+converged SCF energy = -75.7759974024966  <S^2> = 0.75264591  2S+1 = 2.0026442
+**** checking UHF/UKS internal stability ...
+nelec by numeric integration = [5.         4.00000001]
+    CPU time for vxc      2.40 sec, wall time      0.15 sec
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.48  e= [1.72918475]  max|de|= 1.73  lindep= 0.981
+davidson 1 2  |r|= 0.24  e= [1.65275323]  max|de|= -0.0764  lindep= 0.997
+davidson 2 3  |r|= 0.0945  e= [1.56436572]  max|de|= -0.0884  lindep= 0.999
+davidson 3 4  |r|= 0.562  e= [1.53218258]  max|de|= -0.0322  lindep= 0.995
+davidson 4 5  |r|= 0.148  e= [1.45262246]  max|de|= -0.0796  lindep= 0.989
+davidson 5 6  |r|= 0.307  e= [1.41016544]  max|de|= -0.0425  lindep= 0.986
+davidson 6 7  |r|= 0.225  e= [1.34263642]  max|de|= -0.0675  lindep= 0.963
+davidson 7 8  |r|= 0.237  e= [1.29037608]  max|de|= -0.0523  lindep= 0.943
+davidson 8 9  |r|= 0.334  e= [1.20070992]  max|de|= -0.0897  lindep= 0.995
+davidson 9 10  |r|= 0.157  e= [1.10780002]  max|de|= -0.0929  lindep= 0.995
+davidson 10 11  |r|= 0.24  e= [1.03399632]  max|de|= -0.0738  lindep= 0.997
+davidson 11 12  |r|= 0.168  e= [0.97105904]  max|de|= -0.0629  lindep= 0.994
+davidson 12 1  |r|= 0.168  e= [0.97105904]  max|de|= -2.02e-13  lindep= 0.997
+davidson 13 2  |r|= 0.201  e= [0.9051768]  max|de|= -0.0659  lindep= 0.984
+davidson 14 3  |r|= 0.264  e= [0.87941944]  max|de|= -0.0258  lindep= 0.992
+davidson 15 4  |r|= 0.141  e= [0.84087968]  max|de|= -0.0385  lindep= 0.908
+davidson 16 5  |r|= 0.157  e= [0.78916081]  max|de|= -0.0517  lindep= 0.975
+davidson 17 6  |r|= 0.222  e= [0.73479307]  max|de|= -0.0544  lindep= 0.907
+davidson 18 7  |r|= 0.11  e= [0.71215524]  max|de|= -0.0226  lindep= 0.451
+davidson 19 8  |r|= 0.158  e= [0.66413279]  max|de|= -0.048  lindep= 0.865
+davidson 20 9  |r|= 0.779  e= [0.48446285]  max|de|= -0.18  lindep= 0.528
+davidson 21 10  |r|= 0.228  e= [0.30562957]  max|de|= -0.179  lindep= 0.988
+davidson 22 11  |r|= 0.828  e= [0.2185199]  max|de|= -0.0871  lindep= 0.434
+davidson 23 12  |r|= 0.272  e= [0.01389141]  max|de|= -0.205  lindep= 0.982
+davidson 24 1  |r|= 0.272  e= [0.01389141]  max|de|= 1.73e-15  lindep= 0.986
+davidson 25 2  |r|= 0.062  e= [0.00075193]  max|de|= -0.0131  lindep= 0.989
+davidson 26 3  |r|= 0.0209  e= [0.00012549]  max|de|= -0.000626  lindep= 0.906
+root 0 converged  |r|= 0.00388  e= 6.150546774374988e-05  max|de|= -6.4e-05
+converged 27 4  |r|= 0.00388  e= [6.15054677e-05]  max|de|= -6.4e-05
+UHF/UKS wavefunction is stable in the internal stability analysis

@@ -1,0 +1,29 @@
+nbf=   28
+nif=   28
+ON_criteria=  0.9999900
+ON_thres=  0.9800000
+
+Warning in subroutine uno: ON_thres deviates from ON_criteria.
+You better know what you are doing.
+
+The orthonormality of initial Alpha MO:
+maxv=    0.0000000000
+abs_mean=    0.0000000000
+
+The orthonormality of initial Beta MO:
+maxv=    0.0000000000
+abs_mean=    0.0000000000
+
+ndb  =    2
+nact =    5
+nact0=    5
+idx  =    3   13    0
+
+The orthonormality of final Alpha MO:
+maxv=    0.0000000000
+abs_mean=    0.0000000000
+
+ndb  =    4
+nact =    3
+nact0=    3
+idx  =    5   11    0

@@ -3,7 +3,7 @@ from construct_vir import construct_vir
 from pyscf import mcscf
 import numpy as np
 
-def cas(mf, crazywfn=False, max_memory=2000):
+def get_uno(mf):
     mol = mf.mol 
     nbf = mf.mo_coeff[0].shape[0]
     nif = mf.mo_coeff[0].shape[1]
@@ -22,7 +22,11 @@ def cas(mf, crazywfn=False, max_memory=2000):
     nacto = nocc - ndb
     nacta = (nacto + nopen)//2
     nactb = (nacto - nopen)//2
+    return mf, alpha_coeff, noon, nacto, (nacta, nactb)
 
+def cas(mf, crazywfn=False, max_memory=2000):
+    mf, unos, unoon, nacto, (nacta, nactb) = get_uno(mf)
+    nopen = nacta - nactb
     mc = mcscf.CASSCF(mf,nacto,(nacta,nactb))
     mc.fcisolver.max_memory = max_memory // 2
     mc.max_memory = max_memory // 2
