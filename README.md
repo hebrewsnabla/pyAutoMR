@@ -2,6 +2,10 @@
 
 The method used by this program is quite similar to [MOKIT](https://gitlab.com/jxzou/mokit). However, we try to do everything with PySCF and without Gaussian.
 
+## Pre-requisites
+* [MOKIT](https://gitlab.com/jxzou/mokit) (no need to fully compile, only pyuno, construct_vir are needed)
+* PySCF
+
 ## Features
 * UHF -> UNO -> CASSCF
 
@@ -13,3 +17,7 @@ The method used by this program is quite similar to [MOKIT](https://gitlab.com/j
 * UHF stability
 * dump CASCI coefficients
 
+## TODO
+* remove pyuno dependence
+* CASSCF example
+* CASSCF -> NEVPT2
