@@ -23,5 +23,6 @@ This program aims to do:
 
 ## TODO
 * remove pyuno dependence
-* CASSCF example
 * CASSCF -> NEVPT2
+* UNO -> GVB(Q-Chem) -> CASSCF
+* TDDFT NO -> CASSCF
