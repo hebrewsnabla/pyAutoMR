@@ -1,6 +1,6 @@
 from uno import uno
 from construct_vir import construct_vir
-from pyscf import mcscf
+from pyscf import mcscf, mrpt
 import numpy as np
 
 def get_uno(mf):
@@ -44,3 +44,7 @@ def cas(mf, crazywfn=False, max_memory=2000):
     mc.verbose = 5
     mc.kernel()
     return mc
+
+def nevpt2(mc):
+    nev = mrpt.NEVPT(mc)
+    nev.kernel()
