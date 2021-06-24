@@ -27,6 +27,7 @@ def mom(mf, type='U', aexci=[[],[]], bexci=[[],[]]):
     print('                     Beta', occ[1])
     #mf2 = copy.deepcopy(mf)
     dm = mf.make_rdm1(mo0, occ)
+    mf.verbose = 8
     mf2 = scf.addons.mom_occ(mf, mo0, occ)
     mf2.kernel(dm)
     e2 = mf2.e_tot
