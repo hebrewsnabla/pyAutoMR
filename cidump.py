@@ -20,7 +20,7 @@ def merge_vec(va, vb, n):
  
     return ''.join(v), ''.join(vo), int(va), int(vb)
 
-def dump(mc):
+def dump(mc, thresh=1e-2):
     '''
     input:
         mc: PySCF CASCI/CASSCF object
@@ -42,7 +42,7 @@ def dump(mc):
             veca = fci.cistring.addr2str(ncas, na, i)
             vecb = fci.cistring.addr2str(ncas, nb, j)
             coeff = ci[i,j]
-            if coeff**2 > 1e-3:
+            if coeff**2 > thresh:
                 vec, veco, va, vb = merge_vec(veca, vecb, ncas)
                 dump_g[vec] = coeff**2
                 if veco in dump_o:

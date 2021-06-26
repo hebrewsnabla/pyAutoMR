@@ -7,7 +7,6 @@ This program aims to do:
 * automatic guess for CASSCF/SUHF 
 
 ## Pre-requisites
-* [MOKIT](https://gitlab.com/jxzou/mokit) (no need to fully compile, only pyuno, construct_vir are needed)
 * PySCF
 
 ## Features
@@ -22,7 +21,6 @@ This program aims to do:
 * dump CASCI coefficients
 
 ## TODO
-* remove pyuno dependence
-* CASSCF -> NEVPT2
 * UNO -> GVB(Q-Chem) -> CASSCF
 * TDDFT NO -> CASSCF
+* SA-CASSCF
