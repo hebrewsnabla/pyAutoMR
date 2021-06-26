@@ -4,6 +4,9 @@ from pyscf import mcscf, mrpt
 import numpy as np
 import scipy
 from functools import partial, reduce
+from lo import pm
+from pyscf.lo.boys import dipole_integral
+from auto_pair import pair_by_tdm
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
@@ -83,8 +86,53 @@ def get_uno_st1(mo, mo_occ, S, thresh=0.98):
 
     return unos, noon, nacto
 
+def get_locorb(mf):
+    #mol = mf.mol
+    #mol2 = mf.mol.copy()
+    #mol2.basis = 'sto-6g'
+    #mol2.build()
+    #mo2 = scf.addons.project_mo_nr2nr(mol, mf.mo_coeff, mol2)
+
+    npair = np.sum(mf.mo_occ==0)
+    idx2 = np.sum(mf.mo_occ==2)
+    idx1 = idx2 - npair
+    idx3 = 2*idx2 - idx1
+    occ_idx = range(idx1,idx2)
+    vir_idx = range(idx2,idx3)
+    occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
+    vir_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,vir_idx],S,'mulliken')
+    mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
+    mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
+    mo_dipole = dipole_integral(mol, mf.mo_coeff)
+    ncore = idx1
+    nopen = np.sum(mf.mo_occ==1)
+    nalpha = np.sum(mf.mo_occ > 0)
+    nvir_lmo = npair
+    alpha_coeff = pair_by_tdm(ncore, npair, nopen, nalpha, nvir_lmo,nbf, nif, mf.mo_coeff, mo_dipole)
+    mf.mo_coeff = alpha_coeff.copy()
+    return mf, alpha_coeff, nvir_lmo
+
+def check_uhf(mf):
+    ndim = np.ndim(mf.mo_coeff)
+    if ndim==2:
+        return False
+    elif ndim==3:
+        diff = abs(mf.mo_coeff[0] - mf.mo_coeff[1])
+        if max(diff) > 1e-4:
+            return True
+        else:
+            mf = mf.to_rhf()
+            return False
+
+
 def cas(mf, crazywfn=False, max_memory=2000):
-    mf, unos, unoon, nacto, (nacta, nactb) = get_uno(mf)
+    is_uhf = check_uhf(mf)
+    if is_uhf:
+        mf, unos, unoon, nacto, (nacta, nactb) = get_uno(mf)
+    else:
+        mf, lmos, npair = get_locorb(mf)
+        nacto = npair*2
+        nacta = nactb = npair
     nopen = nacta - nactb
     mc = mcscf.CASSCF(mf,nacto,(nacta,nactb))
     mc.fcisolver.max_memory = max_memory // 2

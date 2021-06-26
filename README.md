@@ -11,6 +11,7 @@ This program aims to do:
 
 ## Features
 * UHF -> UNO -> CASSCF
+* RHF -> PM LMO -> CASSCF
 
 ## Utilities
 * guess for UHF
