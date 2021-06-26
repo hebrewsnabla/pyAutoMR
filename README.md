@@ -13,6 +13,7 @@ This program aims to do:
 ## Features
 * UHF -> UNO -> CASSCF
 * RHF -> PM LMO -> CASSCF
+UHF, RHF can be auto-detected.
 
 ## Utilities
 * guess for UHF

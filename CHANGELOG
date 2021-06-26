@@ -1,0 +1,10 @@
+version 0.1 (Jun 27, 2021)
+--------------------------
+* UHF -> UNO -> CASSCF
+* RHF -> PM LMO -> CASSCF
+* guess for UHF
+  + mix
+  + fragment
+  + from_fch
+* UHF stability
+* dump CASCI coefficients
