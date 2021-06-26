@@ -20,6 +20,7 @@ def get_uno(mf, st='st2'):
     nopen = na - nb
     if st=='st1':
         # deprecated
+        mo_occ = mf.mo_occ
         unos, noon, nacto = get_uno_st1(mo, mo_occ, S)
     elif st=='st2':
         dm = mf.make_rdm1()
