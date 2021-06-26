@@ -1,6 +1,6 @@
 #from uno import uno
 #from construct_vir import construct_vir
-from pyscf import mcscf, mrpt
+from pyscf import mcscf, mrpt, gto, scf
 import numpy as np
 import scipy
 from functools import partial, reduce
@@ -87,18 +87,37 @@ def get_uno_st1(mo, mo_occ, S, thresh=0.98):
     return unos, noon, nacto
 
 def get_locorb(mf):
-    #mol = mf.mol
-    #mol2 = mf.mol.copy()
-    #mol2.basis = 'sto-6g'
-    #mol2.build()
-    #mo2 = scf.addons.project_mo_nr2nr(mol, mf.mo_coeff, mol2)
+    mol = mf.mol
+    mo = mf.mo_coeff
+    nbf = mf.mo_coeff.shape[0]
+    nif = mf.mo_coeff.shape[1]
+    mol2 = mf.mol.copy()
+    mol2.basis = 'sto-6g'
+    mol2.build()
+    mf2 = scf.RHF(mol2)
+    mf2.max_cycle = 150
+    #dm = mf2.from_chk('loc_rhf_proj.chk')
+    mf2.kernel()
+    mo2 = mf2.mo_coeff
+    #nbf2 = mf2.mo_coeff.shape[0]
+    #nif2 = mf2.mo_coeff.shape[1]
+    idx = np.count_nonzero(mf.mo_occ)
+    cross_S = gto.intor_cross('int1e_ovlp', mol, mol2)
+    print(idx, mo.shape, mo2.shape ,cross_S.shape)
+    vir_cross = einsum('ji,jk,kl->il', mo[:,idx:], cross_S, mo2[:,idx:])
 
-    npair = np.sum(mf.mo_occ==0)
-    idx2 = np.sum(mf.mo_occ==2)
+    u,s,v = scipy.linalg.svd(vir_cross)
+    print('SVD', s)
+    projmo = np.dot(mo[:,idx:], u)
+    mf.mo_coeff[:, idx:] = projmo
+
+    npair = np.sum(mf2.mo_occ==0)
+    idx2 = np.count_nonzero(mf.mo_occ)
     idx1 = idx2 - npair
-    idx3 = 2*idx2 - idx1
+    idx3 = idx2 + npair
     occ_idx = range(idx1,idx2)
     vir_idx = range(idx2,idx3)
+    S = mol.intor_symmetric('int1e_ovlp')
     occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
     vir_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,vir_idx],S,'mulliken')
     mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
@@ -106,27 +125,30 @@ def get_locorb(mf):
     mo_dipole = dipole_integral(mol, mf.mo_coeff)
     ncore = idx1
     nopen = np.sum(mf.mo_occ==1)
-    nalpha = np.sum(mf.mo_occ > 0)
-    nvir_lmo = npair
-    alpha_coeff = pair_by_tdm(ncore, npair, nopen, nalpha, nvir_lmo,nbf, nif, mf.mo_coeff, mo_dipole)
+    nalpha = idx2
+    #nvir_lmo = npair
+    alpha_coeff = pair_by_tdm(ncore, npair, nopen, nalpha, npair, nbf, nif, mf.mo_coeff, mo_dipole)
     mf.mo_coeff = alpha_coeff.copy()
-    return mf, alpha_coeff, nvir_lmo
+    return mf, alpha_coeff, npair
 
 def check_uhf(mf):
-    ndim = np.ndim(mf.mo_coeff)
+    dm = mf.make_rdm1()
+    ndim = np.ndim(dm)
     if ndim==2:
-        return False
+        return False, mf
     elif ndim==3:
-        diff = abs(mf.mo_coeff[0] - mf.mo_coeff[1])
-        if max(diff) > 1e-4:
-            return True
+        diff = abs(dm[0] - dm[1])
+        #print(diff)
+        #print(np.max(diff))
+        if diff.max() > 1e-4:
+            return True, mf
         else:
             mf = mf.to_rhf()
-            return False
+            return False, mf
 
 
 def cas(mf, crazywfn=False, max_memory=2000):
-    is_uhf = check_uhf(mf)
+    is_uhf, mf = check_uhf(mf)
     if is_uhf:
         mf, unos, unoon, nacto, (nacta, nactb) = get_uno(mf)
     else:

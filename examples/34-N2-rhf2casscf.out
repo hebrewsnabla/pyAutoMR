@@ -1,0 +1,650 @@
+#INFO: **** input file is /share/home/srwang/pyAutoMR/examples/34-N2-rhf2casscf.py ****
+from pyscf import lib
+#from pyphf import util, guess
+import guess, autocas, cidump
+
+lib.num_threads(4)
+
+xyz = 'N 0.0 0.0 0.0; N  0.0 0.0 1.0' #sys.argv[1]
+#fch = 'n2.fchk' #sys.argv[2]
+bas = 'cc-pvdz'
+
+mf = guess.gen(xyz, bas, 0, 0)
+#guess.check_stab(mf)
+
+mf2 = autocas.cas(mf)
+cidump.dump(mf2)
+
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='xn01', release='3.10.0-1127.el7.x86_64', version='#1 SMP Tue Feb 18 16:39:12 EST 2020', machine='x86_64', processor='x86_64')  Threads 4
+Python 3.7.4 (default, Aug 13 2019, 20:35:49) 
+[GCC 7.3.0]
+numpy 1.17.2  scipy 1.4.1
+Date: Sun Jun 27 00:52:07 2021
+PySCF version 1.7.6a1
+PySCF path  /share/home/srwang/pyscf/pyscf
+GIT HEAD      ref: refs/heads/master
+GIT master branch  80f71dfe77ac5f9caae26788acf76446987635bd
+
+[CONFIG] conf_file None
+[INPUT] verbose = 4
+[INPUT] num. atoms = 2
+[INPUT] num. electrons = 14
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 0
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 N      0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr
+[INPUT]  2 N      0.000000000000   0.000000000000   1.000000000000 AA    0.000000000000   0.000000000000   1.889726124565 Bohr
+
+nuclear repulsion = 25.92968333508
+number of shells = 10
+number of NR pGTOs = 52
+number of NR cGTOs = 28
+basis = cc-pvdz
+ecp = {}
+CPU time:         0.45
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/tmpclf9et_7
+max_memory 4000 MB (current use 75 MB)
+number electrons alpha = 7  beta = 7
+Set gradient conv threshold to 3.16228e-05
+init E= -109.61478689215
+  alpha nocc = 7  HOMO = -0.336428140621994  LUMO = 0.17467334374441
+  beta  nocc = 7  HOMO = -0.336714739018985  LUMO = 0.172494301161525
+cycle= 1 E= -108.904880014796  delta_E= 0.71  |g|= 0.233  |ddm|= 1.29
+  alpha nocc = 7  HOMO = -0.669230029626958  LUMO = 0.189494156022768
+  beta  nocc = 7  HOMO = -0.667681006521138  LUMO = 0.189754781635441
+cycle= 2 E= -108.928474943897  delta_E= -0.0236  |g|= 0.0538  |ddm|= 0.191
+  alpha nocc = 7  HOMO = -0.627321566262797  LUMO = 0.233622751407844
+  beta  nocc = 7  HOMO = -0.626606798345332  LUMO = 0.233682338322248
+cycle= 3 E= -108.929788237688  delta_E= -0.00131  |g|= 0.00875  |ddm|= 0.043
+  alpha nocc = 7  HOMO = -0.634092466548869  LUMO = 0.230199640720318
+  beta  nocc = 7  HOMO = -0.63393955701663  LUMO = 0.23016499440308
+cycle= 4 E= -108.929838011582  delta_E= -4.98e-05  |g|= 0.000734  |ddm|= 0.0117
+  alpha nocc = 7  HOMO = -0.633563074273878  LUMO = 0.230669717688164
+  beta  nocc = 7  HOMO = -0.633517151666937  LUMO = 0.230655144430408
+cycle= 5 E= -108.92983836929  delta_E= -3.58e-07  |g|= 0.000135  |ddm|= 0.000916
+  alpha nocc = 7  HOMO = -0.633584589464487  LUMO = 0.230665624975565
+  beta  nocc = 7  HOMO = -0.633576802618514  LUMO = 0.230662545466008
+cycle= 6 E= -108.929838385334  delta_E= -1.6e-08  |g|= 1.82e-05  |ddm|= 0.000233
+  alpha nocc = 7  HOMO = -0.633578392814244  LUMO = 0.230666899804046
+  beta  nocc = 7  HOMO = -0.633577600315605  LUMO = 0.230666546758052
+cycle= 7 E= -108.929838385604  delta_E= -2.7e-10  |g|= 2.51e-06  |ddm|= 7.42e-05
+  alpha nocc = 7  HOMO = -0.633578721524855  LUMO = 0.230665846566406
+  beta  nocc = 7  HOMO = -0.633578418821184  LUMO = 0.230665708737948
+Extra cycle  E= -108.929838385609  delta_E= -4.49e-12  |g|= 8.63e-07  |ddm|= 4.14e-06
+converged SCF energy = -108.929838385609  <S^2> = 8.4554586e-13  2S+1 = 1
+[[0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.000001 0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.000001
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]
+ [0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.
+  0.       0.       0.       0.       0.       0.       0.       0.       0.       0.       0.      ]]
+
+
+******** <class 'pyscf.scf.hf.RHF'> ********
+method = RHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 150
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/tmppcpp57gi
+max_memory 4000 MB (current use 89 MB)
+Set gradient conv threshold to 3.16228e-05
+init E= -109.118668097606
+  HOMO = -0.340727259681487  LUMO = 0.206373767449904
+cycle= 1 E= -108.464842159941  delta_E= 0.654  |g|= 0.0415  |ddm|= 2.45
+  HOMO = -0.56945532702191  LUMO = 0.31742486918875
+cycle= 2 E= -108.464954245982  delta_E= -0.000112  |g|= 0.00401  |ddm|= 0.0403
+  HOMO = -0.569968863561372  LUMO = 0.317280920982988
+cycle= 3 E= -108.464957678335  delta_E= -3.43e-06  |g|= 0.000534  |ddm|= 0.00897
+  HOMO = -0.570059394705288  LUMO = 0.317260695150183
+cycle= 4 E= -108.464957764796  delta_E= -8.65e-08  |g|= 1.11e-07  |ddm|= 0.00169
+  HOMO = -0.570059385497508  LUMO = 0.317260697508443
+cycle= 5 E= -108.464957764796  delta_E=    0  |g|= 7.28e-12  |ddm|= 2.17e-07
+  HOMO = -0.570059385505941  LUMO = 0.31726069750012
+Extra cycle  E= -108.464957764796  delta_E=    0  |g|= 1.44e-12  |ddm|= 1.7e-11
+converged SCF energy = -108.464957764796
+7 (28, 28) (10, 10) (28, 10)
+SVD [0.997158 0.996035 0.996035]
+
+PM orbital localization begins: using mulliken population
+natom=2
+niter=    1, sum_change=      0.0000000
+Localization converged successfully.
+Localization time(sec):0
+
+PM orbital localization begins: using mulliken population
+natom=2
+niter=    1, sum_change=      0.0000000
+Localization converged successfully.
+Localization time(sec):0
+
+Information of subroutine pair_by_tdm1:
+There are   4 core orbitals.
+There are   3 occupied LMOs.
+There are   0 singly occupied MOs.
+There are   7 alpha MOs.
+There are   3 unoccupied LMOs.
+In occ LMO subspace, Modified f(Boys)=   12.283576
+In vir LMO subspace, Modified f(Boys)=   12.283221
+Max transition dipole**2=    0.90925
+    6    8
+sum_tdm=         2.18233
+sum_tdm=         2.18233
+sum_tdm=         2.18233
+Final pairs:
+   1   8   6    0.90925
+   2   9   5    0.38600
+   3  10   7    0.88708
+max_sum=         2.18233
+Information of subroutine pair_by_tdm1 printing done.
+
+******** <class 'pyscf.mcscf.mc1step.CASSCF'> ********
+CAS (3e+3e, 6o), ncore = 4, nvir = 18
+max_cycle_macro = 200
+max_cycle_micro = 4
+conv_tol = 1e-07
+conv_tol_grad = None
+orbital rotation max_stepsize = 0.02
+augmented hessian ah_max_cycle = 30
+augmented hessian ah_conv_tol = 1e-12
+augmented hessian ah_linear dependence = 1e-14
+augmented hessian ah_level shift = 0
+augmented hessian ah_start_tol = 2.5
+augmented hessian ah_start_cycle = 3
+augmented hessian ah_grad_trust_region = 3
+kf_trust_region = 3
+kf_interval = 4
+ci_response_space = 4
+ci_grad_trust_region = 3
+with_dep4 0
+natorb = True
+canonicalization = True
+sorting_mo_energy = False
+ao2mo_level = 2
+chkfile = /share/home/srwang/pyAutoMR/examples/tmpclf9et_7
+max_memory 1000 MB (current use 101 MB)
+internal_rotation = False
+******** <class 'pyscf.fci.direct_spin1.FCISolver'> ********
+max. cycles = 100
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 1000 MB
+nroots = 1
+pspace_size = 400
+spin = 0
+Start 1-step CASSCF
+Start CASCI
+    CPU time for integral transformation to CAS space      0.00 sec, wall time      0.00 sec
+core energy = -97.0441449273071
+    CPU time for effective h1e in CAS space      0.00 sec, wall time      0.00 sec
+    CPU time for FCI solver      0.32 sec, wall time      0.08 sec
+CAS space CI energy = -11.9771328546074
+CASCI E = -109.021277781914  S^2 = 0.0000000
+Set conv_tol_grad to 0.000316228
+    CPU time for Initializing 1-step CASSCF      0.41 sec, wall time      0.10 sec
+    CPU time for CAS DM      0.00 sec, wall time      0.00 sec
+    |g|=0.0762
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 1(3)  |g[o]|=0.0727  |dxi|=0.0254  max(|x|)=0.431  |dr|=0.0254  eig=-0.0114  seig=0.00549
+    imic 2(4)  |g[o]|=0.0695  |dxi|=0.0244  max(|x|)=0.446  |dr|=0.0498  eig=-0.0108  seig=0.00549
+    imic 3(5)  |g[o]|=0.0665  |dxi|=0.0244  max(|x|)=0.445  |dr|=0.0741  eig=-0.0103  seig=0.00542
+    imic 4(6)  |g[o]|=0.0635  |dxi|=0.0245  max(|x|)= 0.44  |dr|=0.0986  eig=-0.00983  seig=0.00538
+    CPU time for aug_hess in 4 inner iters      0.06 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.09 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 1  |u-1|=0.139  |g[o]|=0.0762  |g[c]|=0.0269  |ddm|=0.00151
+    CPU time for micro iter 1      0.00 sec, wall time      0.00 sec
+    |g|=0.0687 (keyframe), |g-correction|=0.0108
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 5(7)  |g[o]|=0.0664  |dxi|=0.0231  max(|x|)=0.556  |dr|=0.0231  eig=-0.0158  seig=0.00538
+    imic 6(8)  |g[o]|=0.0642  |dxi|=0.0223  max(|x|)=0.577  |dr|=0.0454  eig=-0.0155  seig=0.00536
+    imic 7(9)  |g[o]|=0.0621  |dxi|=0.0223  max(|x|)=0.575  |dr|=0.0676  eig=-0.0151  seig=0.00533
+    imic 8(10)  |g[o]|=0.0601  |dxi|=0.0223  max(|x|)=0.572  |dr|= 0.09  eig=-0.0146  seig=0.00523
+    CPU time for aug_hess in 8 inner iters      0.04 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.07 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 2  |u-1|=0.265  |g[o]|=0.0687  |g[c]|=0.035  |ddm|=0.00296
+    CPU time for micro iter 2      0.00 sec, wall time      0.00 sec
+    |g|=0.0749 (keyframe), |g-correction|=0.0246
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 9(11)  |g[o]|=0.0731  |dxi|=0.0211  max(|x|)=0.718  |dr|=0.0211  eig=-0.0284  seig=0.00522
+    imic 10(12)  |g[o]|=0.0714  |dxi|=0.0211  max(|x|)=0.716  |dr|=0.0422  eig=-0.028  seig=0.00521
+    imic 11(13)  |g[o]|=0.0697  |dxi|=0.0211  max(|x|)=0.715  |dr|=0.0633  eig=-0.0276  seig=0.0052
+    imic 12(14)  |g[o]|=0.068  |dxi|=0.0211  max(|x|)=0.714  |dr|=0.0844  eig=-0.0271  seig=0.0052
+    CPU time for aug_hess in 12 inner iters      0.04 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.07 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 3  |u-1|=0.381  |g[o]|=0.0749  |g[c]|=0.0581  |ddm|=0.00413
+    CPU time for micro iter 3      0.00 sec, wall time      0.00 sec
+    |g|=0.0955 (keyframe), |g-correction|=0.0353
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 13(15)  |g[o]|=0.0936  |dxi|=0.0207  max(|x|)=0.789  |dr|=0.0207  eig=-0.0444  seig=0.0052
+    imic 14(16)  |g[o]|=0.0918  |dxi|=0.0207  max(|x|)=0.789  |dr|=0.0415  eig=-0.044  seig=0.00516
+    imic 15(17)  |g[o]|= 0.09  |dxi|=0.0207  max(|x|)=0.788  |dr|=0.0622  eig=-0.0435  seig=0.00515
+    imic 16(18)  |g[o]|=0.0882  |dxi|=0.0207  max(|x|)=0.788  |dr|=0.083  eig=-0.0431  seig=0.00509
+    CPU time for aug_hess in 16 inner iters      0.04 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.07 sec, wall time      0.02 sec
+micro 4  |u-1|=0.494  |g[o]|=0.0955
+Active space overlap to initial guess, SVD = [0.999965 0.999965 0.998828 0.998828 0.993295 0.948062]
+Active space overlap to last step, SVD = [0.999965 0.999965 0.998828 0.998828 0.993295 0.948062]
+    CPU time for update eri      0.04 sec, wall time      0.01 sec
+Start CASCI
+    CPU time for integral transformation to CAS space      0.00 sec, wall time      0.00 sec
+core energy = -96.327449033122
+    CPU time for effective h1e in CAS space      0.00 sec, wall time      0.00 sec
+davidson 0 1  |r|= 0.0206  e= [-12.707055]  max|de|= -12.7  lindep= 0.571
+davidson 1 2  |r|= 0.00728  e= [-12.707187]  max|de|= -0.000131  lindep= 0.569
+davidson 2 3  |r|= 0.00164  e= [-12.707207]  max|de|= -2.01e-05  lindep= 0.981
+davidson 3 4  |r|= 0.000137  e= [-12.707207]  max|de|= -8.78e-07  lindep= 0.966
+root 0 converged  |r|= 2.01e-05  e= -12.707207489125627  max|de|= -6.65e-09
+converged 4 5  |r|= 2.01e-05  e= [-12.707207]  max|de|= -6.65e-09
+    CPU time for FCI solver      0.30 sec, wall time      0.07 sec
+CAS space CI energy = -12.7072074891256
+macro iter 1 (21 JK  4 micro), CASSCF E = -109.034656522248  dE = -0.01337874  S^2 = 0.0000000
+               |grad[o]|=0.0762  |grad[c]|= 0.058093804772990344  |ddm|=0.00413
+    CPU time for CASCI solver      0.33 sec, wall time      0.08 sec
+    CPU time for macro iter 1      0.79 sec, wall time      0.20 sec
+    |g|=0.0479
+    CPU time for gen h_op      0.06 sec, wall time      0.02 sec
+    imic 1(3)  |g[o]|=0.0455  |dxi|=0.0219  max(|x|)=0.381  |dr|=0.0219  eig=-0.0072  seig=0.000377
+    imic 2(4)  |g[o]|=0.043  |dxi|=0.0219  max(|x|)=0.369  |dr|=0.0438  eig=-0.00668  seig=0.000234
+    imic 3(5)  |g[o]|=0.0407  |dxi|=0.0219  max(|x|)= 0.36  |dr|=0.0657  eig=-0.00617  seig=0.000207
+    imic 4(6)  |g[o]|=0.0384  |dxi|=0.0219  max(|x|)=0.351  |dr|=0.0876  eig=-0.00567  seig=0.000183
+    CPU time for aug_hess in 4 inner iters      0.07 sec, wall time      0.02 sec
+    CPU time for orbital rotation      0.16 sec, wall time      0.04 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 1  |u-1|=0.124  |g[o]|=0.0479  |g[c]|=0.0161  |ddm|=0.00106
+    CPU time for micro iter 1      0.00 sec, wall time      0.00 sec
+    |g|=0.0416 (keyframe), |g-correction|=0.00752
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 5(7)  |g[o]|=0.0399  |dxi|=0.0215  max(|x|)=0.452  |dr|=0.0215  eig=-0.009  seig=0.000181
+    imic 6(8)  |g[o]|=0.0382  |dxi|=0.0214  max(|x|)=0.447  |dr|=0.0428  eig=-0.00853  seig=0.000181
+    imic 7(9)  |g[o]|=0.0365  |dxi|=0.0214  max(|x|)=0.439  |dr|=0.0642  eig=-0.00805  seig=0.00018
+    imic 8(10)  |g[o]|=0.0349  |dxi|=0.0214  max(|x|)=0.431  |dr|=0.0855  eig=-0.00759  seig=0.000178
+    CPU time for aug_hess in 8 inner iters      0.04 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.07 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 2  |u-1|=0.244  |g[o]|=0.0416  |g[c]|=0.0237  |ddm|=0.00188
+    CPU time for micro iter 2      0.00 sec, wall time      0.00 sec
+    |g|=0.0447 (keyframe), |g-correction|=0.017
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 9(11)  |g[o]|=0.0433  |dxi|=0.0211  max(|x|)= 0.56  |dr|=0.0211  eig=-0.0144  seig=0.000173
+    imic 10(12)  |g[o]|=0.0419  |dxi|=0.0211  max(|x|)=0.555  |dr|=0.0422  eig=-0.014  seig=0.000135
+    imic 11(13)  |g[o]|=0.0406  |dxi|=0.0212  max(|x|)= 0.55  |dr|=0.0634  eig=-0.0135  seig=0.000133
+    imic 12(14)  |g[o]|=0.0392  |dxi|=0.0212  max(|x|)=0.544  |dr|=0.0846  eig=-0.013  seig=0.00013
+    CPU time for aug_hess in 12 inner iters      0.04 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.07 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 3  |u-1|=0.362  |g[o]|=0.0447  |g[c]|=0.0431  |ddm|=0.00247
+    CPU time for micro iter 3      0.00 sec, wall time      0.00 sec
+    |g|=0.0564 (keyframe), |g-correction|=0.0228
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 13(15)  |g[o]|=0.0547  |dxi|=0.0211  max(|x|)=0.598  |dr|=0.0211  eig=-0.0178  seig=0.000119
+    imic 14(16)  |g[o]|=0.053  |dxi|=0.0211  max(|x|)=0.593  |dr|=0.0422  eig=-0.0173  seig=0.000118
+    imic 15(17)  |g[o]|=0.0514  |dxi|=0.0211  max(|x|)=0.589  |dr|=0.0633  eig=-0.0168  seig=0.000115
+    imic 16(18)  |g[o]|=0.0498  |dxi|=0.0212  max(|x|)=0.585  |dr|=0.0845  eig=-0.0163  seig=0.00011
+    CPU time for aug_hess in 16 inner iters      0.04 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.07 sec, wall time      0.02 sec
+micro 4  |u-1|=0.479  |g[o]|=0.0564
+Active space overlap to initial guess, SVD = [0.999896 0.999896 0.995361 0.995361 0.986618 0.797624]
+Active space overlap to last step, SVD = [0.999982 0.999982 0.998848 0.998848 0.996848 0.948052]
+    CPU time for update eri      0.05 sec, wall time      0.01 sec
+Start CASCI
+    CPU time for integral transformation to CAS space      0.00 sec, wall time      0.00 sec
+core energy = -95.231567905804
+    CPU time for effective h1e in CAS space      0.00 sec, wall time      0.00 sec
+davidson 0 1  |r|= 0.0111  e= [-13.811203]  max|de|= -13.8  lindep= 0.598
+davidson 1 2  |r|= 0.00395  e= [-13.811242]  max|de|= -3.94e-05  lindep= 0.54
+davidson 2 3  |r|= 0.000927  e= [-13.811247]  max|de|= -4.98e-06  lindep= 0.935
+davidson 3 4  |r|= 0.000137  e= [-13.811248]  max|de|= -2.71e-07  lindep= 0.867
+root 0 converged  |r|= 2.38e-05  e= -13.8112477472203  max|de|= -7.68e-09
+converged 4 5  |r|= 2.38e-05  e= [-13.811248]  max|de|= -7.68e-09
+    CPU time for FCI solver      0.29 sec, wall time      0.07 sec
+CAS space CI energy = -13.8112477472203
+macro iter 2 (21 JK  4 micro), CASSCF E = -109.042815653024  dE = -0.0081591308  S^2 = 0.0000000
+               |grad[o]|=0.0479  |grad[c]|= 0.04311729176719974  |ddm|=0.00247
+    CPU time for CASCI solver      0.33 sec, wall time      0.08 sec
+    CPU time for macro iter 2      0.87 sec, wall time      0.22 sec
+    |g|=0.0237
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 1(3)  |g[o]|=0.0209  |dxi|=0.0218  max(|x|)=0.167  |dr|=0.0218  eig=-0.00143  seig=0.000253
+    imic 2(4)  |g[o]|=0.0181  |dxi|=0.0217  max(|x|)=0.149  |dr|=0.0435  eig=-0.00112  seig=0.000245
+    imic 3(5)  |g[o]|=0.0153  |dxi|=0.0217  max(|x|)=0.131  |dr|=0.0652  eig=-0.000853  seig=0.000226
+    imic 4(6)  |g[o]|=0.0126  |dxi|=0.0217  max(|x|)=0.112  |dr|=0.0869  eig=-0.00062  seig=0.000212
+    CPU time for aug_hess in 4 inner iters      0.05 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.11 sec, wall time      0.03 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 1  |u-1|=0.123  |g[o]|=0.0237  |g[c]|= 0.01  |ddm|=0.00096
+    CPU time for micro iter 1      0.00 sec, wall time      0.00 sec
+    |g|=0.0132 (keyframe), |g-correction|=0.00373
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 5(7)  |g[o]|=0.0113  |dxi|=0.0217  max(|x|)=0.134  |dr|=0.0217  eig=-0.000751  seig=0.00021
+    imic 6(8)  |g[o]|=0.0094  |dxi|=0.0217  max(|x|)=0.116  |dr|=0.0434  eig=-0.000553  seig=0.000191
+    imic 7(9)  |g[o]|=0.00747  |dxi|=0.0217  max(|x|)=0.0973  |dr|=0.065  eig=-0.000383  seig=0.000188
+    imic 8(10)  |g[o]|=0.00555  |dxi|=0.0217  max(|x|)=0.078  |dr|=0.0867  eig=-0.000244  seig=0.00018
+    CPU time for aug_hess in 8 inner iters      0.04 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.07 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 2  |u-1|=0.245  |g[o]|=0.0132  |g[c]|=0.0222  |ddm|=0.00191
+    CPU time for micro iter 2      0.00 sec, wall time      0.00 sec
+    |g|=0.0128 (keyframe), |g-correction|=0.0102
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 9(11)  |g[o]|=0.00682  |dxi|=0.0224  max(|x|)=0.0396  |dr|=0.0224  eig=-0.000137  seig=0.000173
+    imic 10(12)  |g[o]|=0.000619  |dxi|=0.0224  max(|x|)=0.019  |dr|=0.0446  eig=-3.75e-05  seig=0.000164
+    CPU time for aug_hess in 10 inner iters      0.02 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.05 sec, wall time      0.01 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 3  |u-1|=0.307  |g[o]|=0.0128  |g[c]|=0.0315  |ddm|=0.00257
+    CPU time for micro iter 3      0.00 sec, wall time      0.00 sec
+    |g|=0.00769 (keyframe), |g-correction|=0.00768
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 11(13)  |g[o]|=0.00504  |dxi|=0.0225  max(|x|)=0.0591  |dr|=0.0225  eig=-0.000136  seig=0.000155
+    imic 12(14)  |g[o]|=0.00247  |dxi|=0.0226  max(|x|)=0.0392  |dr|=0.0451  eig=-6.08e-05  seig=0.000146
+    CPU time for aug_hess in 12 inner iters      0.02 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.05 sec, wall time      0.01 sec
+micro 4  |u-1|= 0.25  |g[o]|=0.00769
+Active space overlap to initial guess, SVD = [0.999779 0.999779 0.9898   0.989799 0.984201 0.690532]
+Active space overlap to last step, SVD = [0.999978 0.999978 0.999593 0.998915 0.998914 0.986986]
+    CPU time for update eri      0.04 sec, wall time      0.01 sec
+Start CASCI
+    CPU time for integral transformation to CAS space      0.00 sec, wall time      0.00 sec
+core energy = -94.6725591691044
+    CPU time for effective h1e in CAS space      0.00 sec, wall time      0.00 sec
+davidson 0 1  |r|= 0.00719  e= [-14.371651]  max|de|= -14.4  lindep= 0.485
+davidson 1 2  |r|= 0.00265  e= [-14.371663]  max|de|= -1.24e-05  lindep= 0.601
+davidson 2 3  |r|= 0.000562  e= [-14.371666]  max|de|= -2.34e-06  lindep= 0.883
+davidson 3 4  |r|= 8.07e-05  e= [-14.371666]  max|de|= -9.67e-08  lindep= 0.976
+root 0 converged  |r|= 1.18e-05  e= -14.371665649945637  max|de|= -2.1e-09
+converged 4 5  |r|= 1.18e-05  e= [-14.371666]  max|de|= -2.1e-09
+    CPU time for FCI solver      0.28 sec, wall time      0.07 sec
+CAS space CI energy = -14.3716656499456
+macro iter 3 (17 JK  4 micro), CASSCF E = -109.04422481905  dE = -0.001409166  S^2 = 0.0000000
+               |grad[o]|=0.0237  |grad[c]|= 0.03146694939860133  |ddm|=0.00257
+    CPU time for CASCI solver      0.31 sec, wall time      0.08 sec
+    CPU time for macro iter 3      0.75 sec, wall time      0.19 sec
+    |g|=0.0191
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 1(3)  |g[o]|=0.00616  |dxi|=0.0243  max(|x|)=0.0294  |dr|=0.0243  eig=-0.000172  seig=0.000197
+    CPU time for aug_hess in 1 inner iters      0.03 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.08 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 1  |u-1|=0.0344  |g[o]|=0.0191  |g[c]|=0.00234  |ddm|=0.000149
+    CPU time for micro iter 1      0.00 sec, wall time      0.00 sec
+    |g|=0.00595 (keyframe), |g-correction|=0.000229
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 2(4)  |g[o]|=0.000293  |dxi|=0.0118  max(|x|)=0.00952  |dr|=0.0118  eig=-1.74e-05  seig=0.000196
+    CPU time for aug_hess in 2 inner iters      0.01 sec, wall time      0.00 sec
+    CPU time for orbital rotation      0.04 sec, wall time      0.01 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 2  |u-1|=0.0511  |g[o]|=0.00595  |g[c]|=0.00152  |ddm|=0.000196
+    CPU time for micro iter 2      0.00 sec, wall time      0.00 sec
+    |g|=0.000408 (keyframe), |g-correction|=0.000295
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 3(5)  |g[o]|=0.000103  |dxi|=0.00182  max(|x|)=0.00156  |dr|=0.00182  eig=-1.81e-07  seig=0.000188
+    CPU time for aug_hess in 3 inner iters      0.01 sec, wall time      0.00 sec
+    CPU time for orbital rotation      0.04 sec, wall time      0.01 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 3  |u-1|=0.0487  |g[o]|=0.000408  |g[c]|=0.000939  |ddm|=0.000208
+    CPU time for micro iter 3      0.00 sec, wall time      0.00 sec
+    |g|=0.000127 (keyframe), |g-correction|=5.8e-05
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 4(6)  |g[o]|=3.76e-05  |dxi|=0.000265  max(|x|)=0.000149  |dr|=0.000265  eig=-7.9e-09  seig=0.000139
+    CPU time for aug_hess in 4 inner iters      0.01 sec, wall time      0.00 sec
+    CPU time for orbital rotation      0.04 sec, wall time      0.01 sec
+micro 4  |u-1|=0.0489  |g[o]|=0.000127
+Active space overlap to initial guess, SVD = [0.999859 0.999859 0.990183 0.990182 0.984829 0.669852]
+Active space overlap to last step, SVD = [0.999995 0.999995 0.999989 0.999989 0.999875 0.99956 ]
+    CPU time for update eri      0.04 sec, wall time      0.01 sec
+Start CASCI
+    CPU time for integral transformation to CAS space      0.00 sec, wall time      0.00 sec
+core energy = -94.5945071547935
+    CPU time for effective h1e in CAS space      0.00 sec, wall time      0.00 sec
+davidson 0 1  |r|= 8e-05  e= [-14.449894]  max|de|= -14.4  lindep= 0.575
+root 0 converged  |r|= 2.26e-05  e= -14.449893852940969  max|de|= -1.66e-09
+converged 1 2  |r|= 2.26e-05  e= [-14.449894]  max|de|= -1.66e-09
+    CPU time for FCI solver      0.25 sec, wall time      0.06 sec
+CAS space CI energy = -14.449893852941
+macro iter 4 (9 JK  4 micro), CASSCF E = -109.044401007734  dE = -0.00017618868  S^2 = 0.0000000
+               |grad[o]|=0.0191  |grad[c]|= 0.0009387294072851324  |ddm|=0.000208
+    CPU time for CASCI solver      0.28 sec, wall time      0.07 sec
+    CPU time for macro iter 4      0.65 sec, wall time      0.16 sec
+    |g|=0.000532
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 1(3)  |g[o]|=0.000102  |dxi|=0.00485  max(|x|)=0.00444  |dr|=0.00485  eig=-7.93e-07  seig=5.73e-08
+    CPU time for aug_hess in 1 inner iters      0.03 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.09 sec, wall time      0.02 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 1  |u-1|=0.00686  |g[o]|=0.000532  |g[c]|=0.000475  |ddm|=1.73e-05
+    CPU time for micro iter 1      0.00 sec, wall time      0.00 sec
+    |g|=0.000111 (keyframe), |g-correction|=2.48e-05
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    imic 2(4)  |g[o]|=6.17e-05  |dxi|=0.000766  max(|x|)=0.000578  |dr|=0.000766  eig=-1.79e-08  seig=5.34e-08
+    imic 3(5)  |g[o]|=1.57e-05  |dxi|=0.000119  max(|x|)=7.34e-05  |dr|=0.000814  eig=-2.14e-09  seig=1.96e-08
+    CPU time for orbital rotation      0.05 sec, wall time      0.01 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 2  |u-1|=0.00794  |g[o]|=0.000111  |g[c]|=7.61e-05  |ddm|=1.96e-05
+    CPU time for micro iter 2      0.00 sec, wall time      0.00 sec
+Active space overlap to initial guess, SVD = [0.99986  0.99986  0.990176 0.990176 0.984862 0.66604 ]
+Active space overlap to last step, SVD = [1.       1.       1.       1.       0.999998 0.999987]
+    CPU time for update eri      0.04 sec, wall time      0.01 sec
+Start CASCI
+    CPU time for integral transformation to CAS space      0.00 sec, wall time      0.00 sec
+core energy = -94.5790890603543
+    CPU time for effective h1e in CAS space      0.00 sec, wall time      0.00 sec
+davidson 0 1  |r|= 5.76e-06  e= [-14.465313]  max|de|= -14.5  lindep=    1
+Linear dependency in trial subspace. |r| for each state [5.7599443673636586e-06]
+    CPU time for FCI solver      0.23 sec, wall time      0.06 sec
+CAS space CI energy = -14.465312839337
+macro iter 5 (6 JK  2 micro), CASSCF E = -109.044401899691  dE = -8.9195676e-07  S^2 = 0.0000000
+               |grad[o]|=0.000532  |grad[c]|= 7.60945292234996e-05  |ddm|=1.96e-05
+    CPU time for CASCI solver      0.26 sec, wall time      0.07 sec
+    CPU time for macro iter 5      0.52 sec, wall time      0.13 sec
+    |g|=2.25e-05
+    CPU time for gen h_op      0.03 sec, wall time      0.01 sec
+    CPU time for orbital rotation      0.05 sec, wall time      0.01 sec
+    CPU time for update CAS DM      0.04 sec, wall time      0.01 sec
+micro 1  |u-1|=    0  |g[o]|=2.25e-05  |g[c]|=5.76e-06  |ddm|=1.33e-06
+    CPU time for micro iter 1      0.00 sec, wall time      0.00 sec
+Active space overlap to initial guess, SVD = [0.99986  0.99986  0.990176 0.990176 0.984862 0.66604 ]
+Active space overlap to last step, SVD = [1. 1. 1. 1. 1. 1.]
+    CPU time for update eri      0.04 sec, wall time      0.01 sec
+Start CASCI
+    CPU time for integral transformation to CAS space      0.00 sec, wall time      0.00 sec
+core energy = -94.5790890603543
+    CPU time for effective h1e in CAS space      0.00 sec, wall time      0.00 sec
+davidson 0 1  |r|= 7.17e-07  e= [-14.465313]  max|de|= -14.5  lindep=    1
+Linear dependency in trial subspace. |r| for each state [7.166433223611941e-07]
+    CPU time for FCI solver      0.23 sec, wall time      0.06 sec
+CAS space CI energy = -14.4653128393554
+macro iter 6 (1 JK  1 micro), CASSCF E = -109.04440189971  dE = -1.8388846e-11  S^2 = 0.0000000
+               |grad[o]|=2.25e-05  |grad[c]|= 5.759944367332553e-06  |ddm|=1.33e-06
+    CPU time for CASCI solver      0.26 sec, wall time      0.06 sec
+    CPU time for macro iter 6      0.39 sec, wall time      0.10 sec
+1-step CASSCF converged in 6 macro (75 JK 19 micro) steps
+CASSCF canonicalization
+where_natorb [1, 0, 2, 3, 5, 4]
+Natural occ [1.987781 1.957147 1.957147 0.042795 0.042795 0.012336]
+Natural orbital (expansion on meta-Lowdin AOs) in CAS space
+               #1        #2        #3        #4        #5       
+  0 N 1s      -0.00868  -0.00000   0.00000   0.00000   0.00000
+  0 N 2s       0.15490  -0.00001   0.00000  -0.00000  -0.00000
+  0 N 3s      -0.10539  -0.00000   0.00000   0.00000   0.00000
+  0 N 2px      0.00000  -0.68899  -0.14449   0.13758  -0.68504
+  0 N 2py      0.00000  -0.14449   0.68899  -0.68504  -0.13758
+  0 N 2pz      0.67347   0.00000  -0.00000  -0.00000  -0.00000
+  0 N 3px      0.00000   0.03513   0.00737  -0.02017   0.10041
+  0 N 3py      0.00000   0.00737  -0.03513   0.10041   0.02017
+  0 N 3pz     -0.07554  -0.00000   0.00000  -0.00000  -0.00001
+  0 N 3dxy     0.00000  -0.00000   0.00000  -0.00000  -0.00000
+  0 N 3dyz     0.00000  -0.01148   0.05475  -0.03544  -0.00712
+  0 N 3dz^2    0.07453   0.00000  -0.00000   0.00000   0.00000
+  0 N 3dxz     0.00000  -0.05475  -0.01148   0.00712  -0.03544
+ 0 N 3dx2-y2   0.00000  -0.00000  -0.00000   0.00000  -0.00000
+  1 N 1s      -0.00868  -0.00000   0.00000  -0.00000  -0.00000
+  1 N 2s       0.15490  -0.00001   0.00000   0.00000   0.00000
+  1 N 3s      -0.10539  -0.00000   0.00000  -0.00000  -0.00000
+  1 N 2px      0.00000  -0.68899  -0.14449  -0.13758   0.68504
+  1 N 2py      0.00000  -0.14449   0.68899   0.68504   0.13758
+  1 N 2pz     -0.67347  -0.00000   0.00000  -0.00000  -0.00000
+  1 N 3px      0.00000   0.03513   0.00737   0.02017  -0.10041
+  1 N 3py      0.00000   0.00737  -0.03513  -0.10041  -0.02017
+  1 N 3pz      0.07554   0.00000  -0.00000  -0.00000  -0.00001
+  1 N 3dxy     0.00000  -0.00000   0.00000   0.00000   0.00000
+  1 N 3dyz    -0.00000   0.01148  -0.05475  -0.03544  -0.00712
+  1 N 3dz^2    0.07453   0.00000  -0.00000  -0.00000  -0.00000
+  1 N 3dxz    -0.00000   0.05475   0.01148   0.00712  -0.03544
+ 1 N 3dx2-y2   0.00000  -0.00000  -0.00000  -0.00000   0.00000
+               #6       
+  0 N 1s       0.00114
+  0 N 2s      -0.47741
+  0 N 3s      -0.04547
+  0 N 2px      0.00000
+  0 N 2py      0.00000
+  0 N 2pz     -0.50110
+  0 N 3px      0.00000
+  0 N 3py      0.00000
+  0 N 3pz      0.13039
+  0 N 3dxy     0.00000
+  0 N 3dyz    -0.00000
+  0 N 3dz^2   -0.04369
+  0 N 3dxz    -0.00000
+ 0 N 3dx2-y2  -0.00000
+  1 N 1s      -0.00114
+  1 N 2s       0.47741
+  1 N 3s       0.04547
+  1 N 2px     -0.00000
+  1 N 2py     -0.00000
+  1 N 2pz     -0.50110
+  1 N 3px     -0.00000
+  1 N 3py     -0.00000
+  1 N 3pz      0.13039
+  1 N 3dxy    -0.00000
+  1 N 3dyz    -0.00000
+  1 N 3dz^2    0.04369
+  1 N 3dxz    -0.00000
+ 1 N 3dx2-y2   0.00000
+<CAS-nat-orb|mo-hf>  5  3    0.74582830
+<CAS-nat-orb|mo-hf>  5  6    0.65846796
+<CAS-nat-orb|mo-hf>  6  5    0.97672138
+<CAS-nat-orb|mo-hf>  7  7    0.98808408
+<CAS-nat-orb|mo-hf>  8  8    0.98457458
+<CAS-nat-orb|mo-hf>  9  10    0.98454135
+<CAS-nat-orb|mo-hf>  10  9    0.98480406
+i = 1  <i|F|i> = -15.62168087
+i = 2  <i|F|i> = -15.61698968
+i = 3  <i|F|i> =  -1.02399934
+i = 4  <i|F|i> =  -0.72858196
+i = 5  <i|F|i> =  -1.12213008
+i = 6  <i|F|i> =  -0.63597215
+i = 7  <i|F|i> =  -0.63597217
+i = 8  <i|F|i> =   0.41735832
+i = 9  <i|F|i> =   0.41735830
+i = 10  <i|F|i> =   1.65834748
+i = 11  <i|F|i> =   0.68864730
+i = 12  <i|F|i> =   0.79132775
+i = 13  <i|F|i> =   0.84541992
+i = 14  <i|F|i> =   0.84541995
+i = 15  <i|F|i> =   0.91544634
+i = 16  <i|F|i> =   0.91544641
+i = 17  <i|F|i> =   1.01642024
+i = 18  <i|F|i> =   1.60281827
+i = 19  <i|F|i> =   1.73693858
+i = 20  <i|F|i> =   1.73693858
+i = 21  <i|F|i> =   2.00426081
+i = 22  <i|F|i> =   2.00426081
+i = 23  <i|F|i> =   2.37861205
+i = 24  <i|F|i> =   2.37861205
+i = 25  <i|F|i> =   2.96310558
+i = 26  <i|F|i> =   3.09995863
+i = 27  <i|F|i> =   3.09995865
+i = 28  <i|F|i> =   3.36722359
+    CPU time for 1-step CASSCF      4.49 sec, wall time      1.13 sec
+CASSCF energy = -109.04440189971
+CASCI E = -109.04440189971  E(CI) = -14.4653128393554  S^2 = 0.0000000
+ c**2   Gaussian-type vector
+ 0.952320  111000 
+ 0.010744  110100 
+ 0.010744  101010 
+ c**2     ORCA-type vector
+ 0.952320  222000 
+ 0.010744  220200 
+ 0.010744  202020 

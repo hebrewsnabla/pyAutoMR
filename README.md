@@ -7,6 +7,7 @@ This program aims to do:
 * automatic guess for CASSCF/SUHF 
 
 ## Pre-requisites
+* MOKIT (no need to fully compile, only lo, autopair are needed)
 * PySCF
 
 ## Features
