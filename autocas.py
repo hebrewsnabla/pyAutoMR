@@ -36,6 +36,8 @@ def get_uno(mf, st='st2'):
     print('nacto, nacta, nactb: %d %d %d' % (nacto, nacta, nactb))
     mf = mf.to_rhf()
     mf.mo_coeff = unos
+    print('UNO in active space')
+    dump_mat.dump_mo(mol, unos[:,ndb:ndb+nacto], ncol=10)
     return mf, unos, noon, nacto, (nacta, nactb), ndb, nex
 
 def check_uno(noon, thresh=1.98):
