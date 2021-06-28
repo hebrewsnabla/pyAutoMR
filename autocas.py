@@ -7,6 +7,8 @@ from functools import partial, reduce
 from lo import pm
 from pyscf.lo.boys import dipole_integral
 from auto_pair import pair_by_tdm
+import dump_mat
+import sys
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
@@ -87,7 +89,7 @@ def get_uno_st1(mo, mo_occ, S, thresh=0.98):
 
     return unos, noon, nacto
 
-def get_locorb(mf):
+def get_locorb(mf, localize='pm1', pair=True):
     mol = mf.mol
     mo = mf.mo_coeff
     nbf = mf.mo_coeff.shape[0]
@@ -113,23 +115,32 @@ def get_locorb(mf):
     mf.mo_coeff[:, idx:] = projmo
 
     npair = np.sum(mf2.mo_occ==0)
-    idx2 = np.count_nonzero(mf.mo_occ)
-    idx1 = idx2 - npair
-    idx3 = idx2 + npair
-    occ_idx = range(idx1,idx2)
-    vir_idx = range(idx2,idx3)
-    S = mol.intor_symmetric('int1e_ovlp')
-    occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
-    vir_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,vir_idx],S,'mulliken')
-    mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
-    mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
-    mo_dipole = dipole_integral(mol, mf.mo_coeff)
-    ncore = idx1
-    nopen = np.sum(mf.mo_occ==1)
-    nalpha = idx2
-    #nvir_lmo = npair
-    alpha_coeff = pair_by_tdm(ncore, npair, nopen, nalpha, npair, nbf, nif, mf.mo_coeff, mo_dipole)
-    mf.mo_coeff = alpha_coeff.copy()
+    if localize=='pm1':
+        idx2 = np.count_nonzero(mf.mo_occ)
+        idx1 = idx2 - npair
+        idx3 = idx2 + npair
+        print('MOs after projection')
+        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
+        occ_idx = range(idx1,idx2)
+        vir_idx = range(idx2,idx3)
+        S = mol.intor_symmetric('int1e_ovlp')
+        occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
+        vir_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,vir_idx],S,'mulliken')
+        mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
+        mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
+        print('MOs after PM localization')
+        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
+    
+    if pair:
+        mo_dipole = dipole_integral(mol, mf.mo_coeff)
+        ncore = idx1
+        nopen = np.sum(mf.mo_occ==1)
+        nalpha = idx2
+        #nvir_lmo = npair
+        alpha_coeff = pair_by_tdm(ncore, npair, nopen, nalpha, npair, nbf, nif, mf.mo_coeff, mo_dipole)
+        mf.mo_coeff = alpha_coeff.copy()
+        print('MOs after pairing')
+        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
     return mf, alpha_coeff, npair
 
 def check_uhf(mf):
