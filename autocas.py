@@ -27,7 +27,7 @@ def get_uno(mf, st='st2'):
     elif st=='st2':
         dm = mf.make_rdm1()
         unos, noon = get_uno_st2(dm[0] + dm[1], S)
-        nacto = check_uno(noon)
+        nacto, ndb, nex = check_uno(noon)
     print('UNO ON:', noon)
     #ndb, nocc, nopen = idx
     #nacto = nocc - ndb
@@ -36,13 +36,13 @@ def get_uno(mf, st='st2'):
     print('nacto, nacta, nactb: %d %d %d' % (nacto, nacta, nactb))
     mf = mf.to_rhf()
     mf.mo_coeff = unos
-    return mf, unos, noon, nacto, (nacta, nactb)
+    return mf, unos, noon, nacto, (nacta, nactb), ndb, nex
 
 def check_uno(noon, thresh=1.98):
-    n1 = np.count_nonzero(noon < thresh)
-    n2 = np.count_nonzero(noon > (2.0-thresh))
-    nacto = n1 + n2 - len(noon)
-    return nacto
+    ndb = np.count_nonzero(noon > thresh)
+    nex = np.count_nonzero(noon < (2.0-thresh))
+    nacto = len(noon) - ndb - nex
+    return nacto, ndb, nex
 
 def get_uno_st2(dm, S):
     A = reduce(np.dot, (S, dm, S))
@@ -141,7 +141,7 @@ def get_locorb(mf, localize='pm1', pair=True):
         mf.mo_coeff = alpha_coeff.copy()
         print('MOs after pairing')
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
-    return mf, alpha_coeff, npair
+    return mf, alpha_coeff, npair, ncore
 
 def check_uhf(mf):
     dm = mf.make_rdm1()
@@ -162,9 +162,9 @@ def check_uhf(mf):
 def cas(mf, crazywfn=False, max_memory=2000):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
-        mf, unos, unoon, nacto, (nacta, nactb) = get_uno(mf)
+        mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
     else:
-        mf, lmos, npair = get_locorb(mf)
+        mf, lmos, npair, ndb = get_locorb(mf)
         nacto = npair*2
         nacta = nactb = npair
     nopen = nacta - nactb
@@ -182,8 +182,11 @@ def cas(mf, crazywfn=False, max_memory=2000):
     else:
         mc.fcisolver.max_cycle = 100
     mc.natorb = True
-    mc.verbose = 5
+    mc.verbose = 4
     mc.kernel()
+    #mc.analyze(with_meta_lowdin=False)
+    print('Natrual Orbs')
+    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
     return mc
 
 def nevpt2(mc):

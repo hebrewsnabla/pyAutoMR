@@ -12,7 +12,8 @@ This program aims to do:
 
 ## Features
 * UHF -> UNO -> CASSCF
-* RHF -> PM LMO -> CASSCF
+* RHF -> vir MO projection -> PM LMO -> CASSCF
+
 UHF, RHF can be auto-detected.
 
 ## Utilities
@@ -22,6 +23,7 @@ UHF, RHF can be auto-detected.
   + from_fch
 * UHF stability
 * dump CASCI coefficients
+* dump active orbital compositions
 
 ## Quick Start
 ```

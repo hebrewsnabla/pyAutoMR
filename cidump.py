@@ -30,6 +30,7 @@ def dump(mc, thresh=1e-2):
     Gaussian format: 11a00
     ORCA format    : 22100
     '''
+    print('***** CI components ******')
     ci = mc.ci
     ncas = mc.ncas
     na, nb = mc.nelecas
@@ -59,5 +60,6 @@ def dump(mc, thresh=1e-2):
     print(" c**2     ORCA-type vector")
     for k,v in dump_o:
         print("{: .6f}  {:7s}".format(v,k))
+    
     return dump_g, dump_o
 
