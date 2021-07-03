@@ -13,14 +13,28 @@ gjfhead = '''%nproc=1
 title
 
 '''
-scrfhead = '''eps=1.0
+basis = '''
+-O -H
+TZVP
+**** 
+-Ce 0
+SDD
+****
+
+-Ce 0
+SDD
+'''
+
+scrfhead = '''
+eps=1.0
 epsinf=1.0
 '''
+
 wfnpath = 'D:\\xxx\\yyy\\frag'
 ## the optput wfn will be frag0.wfn, frag1.wfn, ...
 
 #                         frags       charges  spins
-frag_sol.from_frag(xyz, [[0,1],[2,3]], [0,0], [1,-1], gjfhead, scrfhead, 'frag', wfnpath)
-# note that atom in frag count from 0
+frag_sol.from_frag(xyz, [[1,2],[3,4]], [0,0],[1,-1], gjfhead, scrfhead, 'frag', basis, wfnpath)
+
 # spin = 0 for singlet, 1 for doublet, ...
 # please ensure sum of spins equals spin of the total system

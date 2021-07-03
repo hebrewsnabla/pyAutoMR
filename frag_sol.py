@@ -8,7 +8,7 @@ def from_frag(xyz, frags, chgs, spins, gjfhead='', scrfhead='', gjfname='', basi
     mol.verbose = 1
     mol.build()
 
-    guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpath)
+    guess_frag(mol, frags, chgs, spins, gjfhead.lstrip('\n'), scrfhead, gjfname, basis, wfnpath)
 
 def spin_p2g(spin):
     if spin>0:
@@ -21,7 +21,7 @@ def spin_p2g(spin):
 
 def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpath):
     '''
-    frags: e.g. [[0], [1]] for N2
+    frags: e.g. [[1], [2]] for N2
     chgs:  e.g. [0, 0] for N2
     spins: e.g. [3, -3] for N2
     '''
@@ -32,14 +32,14 @@ def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpa
     #fraga, fragb = frags
     #chga, chgb = chgs
     #spina, spinb = spins
-    allatom = range(len(atom))
+    allatom = range(1,len(atom)+1)
     for k in range(len(frags)):
         frag = frags[k]
         chg = chgs[k]
         spin = spins[k]
         g_spin = spin_p2g(spin)
-        atomk = [atom[i] for i in frag]
-        atomother = [atom[i] for i in allatom if i not in frag]
+        atomk = [atom[i-1] for i in frag]
+        atomother = [atom[i-1] for i in allatom if i not in frag]
         print('fragment %d, chg %d, spin %d' % (k, chg, spin))
         #print(atomk)
         with open(gjfname+'%d.gjf'%k, 'w') as f:
@@ -47,10 +47,10 @@ def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpa
             f.write('%d %d\n' % (chg, g_spin))
             for a in atomk:
                 f.write('%s  %10.5f %10.5f %10.5f\n' % (a[0], a[1][0], a[1][1], a[1][2]))
-            f.write('\n')
+            #f.write('\n')
             if basis is not None:
                 f.write(basis)
-                f.write('\n')
+                #f.write('\n')
             f.write(scrfhead)
             f.write('ExtraSph=%d\n\n' % len(atomother))
             for b in atomother:
