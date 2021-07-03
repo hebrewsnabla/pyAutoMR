@@ -13,7 +13,7 @@ def from_frag(xyz, frags, chgs, spins, gjfhead='', scrfhead='', gjfname='', basi
     guess_frag(xyz, frags, chgs, spins, gjfhead.lstrip('\n'), scrfhead, gjfname, basis, wfnpath)
 
 def spin_p2g(spin):
-    if spin>0:
+    if spin >= 0:
         spin = spin + 1
     elif spin < 0:
         spin = spin - 1
