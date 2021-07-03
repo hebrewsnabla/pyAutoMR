@@ -19,4 +19,8 @@ epsinf=1.0
 wfnpath = 'D:\\xxx\\yyy\\frag'
 ## the optput wfn will be frag0.wfn, frag1.wfn, ...
 
-frag_sol.from_frag(xyz, [[0,1],[2,3]], [0,0],[1,-1], gjfhead, scrfhead, 'frag', wfnpath)
+#                         frags       charges  spins
+frag_sol.from_frag(xyz, [[0,1],[2,3]], [0,0], [1,-1], gjfhead, scrfhead, 'frag', wfnpath)
+# note that atom in frag count from 0
+# spin = 0 for singlet, 1 for doublet, ...
+# please ensure sum of spins equals spin of the total system
