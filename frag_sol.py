@@ -1,14 +1,14 @@
 from pyscf import gto
 import radii
 
-def from_frag(xyz, frags, chgs, spins, gjfhead='', scrfhead='', gjfname='', wfnpath=''):
+def from_frag(xyz, frags, chgs, spins, gjfhead='', scrfhead='', gjfname='', basis=None, wfnpath=None):
     mol = gto.Mole()
     mol.atom = xyz
 #    mol.basis = bas
     mol.verbose = 1
     mol.build()
 
-    guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, wfnpath)
+    guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpath)
 
 def spin_p2g(spin):
     if spin>0:
@@ -19,7 +19,7 @@ def spin_p2g(spin):
 
 
 
-def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, wfnpath):
+def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpath):
     '''
     frags: e.g. [[0], [1]] for N2
     chgs:  e.g. [0, 0] for N2
@@ -48,14 +48,18 @@ def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, wfnpath):
             for a in atomk:
                 f.write('%s  %10.5f %10.5f %10.5f\n' % (a[0], a[1][0], a[1][1], a[1][2]))
             f.write('\n')
+            if basis is not None:
+                f.write(basis)
+                f.write('\n')
             f.write(scrfhead)
             f.write('ExtraSph=%d\n\n' % len(atomother))
             for b in atomother:
                 rad = radii.uff_radii[b[0]] / 2.0
                 f.write(' %10.5f %10.5f %10.5f  %10.5f\n' % (b[1][0], b[1][1], b[1][2], rad))
             f.write('\n')
-            f.write(wfnpath + '%d.wfn'%k + '\n')
-            f.write('\n')
+            if wfnpath is not None:
+                f.write(wfnpath + '%d.wfn'%k + '\n')
+                f.write('\n')
        
             
         
