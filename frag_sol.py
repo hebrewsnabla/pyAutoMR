@@ -8,6 +8,8 @@ def from_frag(xyz, frags, chgs, spins, gjfhead='', scrfhead='', gjfname='', basi
 #    mol.verbose = 1
 #    mol.build()
 #
+    if isinstance(frags[0], str):
+        frags = str2list(frags)
     guess_frag(xyz, frags, chgs, spins, gjfhead.lstrip('\n'), scrfhead, gjfname, basis, wfnpath)
 
 def spin_p2g(spin):
@@ -17,6 +19,20 @@ def spin_p2g(spin):
         spin = spin - 1
     return spin
 
+def str2list(frags):
+    flist = []
+    for frag in frags:
+        alist = []
+        for s in frag.split(','):
+            if '-' in s:
+               start = int(s.split('-')[0])
+               end = int(s.split('-')[1])
+            else:
+               start = int(s)
+               end = int(s)
+            alist += range(start, end+1)
+        flist.append(alist)
+    return flist
 
 
 def guess_frag(xyz, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpath):
