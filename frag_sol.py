@@ -2,13 +2,13 @@ from pyscf import gto
 import radii
 
 def from_frag(xyz, frags, chgs, spins, gjfhead='', scrfhead='', gjfname='', basis=None, wfnpath=None):
-    mol = gto.Mole()
-    mol.atom = xyz
+#    mol = gto.Mole()
+#    mol.atom = xyz
 #    mol.basis = bas
-    mol.verbose = 1
-    mol.build()
-
-    guess_frag(mol, frags, chgs, spins, gjfhead.lstrip('\n'), scrfhead, gjfname, basis, wfnpath)
+#    mol.verbose = 1
+#    mol.build()
+#
+    guess_frag(xyz, frags, chgs, spins, gjfhead.lstrip('\n'), scrfhead, gjfname, basis, wfnpath)
 
 def spin_p2g(spin):
     if spin>0:
@@ -19,7 +19,7 @@ def spin_p2g(spin):
 
 
 
-def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpath):
+def guess_frag(xyz, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpath):
     '''
     frags: e.g. [[1], [2]] for N2
     chgs:  e.g. [0, 0] for N2
@@ -27,7 +27,7 @@ def guess_frag(mol, frags, chgs, spins, gjfhead, scrfhead, gjfname, basis, wfnpa
     '''
     #mol.build()
     print('**** generating fragments ****')
-    atom = mol.format_atom(mol.atom, unit=1)
+    atom = gto.format_atom(xyz, unit=1)
     #print(atom)
     #fraga, fragb = frags
     #chga, chgb = chgs
