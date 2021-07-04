@@ -16,6 +16,6 @@ mf = dft.UKS(mol)
 mf.get_hcore = get_hcore
 mf.xc = 'b3lypg'
 mf.kernel()
-guess.check_stab(mf)
+mf = guess.check_stab(mf)
 
 

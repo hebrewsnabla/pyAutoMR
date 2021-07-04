@@ -5,7 +5,7 @@ try:
     import gaussian
 except:
     print('fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.')
-import stability
+from pyphf import stability
 import time
 import copy
 
@@ -43,8 +43,8 @@ def from_fch_simp(fch, cycle=2):
     nif = mf.mo_coeff[0].shape[1]
     S = mol.intor_symmetric('int1e_ovlp')
     Sdiag = S.diagonal()
-    alpha_coeff = fch2py(fch, nbf, nif, Sdiag, 'a')
-    beta_coeff  = fch2py(fch, nbf, nif, Sdiag, 'b')
+    alpha_coeff = fch2py(fch, nbf, nif, 'a')
+    beta_coeff  = fch2py(fch, nbf, nif, 'b')
     mf.mo_coeff = (alpha_coeff, beta_coeff)
     # read done
     dm = mf.make_rdm1()
@@ -74,8 +74,8 @@ def from_fchk(xyz, bas, fch, cycle=2):
     nif = mf.mo_coeff[0].shape[1]
     S = mol.intor_symmetric('int1e_ovlp')
     Sdiag = S.diagonal()
-    alpha_coeff = fch2py(fch, nbf, nif, Sdiag, 'a')
-    beta_coeff  = fch2py(fch, nbf, nif, Sdiag, 'b')
+    alpha_coeff = fch2py(fch, nbf, nif, 'a')
+    beta_coeff  = fch2py(fch, nbf, nif, 'b')
     mf.mo_coeff = (alpha_coeff, beta_coeff)
     # read done
     
@@ -122,7 +122,7 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False):
         print('Warning: S too small, symmetry breaking may be failed')
     
     if conv == 'tight' and not skipstb:
-        check_stab(mf_mix)
+        mf_mix = check_stab(mf_mix)
 
     t2 = time.time()
     print('time for guess: %.3f' % (t2-t1))
@@ -144,7 +144,8 @@ def check_stab(mf_mix):
         cyc += 1
     if not stable:
         raise RuntimeError('Stablility Opt failed after %d attempts.' % cyc)
-
+    mf_mix.mo_coeff = mo
+    return mf_mix
 
 def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
     mol = gto.Mole()

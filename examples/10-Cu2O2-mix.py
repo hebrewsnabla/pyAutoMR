@@ -10,7 +10,7 @@ xyz = '''
  O                  0.0    1.15    0.0
  O                  0.0   -1.15    0.0
 '''
-mf = guess.mix(xyz, 'def2-tzvp', charge=2)
+mf = guess.mix(xyz, 'def2-tzvp', charge=2, conv='tight')
 # stability check of UHF will be performed
 
 #mf2 = util.SUHF(mf)
