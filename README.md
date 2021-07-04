@@ -39,6 +39,9 @@ mf2 = autocas.cas(mf)
 cidump.dump(mf2)
 ```
 
+## Tutorials
+* [UHF case](https://blog-quoi.readthedocs.io/en/latest/mr_tutor.html#uhf-case)
+
 ## TODO
 * UNO -> GVB(Q-Chem) -> CASSCF
 * TDDFT NO -> CASSCF
