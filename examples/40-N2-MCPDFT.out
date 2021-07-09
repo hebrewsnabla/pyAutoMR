@@ -1,0 +1,230 @@
+#INFO: **** input file is /share/home/srwang/pyAutoMR/examples/40-N2-MCPDFT.py ****
+from pyscf import lib
+import guess, autocas, mcpdft
+
+lib.num_threads(4)
+
+xyz = 'N 0.0 0.0 0.0; N  0.0 0.0 1.9' #sys.argv[1]
+#fch = 'n2.fchk' #sys.argv[2]
+bas = 'cc-pvdz'
+
+mf = guess.from_frag(xyz, bas, [[0],[1]], [0,0], [3,-3], cycle=50)
+mf = guess.check_stab(mf)
+
+mf2 = autocas.cas(mf, natorb=False)
+
+mf3 = mcpdft.PDFT(mf2, 'tpbe')
+mf3.kernel()
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='xn01', release='3.10.0-1127.el7.x86_64', version='#1 SMP Tue Feb 18 16:39:12 EST 2020', machine='x86_64', processor='x86_64')  Threads 4
+Python 3.7.4 (default, Aug 13 2019, 20:35:49) 
+[GCC 7.3.0]
+numpy 1.17.2  scipy 1.4.1
+Date: Fri Jul  9 23:36:38 2021
+PySCF version 1.7.6a1
+PySCF path  /share/home/srwang/pyscf/pyscf
+GIT HEAD      ref: refs/heads/master
+GIT master branch  80f71dfe77ac5f9caae26788acf76446987635bd
+
+[CONFIG] conf_file /share/home/srwang/.pyscf_conf.py
+[INPUT] verbose = 4
+[INPUT] num. atoms = 2
+[INPUT] num. electrons = 14
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 0
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 N      0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr
+[INPUT]  2 N      0.000000000000   0.000000000000   1.900000000000 AA    0.000000000000   0.000000000000   3.590479636674 Bohr
+
+nuclear repulsion = 13.6472017553053
+number of shells = 10
+number of NR pGTOs = 52
+number of NR cGTOs = 28
+basis = cc-pvdz
+ecp = {}
+CPU time:         1.08
+**** generating fragment guess ****
+fragments: [('N', [0.0, 0.0, 0.0])] [('N', [0.0, 0.0, 1.9])]
+converged SCF energy = -54.3911145621998  <S^2> = 3.7540306  2S+1 = 4.0020148
+converged SCF energy = -54.3911145621998  <S^2> = 3.7540306  2S+1 = 4.0020148
+       na   nb
+atom1   5    2
+atom2   2    5
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/tmpp4j_g67r
+max_memory 4000 MB (current use 121 MB)
+number electrons alpha = 7  beta = 7
+Set gradient conv threshold to 3.16228e-05
+init E= -108.900143275272
+  alpha nocc = 7  HOMO = -0.476464499402212  LUMO = 0.166732176142522
+  beta  nocc = 7  HOMO = -0.476464499402224  LUMO = 0.166732176142525
+cycle= 1 E= -108.762288631731  delta_E= 0.138  |g|= 0.0527  |ddm|= 0.373
+  alpha nocc = 7  HOMO = -0.530330642057188  LUMO = 0.162348570448283
+  beta  nocc = 7  HOMO = -0.530330642057186  LUMO = 0.16234857044828
+cycle= 2 E= -108.765642733546  delta_E= -0.00335  |g|= 0.0253  |ddm|= 0.0587
+  alpha nocc = 7  HOMO = -0.529049671912855  LUMO = 0.159261512802595
+  beta  nocc = 7  HOMO = -0.529049671912858  LUMO = 0.159261512802599
+cycle= 3 E= -108.767085606679  delta_E= -0.00144  |g|= 0.0126  |ddm|= 0.0548
+  alpha nocc = 7  HOMO = -0.528710372834685  LUMO = 0.15637893179792
+  beta  nocc = 7  HOMO = -0.528710372834686  LUMO = 0.156378931797924
+cycle= 4 E= -108.767469881852  delta_E= -0.000384  |g|= 0.00324  |ddm|= 0.0393
+  alpha nocc = 7  HOMO = -0.527321353128717  LUMO = 0.156905650680734
+  beta  nocc = 7  HOMO = -0.527321353128713  LUMO = 0.156905650680735
+cycle= 5 E= -108.767488344339  delta_E= -1.85e-05  |g|= 0.000626  |ddm|= 0.0078
+  alpha nocc = 7  HOMO = -0.52767044352938  LUMO = 0.156831110667573
+  beta  nocc = 7  HOMO = -0.527670443529382  LUMO = 0.156831110667578
+cycle= 6 E= -108.767488867958  delta_E= -5.24e-07  |g|= 0.000143  |ddm|= 0.00108
+  alpha nocc = 7  HOMO = -0.527603375860145  LUMO = 0.156896336092541
+  beta  nocc = 7  HOMO = -0.527603375860147  LUMO = 0.156896336092544
+cycle= 7 E= -108.767488893983  delta_E= -2.6e-08  |g|= 4.93e-05  |ddm|= 0.000239
+  alpha nocc = 7  HOMO = -0.527650705153181  LUMO = 0.156872500788267
+  beta  nocc = 7  HOMO = -0.527650705153177  LUMO = 0.156872500788266
+cycle= 8 E= -108.767488898007  delta_E= -4.02e-09  |g|= 1.06e-05  |ddm|= 9.2e-05
+  alpha nocc = 7  HOMO = -0.527658756971642  LUMO = 0.156874706934981
+  beta  nocc = 7  HOMO = -0.527658756971645  LUMO = 0.156874706934985
+cycle= 9 E= -108.76748889822  delta_E= -2.13e-10  |g|= 1.78e-06  |ddm|= 2.85e-05
+  alpha nocc = 7  HOMO = -0.527658437248198  LUMO = 0.156874663133347
+  beta  nocc = 7  HOMO = -0.527658437248195  LUMO = 0.156874663133348
+Extra cycle  E= -108.767488898223  delta_E= -2.44e-12  |g|= 6.81e-07  |ddm|= 2.47e-06
+converged SCF energy = -108.767488898223  <S^2> = 2.6423741  2S+1 = 3.4013963
+time for guess: 0.211
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.37  e= [2.24018]  max|de|= 2.24  lindep= 0.688
+davidson 1 2  |r|= 1.19  e= [1.280848]  max|de|= -0.959  lindep= 0.824
+davidson 2 3  |r|= 0.345  e= [0.716736]  max|de|= -0.564  lindep= 0.979
+davidson 3 4  |r|= 0.259  e= [0.587711]  max|de|= -0.129  lindep= 0.951
+davidson 4 5  |r|= 0.111  e= [0.552741]  max|de|= -0.035  lindep= 0.979
+davidson 5 6  |r|= 0.048  e= [0.547054]  max|de|= -0.00569  lindep= 0.957
+davidson 6 7  |r|= 0.0329  e= [0.545464]  max|de|= -0.00159  lindep= 0.937
+davidson 7 8  |r|= 0.0304  e= [0.544378]  max|de|= -0.00109  lindep= 0.94
+davidson 8 9  |r|= 0.054  e= [0.5428]  max|de|= -0.00158  lindep= 0.936
+davidson 9 10  |r|= 0.0463  e= [0.540397]  max|de|= -0.0024  lindep= 0.944
+davidson 10 11  |r|= 0.0431  e= [0.538456]  max|de|= -0.00194  lindep= 0.955
+davidson 11 12  |r|= 0.0601  e= [0.536803]  max|de|= -0.00165  lindep= 0.891
+davidson 12 1  |r|= 0.0601  e= [0.536803]  max|de|= -3.33e-16  lindep= 0.995
+davidson 13 2  |r|= 0.0371  e= [0.535909]  max|de|= -0.000894  lindep= 0.84
+davidson 14 3  |r|= 0.024  e= [0.53521]  max|de|= -0.000699  lindep= 0.957
+davidson 15 4  |r|= 0.0222  e= [0.534704]  max|de|= -0.000506  lindep= 0.913
+davidson 16 5  |r|= 0.0183  e= [0.534382]  max|de|= -0.000322  lindep= 0.947
+davidson 17 6  |r|= 0.0132  e= [0.534224]  max|de|= -0.000159  lindep= 0.908
+davidson 18 7  |r|= 0.014  e= [0.534063]  max|de|= -0.00016  lindep= 0.941
+davidson 19 8  |r|= 0.0215  e= [0.533823]  max|de|= -0.00024  lindep= 0.916
+davidson 20 9  |r|= 0.0162  e= [0.533502]  max|de|= -0.000321  lindep= 0.931
+davidson 21 10  |r|= 0.00764  e= [0.533371]  max|de|= -0.000131  lindep= 0.887
+root 0 converged  |r|= 0.00325  e= 0.5333478652670298  max|de|= -2.29e-05
+converged 22 11  |r|= 0.00325  e= [0.533348]  max|de|= -2.29e-05
+UHF/UKS wavefunction is stable in the internal stability analysis
+UNO ON: [ 2.        2.        1.999103  1.997838  1.550306  1.174501  1.174501  0.825499  0.825499  0.449694  0.002162  0.000897  0.        0.        0.
+  0.        0.        0.        0.        0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.      ]
+nacto, nacta, nactb: 6 3 3
+Converting <class 'pyscf.scf.uhf.UHF'> to RHF
+UNO in active space
+             #0      #1      #2      #3      #4      #5     
+  0 N 3s                                               0.184
+  0 N 2px             -0.409   0.207  -0.246  -0.443        
+  0 N 2py              0.207   0.409  -0.443   0.246        
+  0 N 2pz     -0.442                                   0.565
+  0 N 3px             -0.280   0.141  -0.163  -0.294        
+  0 N 3py              0.141   0.280  -0.294   0.163        
+  0 N 3pz     -0.295                                   0.390
+  1 N 3s                                              -0.184
+  1 N 2px             -0.409   0.207   0.246   0.443        
+  1 N 2py              0.207   0.409   0.443  -0.246        
+  1 N 2pz      0.442                                   0.565
+  1 N 3px             -0.280   0.141   0.163   0.294        
+  1 N 3py              0.141   0.280   0.294  -0.163        
+  1 N 3pz      0.295                                   0.390
+
+******** <class 'pyscf.mcscf.mc1step.CASSCF'> ********
+CAS (3e+3e, 6o), ncore = 4, nvir = 18
+max_cycle_macro = 200
+max_cycle_micro = 4
+conv_tol = 1e-07
+conv_tol_grad = None
+orbital rotation max_stepsize = 0.02
+augmented hessian ah_max_cycle = 30
+augmented hessian ah_conv_tol = 1e-12
+augmented hessian ah_linear dependence = 1e-14
+augmented hessian ah_level shift = 0
+augmented hessian ah_start_tol = 2.5
+augmented hessian ah_start_cycle = 3
+augmented hessian ah_grad_trust_region = 3
+kf_trust_region = 3
+kf_interval = 4
+ci_response_space = 4
+ci_grad_trust_region = 3
+with_dep4 0
+natorb = False
+canonicalization = True
+sorting_mo_energy = False
+ao2mo_level = 2
+chkfile = /share/home/srwang/pyAutoMR/examples/tmpp4j_g67r
+max_memory 1000 MB (current use 122 MB)
+internal_rotation = False
+******** <class 'pyscf.fci.direct_spin1.FCISolver'> ********
+max. cycles = 100
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 1000 MB
+nroots = 1
+pspace_size = 400
+spin = 0
+CASCI E = -108.799475961089  S^2 = 0.0000000
+Set conv_tol_grad to 0.000316228
+macro iter 1 (13 JK  4 micro), CASSCF E = -108.800824511519  dE = -0.0013485504  S^2 = 0.0000001
+               |grad[o]|=0.0392  |grad[c]|= 0.001659294395881924  |ddm|=0.0463
+macro iter 2 (6 JK  2 micro), CASSCF E = -108.800824782559  dE = -2.7103999e-07  S^2 = 0.0000000
+               |grad[o]|=0.000653  |grad[c]|= 2.6749742103137575e-05  |ddm|=0.000237
+macro iter 3 (1 JK  1 micro), CASSCF E = -108.800824782721  dE = -1.6206059e-10  S^2 = 0.0000000
+               |grad[o]|=2.58e-05  |grad[c]|= 7.5788286337607645e-06  |ddm|=2.05e-05
+1-step CASSCF converged in 3 macro (20 JK 7 micro) steps
+CASSCF canonicalization
+Density matrix diagonal elements [1.733016 1.391519 1.391518 0.608475 0.608475 0.266997]
+CASSCF energy = -108.800824782721
+CASCI E = -108.800824782721  E(CI) = -9.66808302621443  S^2 = 0.0000000
+Building tpbe functional
+Converting <class 'pyscf.scf.hf.RHF'> to UHF
+tot grids = 56520
+    CPU time for untransformed density      0.12 sec, wall time      0.03 sec
+    CPU time for otpd ao2mo      0.03 sec, wall time      0.01 sec
+    CPU time for on-top pair density calculation      0.33 sec, wall time      0.08 sec
+MC-PDFT: Total number of electrons in (this chunk of) the total density = 14.000000024052328
+MC-PDFT: Total ms = (neleca - nelecb) / 2 in (this chunk of) the translated density = 2.454864556282838
+    CPU time for on-top exchange-correlation energy calculation      0.09 sec, wall time      0.02 sec
+tot grids = 56520
+    CPU time for untransformed density      0.11 sec, wall time      0.03 sec
+    CPU time for otpd ao2mo      0.03 sec, wall time      0.01 sec
+    CPU time for on-top pair density calculation      0.32 sec, wall time      0.08 sec
+MC-PDFT: Total number of electrons in (this chunk of) the total density = 14.000000024052328
+MC-PDFT: Total ms = (neleca - nelecb) / 2 in (this chunk of) the translated density = 2.454864556282838
+    CPU time for on-top exchange-correlation energy calculation      0.12 sec, wall time      0.03 sec
+e_mc  :   -108.80082478
+e_nn  :     13.64720176
+e_core:   -174.93267584
+e_coul:     65.60051510
+e_x   :    -12.19634132
+e_otx :    -13.01591543
+e_otc :     -0.38636603
+e_c   :     -0.91952448

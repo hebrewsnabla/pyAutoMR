@@ -161,7 +161,7 @@ def check_uhf(mf):
             return False, mf
 
 
-def cas(mf, crazywfn=False, max_memory=2000):
+def cas(mf, crazywfn=False, max_memory=2000, natorb=True):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
@@ -183,12 +183,13 @@ def cas(mf, crazywfn=False, max_memory=2000):
         mc.fcisolver.max_cycle = 300
     else:
         mc.fcisolver.max_cycle = 100
-    mc.natorb = True
+    mc.natorb = natorb
     mc.verbose = 4
     mc.kernel()
     #mc.analyze(with_meta_lowdin=False)
-    print('Natrual Orbs')
-    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
+    if natorb:
+        print('Natrual Orbs')
+        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
     return mc
 
 def nevpt2(mc):
