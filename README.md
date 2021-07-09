@@ -8,11 +8,14 @@ This program aims to do:
 
 ## Pre-requisites
 * MOKIT (no need to fully compile, only lo, autopair are needed)
-* PySCF
+* [PySCF](https://github.com/pyscf/pyscf)
+* [mrh](https://github.com/MatthewRHermes/mrh) (optional, for MC-PDFT)
 
 ## Features
 * UHF -> UNO -> CASSCF
 * RHF -> vir MO projection -> PM LMO -> CASSCF
+* CASSCF -> NEVPT2
+* CASSCF -> MC-PDFT
 
 UHF, RHF can be auto-detected.
 
