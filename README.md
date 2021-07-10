@@ -6,10 +6,13 @@ This program aims to do:
 * HF guess strategy
 * automatic guess for CASSCF/SUHF 
 
-## Pre-requisites
+## Installation
+Pre-requisites
 * MOKIT (no need to fully compile, only lo, autopair are needed)
 * [PySCF](https://github.com/pyscf/pyscf)
 * [mrh](https://github.com/MatthewRHermes/mrh) (optional, for MC-PDFT)
+Install
+* git clone and add `/path/to/pyAutoMR` to your `PYTHONPATH`
 
 ## Features
 * UHF -> UNO -> CASSCF
@@ -30,7 +33,7 @@ UHF, RHF can be auto-detected.
 
 ## Quick Start
 ```
-import guess, autocas, cidump
+from automr import guess, autocas, cidump
 
 xyz = 'N 0.0 0.0 0.0; N  0.0 0.0 1.9' 
 bas = 'cc-pvdz'

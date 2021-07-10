@@ -42,14 +42,14 @@ def get_energy_decomposition (mc, ot, mo_coeff=None, ci=None):
     #else:
     if True:
         e_nn, e_core, e_coul, e_x, e_otx, e_otc, e_c = _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf, xfnal, cfnal)
-        print('e_mc  : %15.8f' % e_mcscf)
-        print('e_nn  : %15.8f' % e_nn)
-        print('e_core: %15.8f' % e_core)
-        print('e_coul: %15.8f' % e_coul)
-        print('e_x   : %15.8f' % e_x)
-        print('e_otx : %15.8f' % e_otx)
-        print('e_otc : %15.8f' % e_otc)
-        print('e_c   : %15.8f' % e_c)
+        print('e_mc   : %15.8f' % e_mcscf)
+        print('e_nn   : %15.8f' % e_nn)
+        print('e_core : %15.8f' % e_core)
+        print('e_coul : %15.8f' % e_coul)
+        print('e_x    : %15.8f' % e_x)
+        print('e_otx  : %15.8f' % e_otx)
+        print('e_otc  : %15.8f' % e_otc)
+        print('e_c    : %15.8f' % e_c)
     return e_nn, e_core, e_coul, e_x, e_otx, e_otc, e_c
 
 def _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf, xfnal, cfnal):

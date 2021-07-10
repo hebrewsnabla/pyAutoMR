@@ -1,5 +1,5 @@
 from pyscf import gto,scf, dft, lib
-from pyphf import guess
+from automr import guess
 
 lib.num_threads(16)
 

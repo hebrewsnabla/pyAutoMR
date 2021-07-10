@@ -1,5 +1,5 @@
 from pyscf import lib
-import guess, autocas, mcpdft
+from automr import guess, autocas, mcpdft
 
 lib.num_threads(4)
 

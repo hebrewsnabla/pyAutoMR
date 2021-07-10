@@ -1,6 +1,6 @@
 from pyscf import lib
 #from pyphf import util, guess
-import guess, autocas, cidump
+from automr import guess, autocas, cidump
 
 lib.num_threads(4)
 

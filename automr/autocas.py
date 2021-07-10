@@ -161,7 +161,7 @@ def check_uhf(mf):
             return False, mf
 
 
-def cas(mf, crazywfn=False, max_memory=2000, natorb=True):
+def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
@@ -170,6 +170,10 @@ def cas(mf, crazywfn=False, max_memory=2000, natorb=True):
         nacto = npair*2
         nacta = nactb = npair
     nopen = nacta - nactb
+    if act_user is not None:
+        print('Warning: using user defined active space')
+        nacto = act_user[0]
+        nacta, nactb = act_user[1]
     mc = mcscf.CASSCF(mf,nacto,(nacta,nactb))
     mc.fcisolver.max_memory = max_memory // 2
     mc.max_memory = max_memory // 2

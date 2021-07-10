@@ -1,5 +1,5 @@
 from pyscf import lib
-import guess
+from automr import guess
 
 lib.num_threads(4)
 
