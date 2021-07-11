@@ -7,8 +7,8 @@ from functools import partial, reduce
 from lo import pm
 from pyscf.lo.boys import dipole_integral
 from auto_pair import pair_by_tdm
-import dump_mat
-import sys
+from automr import dump_mat, bridge
+import sys, os
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
@@ -145,6 +145,19 @@ def get_locorb(mf, localize='pm1', pair=True):
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
     return mf, alpha_coeff, npair, ncore
 
+def do_gvb(mf, npair):
+    mo = mf.mo_coeff
+    basename = str(os.getpid())
+    bridge.py2qchem(mf, basename)
+    #os.system('mkdir -p /tmp/qchem/' + basename)
+    #os.system('cp test.q53 /tmp/qchem/test_qc/53.0
+    os.system('qchem %s.in %s.qout %s' % (basename, basename, basename))
+    gvbno = bridge.qchem2py(basename)[0]
+    mf.mo_coeff = gvbno
+    dump_mat.dump_mo(mf.mol, gvbno, ncol=10)
+    return mf, gvbno, npair
+
+
 def check_uhf(mf):
     dm = mf.make_rdm1()
     ndim = np.ndim(dm)
@@ -161,12 +174,15 @@ def check_uhf(mf):
             return False, mf
 
 
-def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True):
+def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
     else:
         mf, lmos, npair, ndb = get_locorb(mf)
+        if gvb:
+            #npair=2
+            mf, gvbno, npair = do_gvb(mf, npair)
         nacto = npair*2
         nacta = nactb = npair
     nopen = nacta - nactb

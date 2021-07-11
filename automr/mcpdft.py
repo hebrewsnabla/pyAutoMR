@@ -6,6 +6,7 @@ from pyscf.lib import logger
 from mrh.util.rdm import get_2CDM_from_2RDM, get_2CDMs_from_2RDMs
 from mrh.my_pyscf.mcpdft.mcpdft import get_E_ot, _PDFT
 from mrh.my_pyscf.mcpdft.otpd import get_ontop_pair_density
+
 from functools import partial
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
