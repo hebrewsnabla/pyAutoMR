@@ -12,5 +12,5 @@ mf = guess.from_frag(xyz, bas, [[0],[1]], [0,0], [3,-3], cycle=50)
 mf = guess.check_stab(mf)
 
 mf2 = autocas.cas(mf)
-cidump.dump(mf2)
+#cidump.dump(mf2)
 

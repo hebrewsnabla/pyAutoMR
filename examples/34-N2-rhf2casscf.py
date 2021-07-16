@@ -12,5 +12,5 @@ mf = guess.gen(xyz, bas, 0, 0)
 #guess.check_stab(mf)
 
 mf2 = autocas.cas(mf)
-cidump.dump(mf2)
+#cidump.dump(mf2)
 

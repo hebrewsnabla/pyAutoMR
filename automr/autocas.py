@@ -7,7 +7,7 @@ from functools import partial, reduce
 from lo import pm
 from pyscf.lo.boys import dipole_integral
 from auto_pair import pair_by_tdm
-from automr import dump_mat, bridge
+from automr import dump_mat, bridge, cidump
 import sys, os
 
 print = partial(print, flush=True)
@@ -210,6 +210,7 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
     if natorb:
         print('Natrual Orbs')
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
+    cidump.dump(mc)
     return mc
 
 def nevpt2(mc):
