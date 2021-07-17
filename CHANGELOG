@@ -1,10 +1,11 @@
-version 0.2.0 (Jul 10, 2021)
+version 0.2.0 (Jul 17, 2021)
 * move everything to pyAutoMR.automr
+* UHF -> SUHF -> CASSCF
 
 version 0.1.1 (Jul 9, 2021)
 --------------------------
 * dump active orbital composition
-* add MC-PDFT
+* CASSCF -> MC-PDFT
 
 version 0.1 (Jun 27, 2021)
 --------------------------
