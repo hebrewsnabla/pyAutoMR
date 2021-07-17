@@ -144,8 +144,30 @@ def check_stab(mf_mix):
         cyc += 1
     if not stable:
         raise RuntimeError('Stablility Opt failed after %d attempts.' % cyc)
+    if not mf_mix.converged:
+        print('Warning: UHF finally not converged')
     mf_mix.mo_coeff = mo
     return mf_mix
+
+def from_frag_tight(xyz, bas, frags, chgs, spins):
+    if not isinstance(spins[0], list):
+        spins = [spins]
+    lowest_mf = None
+    lowest_e = 0.0
+    lowest_spin = None
+    for s in spins:
+        print('Attempt spins ', s)
+        mf = from_frag(xyz, bas, frags, chgs, s, cycle=70)
+        mf = check_stab(mf)
+        if mf.e_tot < lowest_e:
+            lowest_e = mf.e_tot
+            lowest_mf = mf
+            lowest_spin = s
+    print('Lowest UHF energy %.6f from spin guess ' % lowest_e, lowest_spin)
+    return lowest_mf
+    
+
+
 
 def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
     mol = gto.Mole()

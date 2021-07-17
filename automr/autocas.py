@@ -9,10 +9,34 @@ from pyscf.lo.boys import dipole_integral
 from auto_pair import pair_by_tdm
 from automr import dump_mat, bridge, cidump
 import sys, os
+from pyphf import suscf
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
 np.set_printoptions(precision=6, linewidth=160, suppress=True)
+
+def do_suhf(mf):
+    mol = mf.mol 
+    #mo = mf.mo_coeff
+    #S = mol.intor_symmetric('int1e_ovlp')
+    na, nb = mf.nelec
+    nopen = na - nb
+    mf2 = suscf.SUHF(mf)
+    mf2.kernel()
+    no = mf2.natorb[2]
+    noon = mf2.natocc[2]
+    nacto, ndb, nex = check_uno(noon)
+    #ndb, nocc, nopen = idx
+    #nacto = nocc - ndb
+    nacta = (nacto + nopen)//2
+    nactb = (nacto - nopen)//2
+    print('nacto, nacta, nactb: %d %d %d' % (nacto, nacta, nactb))
+    mf = mf.to_rhf()
+    mf.mo_coeff = no
+    print('UNO in active space')
+    dump_mat.dump_mo(mol, no[:,ndb:ndb+nacto], ncol=10)
+    return mf, no, noon, nacto, (nacta, nactb), ndb, nex
+
 
 def get_uno(mf, st='st2'):
     mol = mf.mol 
@@ -174,10 +198,13 @@ def check_uhf(mf):
             return False, mf
 
 
-def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False):
+def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
-        mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
+        if suhf:
+            mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = do_suhf(mf)
+        else:
+            mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
     else:
         mf, lmos, npair, ndb = get_locorb(mf)
         if gvb:
