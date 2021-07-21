@@ -141,6 +141,7 @@ def get_locorb(mf, localize='pm1', pair=True):
     mf.mo_coeff[:, idx:] = projmo
 
     npair = np.sum(mf2.mo_occ==0)
+    print('npair', npair)
     if localize=='pm1':
         idx2 = np.count_nonzero(mf.mo_occ)
         idx1 = idx2 - npair
@@ -198,7 +199,7 @@ def check_uhf(mf):
             return False, mf
 
 
-def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False):
+def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False, lmo=True):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         if suhf:
@@ -206,17 +207,25 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
         else:
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
     else:
-        mf, lmos, npair, ndb = get_locorb(mf)
-        if gvb:
-            #npair=2
-            mf, gvbno, npair = do_gvb(mf, npair)
-        nacto = npair*2
-        nacta = nactb = npair
-    nopen = nacta - nactb
+        if lmo:
+            mf, lmos, npair, ndb = get_locorb(mf)
+            if gvb:
+                #npair=2
+                mf, gvbno, npair = do_gvb(mf, npair)
+            nacto = npair*2
+            nacta = nactb = npair
+        #else:
+        #    ndb = np.count_nonzero(mf.mo_occ)
+            
     if act_user is not None:
         print('Warning: using user defined active space')
         nacto = act_user[0]
         nacta, nactb = act_user[1]
+        print('user-defined guess orbs')
+        if not is_uhf and not lmo:
+            ndb = np.count_nonzero(mf.mo_occ) - nacto//2
+        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
+    nopen = nacta - nactb
     mc = mcscf.CASSCF(mf,nacto,(nacta,nactb))
     mc.fcisolver.max_memory = max_memory // 2
     mc.max_memory = max_memory // 2
