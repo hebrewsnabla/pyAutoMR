@@ -198,8 +198,30 @@ def check_uhf(mf):
             mf = mf.to_rhf()
             return False, mf
 
+def sort_mo(mf, sort, ncore, base=1):
+    caslst = sort
+    mo_coeff = mf.mo_coeff
+    def ext_list(nmo, caslst):
+        mask = np.ones(nmo, dtype=bool)
+        mask[caslst] = False
+        idx = np.where(mask)[0]
+        #if len(idx) + casscf.ncas != nmo:
+        #    raise ValueError('Active space size is incompatible with caslist. '
+        #                     'ncas = %d.  caslist %s' % (casscf.ncas, caslst))
+        return idx
 
-def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False, lmo=True):
+    #if isinstance(ncore, (int, numpy.integer)):
+    nmo = mo_coeff.shape[1]
+    if base != 0:
+        caslst = [i-base for i in caslst]
+    idx = ext_list(nmo, caslst)
+    mo = np.hstack((mo_coeff[:,idx[:ncore]],
+                           mo_coeff[:,caslst],
+                           mo_coeff[:,idx[ncore:]]))
+    mf.mo_coeff = mo
+    return mf
+
+def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False, lmo=True, sort=None):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         if suhf:
@@ -215,8 +237,8 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
             nacto = npair*2
             nacta = nactb = npair
         #else:
-        #    ndb = np.count_nonzero(mf.mo_occ)
-            
+        #    ndb = np.count_nonzero(mf.mo_occ) - nacto//2
+        
     if act_user is not None:
         print('Warning: using user defined active space')
         nacto = act_user[0]
@@ -224,6 +246,8 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
         print('user-defined guess orbs')
         if not is_uhf and not lmo:
             ndb = np.count_nonzero(mf.mo_occ) - nacto//2
+            if sort is not None:
+                mf = sort_mo(mf, sort, ndb)
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
     nopen = nacta - nactb
     mc = mcscf.CASSCF(mf,nacto,(nacta,nactb))
@@ -241,6 +265,9 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
         mc.fcisolver.max_cycle = 100
     mc.natorb = natorb
     mc.verbose = 4
+    #if not is_uhf and sort is not None:
+    #    mo = mc.sort_mo(sort)
+    #    mf.mo_coeff = mo
     mc.kernel()
     #mc.analyze(with_meta_lowdin=False)
     if natorb:
