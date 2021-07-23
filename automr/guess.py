@@ -5,7 +5,7 @@ try:
     import gaussian
 except:
     print('fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.')
-from automr import stability
+from automr import stability, dump_mat
 import time
 import copy
 
@@ -178,6 +178,10 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
     
     t1 = time.time() 
     dm, mo, occ = guess_frag(mol, frags, chgs, spins)
+    print('Frag guess orb alpha')
+    dump_mat.dump_mo(mol, mo[0])
+    print('Frag guess orb beta')
+    dump_mat.dump_mo(mol, mo[1])
     if xc is None:
         mf = scf.UHF(mol)
     else:

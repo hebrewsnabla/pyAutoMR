@@ -1,6 +1,8 @@
-version 0.2.0 (Jul 17, 2021)
+version 0.2.0 (Jul 23, 2021)
 * move everything to pyAutoMR.automr
 * UHF -> SUHF -> CASSCF
+* from_frag_tight for trying multiple frag guesses
+* sort MO
 
 version 0.1.1 (Jul 9, 2021)
 --------------------------
