@@ -1,0 +1,224 @@
+#INFO: **** input file is /share/home/srwang/pyAutoMR/examples/30-H2-CASSCF.py ****
+from pyscf import lib
+#from pyphf import util, guess
+from automr import guess, autocas, cidump
+
+lib.num_threads(4)
+
+xyz = 'H 0.0 0.0 0.0; H  0.0 0.0 1.9' #sys.argv[1]
+#fch = 'n2.fchk' #sys.argv[2]
+bas = 'cc-pvdz'
+
+mf = guess.mix(xyz, bas, conv='tight')
+#mf = guess.from_frag(xyz, bas, [[0],[1]], [0,0], [3,-3], cycle=50)
+#mf = guess.check_stab(mf)
+
+mf2 = autocas.cas(mf)
+#cidump.dump(mf2)
+
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='xn01', release='3.10.0-1127.el7.x86_64', version='#1 SMP Tue Feb 18 16:39:12 EST 2020', machine='x86_64', processor='x86_64')  Threads 4
+Python 3.7.4 (default, Aug 13 2019, 20:35:49) 
+[GCC 7.3.0]
+numpy 1.17.2  scipy 1.4.1
+Date: Mon Jul 26 14:15:07 2021
+PySCF version 1.7.6a1
+PySCF path  /share/home/srwang/pyscf/pyscf
+GIT ORIG_HEAD 80f71dfe77ac5f9caae26788acf76446987635bd
+GIT HEAD      ref: refs/heads/master
+GIT master branch  80f71dfe77ac5f9caae26788acf76446987635bd
+
+[ENV] PYSCF_EXT_PATH /share/home/srwang/pyscf_ext/fciqmc:
+[CONFIG] conf_file /share/home/srwang/.pyscf_conf.py
+[INPUT] verbose = 4
+[INPUT] num. atoms = 2
+[INPUT] num. electrons = 2
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 0
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 H      0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr
+[INPUT]  2 H      0.000000000000   0.000000000000   1.900000000000 AA    0.000000000000   0.000000000000   3.590479636674 Bohr
+
+nuclear repulsion = 0.278514321536842
+number of shells = 6
+number of NR pGTOs = 14
+number of NR cGTOs = 10
+basis = cc-pvdz
+ecp = {}
+CPU time:         1.15
+
+
+******** <class 'pyscf.scf.hf.RHF'> ********
+method = RHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-05
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/tmp0nw5gc1j
+max_memory 4000 MB (current use 106 MB)
+Set gradient conv threshold to 0.00316228
+init E= -0.663939258256991
+  HOMO = -0.263553157682877  LUMO = -0.0875052472996637
+cycle= 1 E= -0.935350784939794  delta_E= -0.271  |g|= 0.0396  |ddm|= 0.76
+  HOMO = -0.39470688087916  LUMO = -0.023612304461931
+cycle= 2 E= -0.935904285945242  delta_E= -0.000554  |g|= 0.00593  |ddm|= 0.0256
+  HOMO = -0.394647760057225  LUMO = -0.0230057660669077
+cycle= 3 E= -0.935917666056638  delta_E= -1.34e-05  |g|= 0.000171  |ddm|= 0.00522
+  HOMO = -0.394719963015868  LUMO = -0.0230999730585679
+cycle= 4 E= -0.935917682817582  delta_E= -1.68e-08  |g|= 1.27e-06  |ddm|= 0.000325
+  HOMO = -0.394722712673641  LUMO = -0.0231009618140017
+Extra cycle  E= -0.935917682818483  delta_E= -9e-13  |g|= 2.42e-07  |ddm|= 1.94e-06
+converged SCF energy = -0.935917682818483
+**** generating mix guess ****
+rotating angle: 0.25 pi
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 100
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/tmp_p2jj38n
+max_memory 4000 MB (current use 118 MB)
+number electrons alpha = 1  beta = 1
+Set gradient conv threshold to 3.16228e-05
+init E= -1.68104509769668
+  alpha nocc = 1  HOMO = -0.244319455963358  LUMO = 0.768038426335615
+  beta  nocc = 1  HOMO = -0.244319455963359  LUMO = 0.768038426335615
+cycle= 1 E= -0.984010668654883  delta_E= 0.697  |g|= 0.107  |ddm|= 1.15
+  alpha nocc = 1  HOMO = -0.509991723341664  LUMO = 0.0698081726025291
+  beta  nocc = 1  HOMO = -0.509991723341664  LUMO = 0.0698081726025293
+cycle= 2 E= -1.00191557892396  delta_E= -0.0179  |g|= 0.0352  |ddm|= 0.224
+  alpha nocc = 1  HOMO = -0.501953332236701  LUMO = 0.0900519563298004
+  beta  nocc = 1  HOMO = -0.501953332236701  LUMO = 0.0900519563298
+cycle= 3 E= -1.00441969047348  delta_E= -0.0025  |g|= 0.00482  |ddm|= 0.11
+  alpha nocc = 1  HOMO = -0.496875318987011  LUMO = 0.0838654054998624
+  beta  nocc = 1  HOMO = -0.496875318987011  LUMO = 0.0838654054998627
+cycle= 4 E= -1.00447262876967  delta_E= -5.29e-05  |g|= 0.00138  |ddm|= 0.0112
+  alpha nocc = 1  HOMO = -0.498354267579016  LUMO = 0.0841459456786067
+  beta  nocc = 1  HOMO = -0.498354267579016  LUMO = 0.0841459456786057
+cycle= 5 E= -1.00447565323729  delta_E= -3.02e-06  |g|= 0.000123  |ddm|= 0.00364
+  alpha nocc = 1  HOMO = -0.498024225722244  LUMO = 0.0838267972960363
+  beta  nocc = 1  HOMO = -0.498024225722244  LUMO = 0.0838267972960365
+cycle= 6 E= -1.00447569028326  delta_E= -3.7e-08  |g|= 9.14e-06  |ddm|= 0.000348
+  alpha nocc = 1  HOMO = -0.498015508122027  LUMO = 0.0838145677113816
+  beta  nocc = 1  HOMO = -0.498015508122027  LUMO = 0.0838145677113814
+cycle= 7 E= -1.00447569039566  delta_E= -1.12e-10  |g|= 2.82e-07  |ddm|= 2.48e-05
+  alpha nocc = 1  HOMO = -0.498015718555062  LUMO = 0.083814768431301
+  beta  nocc = 1  HOMO = -0.498015718555063  LUMO = 0.0838147684313007
+Extra cycle  E= -1.00447569039581  delta_E= -1.47e-13  |g|= 1.34e-07  |ddm|= 3.74e-07
+converged SCF energy = -1.00447569039581  <S^2> = 0.87173856  2S+1 = 2.1182432
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 1.15  e= [1.424871]  max|de|= 1.42  lindep= 0.644
+davidson 1 2  |r|= 0.35  e= [0.657062]  max|de|= -0.768  lindep= 0.88
+davidson 2 3  |r|= 0.0573  e= [0.577915]  max|de|= -0.0791  lindep= 0.977
+davidson 3 4  |r|= 0.00368  e= [0.576204]  max|de|= -0.00171  lindep= 0.994
+root 0 converged  |r|= 0.00322  e= 0.5761629290450474  max|de|= -4.16e-05
+converged 4 5  |r|= 0.00322  e= [0.576163]  max|de|= -4.16e-05
+UHF/UKS wavefunction is stable in the internal stability analysis
+time for guess: 0.145
+UNO ON: [ 1.358136  0.641864  0.        0.        0.        0.       -0.       -0.       -0.       -0.      ]
+nacto, nacta, nactb: 2 1 1
+Converting <class 'pyscf.scf.uhf.UHF'> to RHF
+UNO in active space
+             #0      #1     
+  0 H 1s      -0.375   0.469
+  0 H 2s      -0.315   0.419
+  1 H 1s      -0.375  -0.469
+  1 H 2s      -0.315  -0.419
+
+******** <class 'pyscf.mcscf.mc1step.CASSCF'> ********
+CAS (1e+1e, 2o), ncore = 0, nvir = 8
+max_cycle_macro = 200
+max_cycle_micro = 4
+conv_tol = 1e-07
+conv_tol_grad = None
+orbital rotation max_stepsize = 0.02
+augmented hessian ah_max_cycle = 30
+augmented hessian ah_conv_tol = 1e-12
+augmented hessian ah_linear dependence = 1e-14
+augmented hessian ah_level shift = 0
+augmented hessian ah_start_tol = 2.5
+augmented hessian ah_start_cycle = 3
+augmented hessian ah_grad_trust_region = 3
+kf_trust_region = 3
+kf_interval = 4
+ci_response_space = 4
+ci_grad_trust_region = 3
+with_dep4 0
+natorb = True
+canonicalization = True
+sorting_mo_energy = False
+ao2mo_level = 2
+chkfile = /share/home/srwang/pyAutoMR/examples/tmp_p2jj38n
+max_memory 1000 MB (current use 119 MB)
+internal_rotation = False
+******** <class 'pyscf.fci.direct_spin1.FCISolver'> ********
+max. cycles = 100
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 1000 MB
+nroots = 1
+pspace_size = 400
+spin = 0
+CASCI E = -1.02090218701652  S^2 = 0.0000000
+Set conv_tol_grad to 0.000316228
+macro iter 1 (9 JK  3 micro), CASSCF E = -1.02153423865087  dE = -0.00063205163  S^2 = 0.0000000
+               |grad[o]|=0.0209  |grad[c]|= 0.0006400366927789517  |ddm|=0.0232
+macro iter 2 (3 JK  1 micro), CASSCF E = -1.02153426306324  dE = -2.4412372e-08  S^2 = 0.0000000
+               |grad[o]|=0.000109  |grad[c]|= 7.752370026731206e-06  |ddm|=1.71e-05
+1-step CASSCF converged in 2 macro (12 JK 4 micro) steps
+CASSCF canonicalization
+Natural occ [1.60575 0.39425]
+Natural orbital (expansion on AOs) in CAS space
+               #1        #2       
+  0 H 1s      -0.36830   0.49864
+  0 H 2s      -0.32115   0.37667
+  0 H 2px      0.00000  -0.00000
+  0 H 2py     -0.00000   0.00000
+  0 H 2pz     -0.00619   0.00115
+  1 H 1s      -0.36830  -0.49864
+  1 H 2s      -0.32115  -0.37668
+  1 H 2px      0.00000  -0.00000
+  1 H 2py      0.00000   0.00000
+  1 H 2pz      0.00619   0.00115
+<CAS-nat-orb|mo-hf>  1  1    0.99997209
+<CAS-nat-orb|mo-hf>  2  2    0.99935206
+CASSCF energy = -1.02153426306324
+CASCI E = -1.02153426306324  E(CI) = -1.30004858460009  S^2 = 0.0000000
+Natrual Orbs
+             #0      #1     
+  0 H 1s      -0.375   0.469
+  0 H 2s      -0.315   0.419
+  1 H 1s      -0.375  -0.469
+  1 H 2s      -0.315  -0.419
+***** CI components ******
+ c**2   Gaussian-type vector
+ 0.802875  10     
+ 0.197125  01     
+ c**2     ORCA-type vector
+ 0.802875  20     
+ 0.197125  02     
