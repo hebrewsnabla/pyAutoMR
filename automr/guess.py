@@ -84,7 +84,7 @@ def from_fchk(xyz, bas, fch, cycle=2):
     mf.kernel(dm)
     return mf
 
-def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False):
+def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
     mol = gto.Mole()
     mol.atom = xyz
     #with open(xyz, 'r') as f:
@@ -102,12 +102,13 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False):
     #mf.verbose = 4
     mf.kernel() # Guess by 1e is poor,
     #dm, mo_coeff, mo_energy, mo_occ = init_guess_by_1e(mf)
-    #mf.init_guess_breaksym = True
-    #mo = (mf.mo_coeff, mf.mo_coeff)
-    #occ = (mf.mo_occ, mf.mo_occ)
     print('**** generating mix guess ****')
     dm_mix = init_guess_mixed(mf.mo_coeff, mf.mo_occ)
-    mf_mix = scf.UHF(mol)
+    if xc is None:
+        mf_mix = scf.UHF(mol)
+    else:
+        mf_mix = dft.UKS(mol)
+        mf_mix.xc = xc
     #mf_mix.verbose = 4
     if conv == 'loose':
         mf_mix.conv_tol = 1e-3

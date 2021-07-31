@@ -12,7 +12,7 @@ print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
 
 # mc is mcscf.CASSCF obj
-def get_energy_decomposition (mc, ot, mo_coeff=None, ci=None):
+def get_energy_decomposition (mc, ot=None, mo_coeff=None, ci=None):
     ''' Compute a decomposition of the MC-PDFT energy into nuclear potential, core, Coulomb, exchange,
     and correlation terms. The exchange-correlation energy at the MC-SCF level is also returned.
     This is not meant to work with MC-PDFT methods that are already hybrids. Most return arguments
@@ -25,7 +25,8 @@ def get_energy_decomposition (mc, ot, mo_coeff=None, ci=None):
     #    e_tot = mc.e_states
     #e_nuc = mc._scf.energy_nuc ()
     #h = mc.get_hcore ()
-    xfnal, cfnal = ot.split_x_c ()
+    #if ot is not None:
+    #    xfnal, cfnal = ot.split_x_c ()
     #if isinstance (mc, StateAverageMCSCFSolver):
     #    e_core = []
     #    e_coul = []
@@ -42,7 +43,7 @@ def get_energy_decomposition (mc, ot, mo_coeff=None, ci=None):
     
     #else:
     if True:
-        e_nn, e_core, e_coul, e_x, e_otx, e_otc, e_c = _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf, xfnal, cfnal)
+        e_nn, e_core, e_coul, e_x, e_otx, e_otc, e_c = _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf)
         print('e_mc   : %15.8f' % e_mcscf)
         print('e_nn   : %15.8f' % e_nn)
         print('e_core : %15.8f' % e_core)
@@ -53,7 +54,9 @@ def get_energy_decomposition (mc, ot, mo_coeff=None, ci=None):
         print('e_c    : %15.8f' % e_c)
     return e_nn, e_core, e_coul, e_x, e_otx, e_otc, e_c
 
-def _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf, xfnal, cfnal):
+def _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf):
+    if ot is not None:
+        xfnal, cfnal = ot.split_x_c ()
     ncore, ncas, nelecas = mc.ncore, mc.ncas, mc.nelecas
     _rdms = mcscf.CASCI (mc._scf, ncas, nelecas)
     _rdms.fcisolver = fci.solver (mc._scf.mol, singlet = False, symm = False)
@@ -70,11 +73,13 @@ def _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf, xfnal, cfnal):
     #print(j.shape, k.shape, dm1.shape)
     e_coul = np.tensordot (j[0] + j[1], dm1, axes=2) / 2
     e_x = -(np.tensordot (k[0], dm1s[0]) + np.tensordot (k[1], dm1s[1])) / 2
-    adm1s = np.stack (_casdms.make_rdm1s (ci, ncas, nelecas), axis=0)
-    adm2 = get_2CDM_from_2RDM (_casdms.make_rdm12 (_rdms.ci, ncas, nelecas)[1], adm1s)
-    mo_cas = mo_coeff[:,ncore:][:,:ncas]
-    e_otx = get_E_ot (xfnal, dm1s, adm2, mo_cas, max_memory=mc.max_memory)
-    e_otc = get_E_ot (cfnal, dm1s, adm2, mo_cas, max_memory=mc.max_memory)
+    e_otx = 0.0; e_otc = 0.0
+    if ot is not None:
+        adm1s = np.stack (_casdms.make_rdm1s (ci, ncas, nelecas), axis=0)
+        adm2 = get_2CDM_from_2RDM (_casdms.make_rdm12 (_rdms.ci, ncas, nelecas)[1], adm1s)
+        mo_cas = mo_coeff[:,ncore:][:,:ncas]
+        e_otx = get_E_ot (xfnal, dm1s, adm2, mo_cas, max_memory=mc.max_memory)
+        e_otc = get_E_ot (cfnal, dm1s, adm2, mo_cas, max_memory=mc.max_memory)
     e_c = e_mcscf - e_nn - e_core - e_coul - e_x
     return e_nn, e_core, e_coul, e_x, e_otx, e_otc, e_c
 

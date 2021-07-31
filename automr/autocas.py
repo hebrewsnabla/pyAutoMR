@@ -38,7 +38,7 @@ def do_suhf(mf):
     return mf, no, noon, nacto, (nacta, nactb), ndb, nex
 
 
-def get_uno(mf, st='st2'):
+def get_uno(mf, st='st2', uks=False):
     mol = mf.mol 
     mo = mf.mo_coeff
     S = mol.intor_symmetric('int1e_ovlp')
@@ -58,7 +58,10 @@ def get_uno(mf, st='st2'):
     nacta = (nacto + nopen)//2
     nactb = (nacto - nopen)//2
     print('nacto, nacta, nactb: %d %d %d' % (nacto, nacta, nactb))
-    mf = mf.to_rhf()
+    if uks:
+        mf = mf.to_rks()
+    else:
+        mf = mf.to_rhf()
     mf.mo_coeff = unos
     print('UNO in active space')
     dump_mat.dump_mo(mol, unos[:,ndb:ndb+nacto], ncol=10)
@@ -250,6 +253,7 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
                 mf = sort_mo(mf, sort, ndb)
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
     nopen = nacta - nactb
+
     mc = mcscf.CASSCF(mf,nacto,(nacta,nactb))
     mc.fcisolver.max_memory = max_memory // 2
     mc.max_memory = max_memory // 2
