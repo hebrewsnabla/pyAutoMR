@@ -2,6 +2,10 @@ from automr import autocas, mcpdft
 from pyscf import mcscf, lib
 from pyscf.dft import rks, uks
 import numpy as np
+from functools import partial
+
+print = partial(print, flush=True)
+einsum = partial(np.einsum, optimize=True)
 
 def get_veff(ks, mol=None, dm=None, dm_last=0, vhf_last=0, hermi=1):
     '''Coulomb + XC functional for UKS.  See pyscf/dft/rks.py
@@ -78,37 +82,39 @@ def get_veff(ks, mol=None, dm=None, dm_last=0, vhf_last=0, hermi=1):
                 vklr *= (alpha - hyb)
                 vk += vklr
         vxc += vj - vk
-
+        
         if ground_state:
-            exc -=(np.einsum('ij,ji', dm[0], vk[0]).real +
+            exc0 = exc
+            ek = -(np.einsum('ij,ji', dm[0], vk[0]).real +
                    np.einsum('ij,ji', dm[1], vk[1]).real) * .5
     if ground_state:
         ecoul = np.einsum('ij,ji', dm[0]+dm[1], vj).real * .5
     else:
         ecoul = None
 
-    vxc = lib.tag_array(vxc, ecoul=ecoul, exc=exc, vj=vj, vk=vk)
-    return vxc
+    #vxc = lib.tag_array(vxc, ecoul=ecoul, exc=exc, vj=vj, vk=vk)
+    return vxc, exc0, ecoul, ek
 
 def ks_decomp(ks):
     e_nn = ks.energy_nuc()
     dm1 = ks.make_rdm1()
     dm1t = dm1[0] + dm1[1]
-    e_core = np.dot(ks.get_hcore(), dm1t)
-    vhf = uks.get_veff(ks, dm=dm1)
-    e_coul = vhf.ecoul
+    e_core = einsum('ij,ji->', ks.get_hcore(), dm1t)
+    vhf, e_xcdft, e_coul, e_xhf = get_veff(ks)
+    #e_coul = vhf.ecoul
     #print('e_mc   : %15.8f' % e_mcscf)
     print('e_nn   : %15.8f' % e_nn)
     print('e_core : %15.8f' % e_core)
     print('e_coul : %15.8f' % e_coul)
-    #    print('e_x    : %15.8f' % e_x)
-    #    print('e_otx  : %15.8f' % e_otx)
+    print('e_xhf    : %15.8f' % e_xhf)
+    print('e_xcdft  : %15.8f' % e_xcdft)
     #    print('e_otc  : %15.8f' % e_otc)
     #    print('e_c    : %15.8f' % e_c)
 
 
 def dftcasci(ks, act_user):
     #mo = ks.mo_coeff
+    ks_decomp(ks)
     nacto = act_user[0]
     nacta, nactb = act_user[1]
     nopen = nacta - nactb
@@ -124,5 +130,4 @@ def dftcasci(ks, act_user):
     mc.verbose = 4
     mc.kernel()
 
-    ks_decomp(ks)
     e_nn, e_core, e_coul, e_x, _, _, e_c = mcpdft.get_energy_decomposition(mc)

@@ -9,7 +9,7 @@ from automr import stability, dump_mat
 import time
 import copy
 
-def gen(xyz, bas, charge, spin, conv='tight', level_shift=0):
+def gen(xyz, bas, charge, spin, conv='tight', level_shift=0, xc=None):
     '''for states other than singlets'''
     mol = gto.Mole()
     mol.atom = xyz
@@ -19,7 +19,11 @@ def gen(xyz, bas, charge, spin, conv='tight', level_shift=0):
     mol.verbose = 4
     mol.build()
     
-    mf = scf.UHF(mol)
+    if xc is None:
+        mf = scf.UHF(mol)
+    else:
+        mf = dft.UKS(mol)
+        mf.xc = xc
     if conv == 'loose':
         mf.conv_tol = 1e-6
         mf.max_cycle = 10
