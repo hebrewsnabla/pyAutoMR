@@ -4,12 +4,18 @@ from pyscf import mcscf, mrpt, gto, scf
 import numpy as np
 import scipy
 from functools import partial, reduce
-from lo import pm
+try:
+    from lo import pm
+    from auto_pair import pair_by_tdm
+except:
+    print('Warning: lo/auto_pair not found. Orbital localization is disabled. Install MOKIT if you need that.')
 from pyscf.lo.boys import dipole_integral
-from auto_pair import pair_by_tdm
 from automr import dump_mat, bridge, cidump
 import sys, os
-from pyphf import suscf
+try:
+    from pyphf import suscf
+except:
+    print('Warning: pyphf not found. SUHF is disabled. Install ExSCF if you need that.')
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
