@@ -88,6 +88,9 @@ def from_fchk(xyz, bas, fch, cycle=2):
     mf.kernel(dm)
     return mf
 
+def mix_tight(xyz, bas, charge=0, xc=None):
+    return mix(xyz, bas, charge, 'tight', xc=xc)
+
 def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
     mol = gto.Mole()
     mol.atom = xyz
