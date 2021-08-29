@@ -30,36 +30,40 @@ def dump(mc, thresh=1e-2):
     Gaussian format: 11a00
     ORCA format    : 22100
     '''
-    print('***** CI components ******')
-    ci = mc.ci
-    ncas = mc.ncas
-    na, nb = mc.nelecas
-    #print(mc.ci)
-    lena, lenb = mc.ci.shape
-    dump_g = {}
-    dump_o = {}
-    for i in range(lena):
-        for j in range(lenb):
-            veca = fci.cistring.addr2str(ncas, na, i)
-            vecb = fci.cistring.addr2str(ncas, nb, j)
-            coeff = ci[i,j]
-            if coeff**2 > thresh:
-                vec, veco, va, vb = merge_vec(veca, vecb, ncas)
-                dump_g[vec] = coeff**2
-                if veco in dump_o:
-                    dump_o[veco] += coeff**2
-                else:
-                    dump_o[veco] = coeff**2
-    dump_g = sorted(dump_g.items(),  key=lambda d: d[1], reverse=True)
-    dump_o = sorted(dump_o.items(),  key=lambda d: d[1], reverse=True)
-    #print(dump_g)
-    #print(dump_o)
-    print(" c**2   Gaussian-type vector")
-    for k,v in dump_g:
-        print("{: .6f}  {:7s}".format(v,k))
-    print(" c**2     ORCA-type vector")
-    for k,v in dump_o:
-        print("{: .6f}  {:7s}".format(v,k))
-    
+    if isinstance(mc.ci, (list, tuple)):
+        civecs = mc.ci
+    else:
+        civecs = [mc.ci]
+    for ici, ci in enumerate(civecs):
+        print('***** CI components ROOT %d ******' % ici)
+        ncas = mc.ncas
+        na, nb = mc.nelecas
+        #print(mc.ci)
+        lena, lenb = ci.shape
+        dump_g = {}
+        dump_o = {}
+        for i in range(lena):
+            for j in range(lenb):
+                veca = fci.cistring.addr2str(ncas, na, i)
+                vecb = fci.cistring.addr2str(ncas, nb, j)
+                coeff = ci[i,j]
+                if coeff**2 > thresh:
+                    vec, veco, va, vb = merge_vec(veca, vecb, ncas)
+                    dump_g[vec] = coeff**2
+                    if veco in dump_o:
+                        dump_o[veco] += coeff**2
+                    else:
+                        dump_o[veco] = coeff**2
+        dump_g = sorted(dump_g.items(),  key=lambda d: d[1], reverse=True)
+        dump_o = sorted(dump_o.items(),  key=lambda d: d[1], reverse=True)
+        #print(dump_g)
+        #print(dump_o)
+        print(" c**2   Gaussian-type vector")
+        for k,v in dump_g:
+            print("{: .6f}  {:7s}".format(v,k))
+        print(" c**2     ORCA-type vector")
+        for k,v in dump_o:
+            print("{: .6f}  {:7s}".format(v,k))
+        
     return dump_g, dump_o
 

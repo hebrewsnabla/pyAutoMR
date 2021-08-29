@@ -230,7 +230,7 @@ def sort_mo(mf, sort, ncore, base=1):
     mf.mo_coeff = mo
     return mf
 
-def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False, lmo=True, sort=None):
+def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False, lmo=True, sort=None, dry=False):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         if suhf:
@@ -278,6 +278,8 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
     #if not is_uhf and sort is not None:
     #    mo = mc.sort_mo(sort)
     #    mf.mo_coeff = mo
+    if dry:
+        return mc
     mc.kernel()
     #mc.analyze(with_meta_lowdin=False)
     if natorb:
