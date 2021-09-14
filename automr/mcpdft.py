@@ -59,11 +59,15 @@ def _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf):
     if ot is not None:
         xfnal, cfnal = ot.split_x_c ()
     ncore, ncas, nelecas = mc.ncore, mc.ncas, mc.nelecas
-    _rdms = mcscf.CASCI (mc._scf, ncas, nelecas)
-    _rdms.fcisolver = fci.solver (mc._scf.mol, singlet = False, symm = False)
-    _rdms.mo_coeff = mo_coeff
-    _rdms.ci = ci
-    _casdms = _rdms.fcisolver
+    if isinstance(mc, mcscf.casci.CASCI):
+        _rdms = mc
+        _casdms = mc.fcisolver
+    else:
+        _rdms = mcscf.CASCI (mc._scf, ncas, nelecas)
+        _rdms.fcisolver = fci.solver (mc._scf.mol, singlet = False, symm = False)
+        _rdms.mo_coeff = mo_coeff
+        _rdms.ci = ci
+        _casdms = _rdms.fcisolver
     _scf = _rdms._scf.to_uhf()
     dm1s = np.stack (_rdms.make_rdm1s (), axis=0)
     dm1 = dm1s[0] + dm1s[1]

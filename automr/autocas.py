@@ -288,6 +288,6 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
     cidump.dump(mc)
     return mc
 
-def nevpt2(mc):
-    nev = mrpt.NEVPT(mc)
+def nevpt2(mc, root=0):
+    nev = mrpt.NEVPT(mc, root=root)
     nev.kernel()

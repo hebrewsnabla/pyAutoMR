@@ -139,13 +139,15 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
     #mf_mix.kernel(dm)
     return mf_mix
 
-def check_stab(mf_mix):
+def check_stab(mf_mix, newton=False):
     mf_mix.verbose = 9
     mo, stable = stability.uhf_internal(mf_mix)
     cyc = 0
     while(not stable and cyc < 10):
         mf_mix.verbose = 4
         dm_new = scf.uhf.make_rdm1(mo, mf_mix.mo_occ)
+        if newton:
+            mf_mix=mf_mix.newton()
         mf_mix.kernel(dm0=dm_new)
         mf_mix.verbose = 9
         mo, stable = stability.uhf_internal(mf_mix)
