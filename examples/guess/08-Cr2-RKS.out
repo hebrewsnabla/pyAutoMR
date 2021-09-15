@@ -1,0 +1,26 @@
+converged SCF energy = -2088.28076496514
+**** checking RHF/RKS internal stability ...
+nelec by numeric integration = 48.000004161259334
+    CPU time for vxc      1.66 sec, wall time      0.05 sec
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 4.11  e= [2.061283]  max|de|= 2.06  lindep= 0.997
+davidson 1 2  |r|= 0.991  e= [1.749281]  max|de|= -0.312  lindep= 0.993
+davidson 2 3  |r|= 2.89  e= [1.636928]  max|de|= -0.112  lindep= 0.977
+davidson 3 4  |r|=  1.2  e= [1.460154]  max|de|= -0.177  lindep= 0.944
+davidson 4 5  |r|= 0.786  e= [1.229078]  max|de|= -0.231  lindep= 0.971
+davidson 5 6  |r|= 0.707  e= [1.021425]  max|de|= -0.208  lindep= 0.983
+davidson 6 7  |r|= 0.294  e= [0.796616]  max|de|= -0.225  lindep= 0.973
+davidson 7 8  |r|= 0.201  e= [0.77611]  max|de|= -0.0205  lindep= 0.882
+davidson 8 9  |r|= 0.213  e= [0.773811]  max|de|= -0.0023  lindep= 0.836
+davidson 9 10  |r|= 0.816  e= [0.385896]  max|de|= -0.388  lindep= 0.95
+davidson 10 11  |r|= 0.485  e= [0.276048]  max|de|= -0.11  lindep= 0.962
+davidson 11 12  |r|= 0.174  e= [0.238401]  max|de|= -0.0376  lindep= 0.844
+davidson 12 1  |r|= 0.174  e= [0.238401]  max|de|= 1.39e-16  lindep=    1
+davidson 13 2  |r|= 0.14  e= [0.236465]  max|de|= -0.00194  lindep=    1
+davidson 14 3  |r|= 0.0768  e= [0.234487]  max|de|= -0.00198  lindep= 0.863
+davidson 15 4  |r|= 0.0476  e= [0.233472]  max|de|= -0.00101  lindep= 0.861
+davidson 16 5  |r|= 0.0174  e= [0.233168]  max|de|= -0.000304  lindep= 0.937
+root 0 converged  |r|= 0.0077  e= 0.2331109827275325  max|de|= -5.68e-05
+converged 17 6  |r|= 0.0077  e= [0.233111]  max|de|= -5.68e-05
+RHF/RKS wavefunction is stable in the internal stability analysis

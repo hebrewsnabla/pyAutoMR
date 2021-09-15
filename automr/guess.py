@@ -5,7 +5,7 @@ try:
     import gaussian
 except:
     print('fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.')
-from automr import stability, dump_mat
+from automr import stability, dump_mat, autocas
 import time
 import copy
 
@@ -130,18 +130,25 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
     #mf_mix.kernel(dm)
     return mf_mix
 
-def check_stab(mf_mix, newton=False):
+def check_stab(mf_mix, newton=False, res=False):
+    if res:
+        stab = stability.rhf_internal
+        is_uhf, mf_mix = autocas.check_uhf(mf_mix)
+        if is_uhf:
+            raise ValueError('UHF/UKS wavefunction detected. RHF/RKS is required for res=True')
+    else:
+        stab = stability.uhf_internal
     mf_mix.verbose = 9
-    mo, stable = stability.uhf_internal(mf_mix)
+    mo, stable = stab(mf_mix)
     cyc = 0
     while(not stable and cyc < 10):
         mf_mix.verbose = 4
-        dm_new = scf.uhf.make_rdm1(mo, mf_mix.mo_occ)
+        dm_new = mf_mix.make_rdm1(mo, mf_mix.mo_occ)
         if newton:
             mf_mix=mf_mix.newton()
         mf_mix.kernel(dm0=dm_new)
         mf_mix.verbose = 9
-        mo, stable = stability.uhf_internal(mf_mix)
+        mo, stable = stab(mf_mix)
         cyc += 1
     if not stable:
         raise RuntimeError('Stablility Opt failed after %d attempts.' % cyc)
