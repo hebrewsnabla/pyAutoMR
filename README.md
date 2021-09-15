@@ -28,11 +28,12 @@ Install
 UHF, RHF can be auto-detected.
 
 ## Utilities
-* guess for UHF
+* guess for UHF/UKS
   + mix
   + fragment
   + from_fch
-* UHF stability
+* internal stability for RHF/RKS, UHF/UKS, ROHF/ROKS
+  + optimize wavefunction until stable
 * dump CASCI coefficients
 * dump (active) orbital compositions
 
