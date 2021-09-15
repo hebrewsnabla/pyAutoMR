@@ -32,31 +32,11 @@ def gen(xyz, bas, charge, spin, conv='tight', level_shift=0, xc=None):
 
     return mf
 
-def from_fch_simp(fch, cycle=2):
+def from_fch_simp(fch, cycle=None, xc=None):
     mol = gaussian.load_mol_from_fch(fch)
-    
-    mf = scf.UHF(mol)
-    #mf.init_guess = '1e'
-    #mf.init_guess_breaksym = True
-    mf.verbose = 4
-    mf.max_cycle = 1
-    mf.kernel()
-    
-    # read MOs from .fch(k) file
-    nbf = mf.mo_coeff[0].shape[0]
-    nif = mf.mo_coeff[0].shape[1]
-    S = mol.intor_symmetric('int1e_ovlp')
-    Sdiag = S.diagonal()
-    alpha_coeff = fch2py(fch, nbf, nif, 'a')
-    beta_coeff  = fch2py(fch, nbf, nif, 'b')
-    mf.mo_coeff = (alpha_coeff, beta_coeff)
-    # read done
-    dm = mf.make_rdm1()
-    mf.max_cycle = cycle
-    mf.kernel(dm)
-    return mf
+    return _from_fchk(mol, fch, cycle, xc)    
 
-def from_fchk(xyz, bas, fch, cycle=2):
+def from_fchk(xyz, bas, fch, cycle=None, xc=None):
     mol = gto.Mole()
     mol.atom = xyz
     #with open(xyz, 'r') as f:
@@ -66,24 +46,35 @@ def from_fchk(xyz, bas, fch, cycle=2):
     #mol.output = 'test.pylog'
     mol.verbose = 4
     mol.build()
-    
-    mf = scf.UHF(mol)
+    return _from_fchk(mol, fch, cycle, xc)
+
+def _from_fchk(mol, fch, cycle=None, xc=None):    
+    if xc is None:
+        mf = scf.UHF(mol)
+    else:
+        mf = dft.UKS(mol)
+        mf.xc = xc
     #mf.init_guess = '1e'
-    mf.init_guess_breaksym = True
+    #mf.init_guess_breaksym = True
     mf.max_cycle = 1
     mf.kernel()
     
     # read MOs from .fch(k) file
     nbf = mf.mo_coeff[0].shape[0]
     nif = mf.mo_coeff[0].shape[1]
-    S = mol.intor_symmetric('int1e_ovlp')
-    Sdiag = S.diagonal()
+    #S = mol.intor_symmetric('int1e_ovlp')
+    #Sdiag = S.diagonal()
     alpha_coeff = fch2py(fch, nbf, nif, 'a')
     beta_coeff  = fch2py(fch, nbf, nif, 'b')
     mf.mo_coeff = (alpha_coeff, beta_coeff)
     # read done
     
     dm = mf.make_rdm1()
+    if cycle is None:
+        if xc is None:
+            cycle = 2
+        else:
+            cycle = 6
     mf.max_cycle = cycle
     mf.kernel(dm)
     return mf
