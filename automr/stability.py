@@ -71,3 +71,32 @@ def uhf_internal(mf, with_symmetry=True, verbose=None):
         mo = mf.mo_coeff
         stable = True
     return mo, stable
+
+def rohf_internal(mf, with_symmetry=True, verbose=None):
+    log = logger.new_logger(mf, verbose)
+    log.note('**** checking ROHF/ROKS internal stability ...')
+    g, hop, hdiag = newton_ah.gen_g_hop_rohf(mf, mf.mo_coeff, mf.mo_occ,
+                                             with_symmetry=with_symmetry)
+    hdiag *= 2
+    stable = True
+    def precond(dx, e, x0):
+        hdiagd = hdiag - e
+        hdiagd[abs(hdiagd)<1e-8] = 1e-8
+        return dx/hdiagd
+    def hessian_x(x): # See comments in function rhf_internal
+        return hop(x).real * 2
+
+    x0 = numpy.zeros_like(g)
+    x0[g!=0] = 1. / hdiag[g!=0]
+    if not with_symmetry:  # allow to break point group symmetry
+        x0[numpy.argmin(hdiag)] = 1
+    e, v = lib.davidson(hessian_x, x0, precond, tol=1e-4, verbose=log)
+    if e < -1e-5:
+        log.note('ROHF wavefunction has an internal instability.')
+        mo = _rotate_mo(mf.mo_coeff, mf.mo_occ, v)
+        stable = False
+    else:
+        log.note('ROHF wavefunction is stable in the internal stability analysis')
+        mo = mf.mo_coeff
+    return mo, stable
+

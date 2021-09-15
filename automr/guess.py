@@ -130,10 +130,22 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
     #mf_mix.kernel(dm)
     return mf_mix
 
+def check_uhf2(mf):
+    ss, s = mf.spin_square()
+    spin = mf.mol.spin
+    if abs(s - 1 - spin) > 0.01:
+        is_uhf = True
+    else:
+        is_uhf = False
+        #mf = mf.to_rhf()
+    return is_uhf, mf
+
 def check_stab(mf_mix, newton=False, res=False):
     if res:
         stab = stability.rhf_internal
-        is_uhf, mf_mix = autocas.check_uhf(mf_mix)
+        if mf_mix.mol.spin is not 0:
+            stab = stability.rohf_internal
+        is_uhf, mf_mix = check_uhf2(mf_mix)
         if is_uhf:
             raise ValueError('UHF/UKS wavefunction detected. RHF/RKS is required for res=True')
     else:
@@ -153,7 +165,7 @@ def check_stab(mf_mix, newton=False, res=False):
     if not stable:
         raise RuntimeError('Stablility Opt failed after %d attempts.' % cyc)
     if not mf_mix.converged:
-        print('Warning: UHF finally not converged')
+        print('Warning: SCF finally not converged')
     mf_mix.mo_coeff = mo
     return mf_mix
 
