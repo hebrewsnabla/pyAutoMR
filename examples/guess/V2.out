@@ -1,0 +1,1579 @@
+#INFO: **** input file is /share/home/srwang/pyAutoMR/examples/guess/V2.py ****
+from pyscf import scf,dft, gto, lib
+from automr import guess, autocas
+
+lib.num_threads(8)
+#mf=guess.from_fch_simp("v2.fchk", xc='pbe0')
+
+#mf2.verbose=9
+#mf2.stability()
+mol = gto.Mole(atom='''V 0.0 0.0 0.0; V 0.0 0.0 1.77''', basis='def2-tzvp', spin=2)
+mol.verbose = 4
+mol.build()
+mf = scf.UHF(mol)
+mf.kernel()
+mf = guess.check_stab(mf, newton=True)
+mf2 = autocas.cas(mf, (8, (5,3)) )
+mf4 = autocas.nevpt2(mf2)
+
+mol2 = gto.Mole(atom='''V 0.0 0.0 0.0''', basis='def2-tzvp', spin=3)
+mol2.verbose = 4
+mol2.build()
+mfb = scf.UHF(mol2)
+mfb.kernel()
+mfb = guess.check_stab(mfb, newton=True)
+mfb2 = autocas.cas(mfb)
+mfb4 = autocas.nevpt2(mfb2)
+
+mol3 = gto.Mole(atom='''V 0.0 0.0 0.0''', basis='def2-tzvp', spin=1)
+mol3.verbose = 4
+mol3.build()
+mfc = scf.UHF(mol3)
+mfc.kernel()
+mfc = guess.check_stab(mfc, newton=True)
+mfc2 = autocas.cas(mfc)
+mfc4 = autocas.nevpt2(mfc2)
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='xn01', release='3.10.0-1127.el7.x86_64', version='#1 SMP Tue Feb 18 16:39:12 EST 2020', machine='x86_64', processor='x86_64')  Threads 8
+Python 3.7.4 (default, Aug 13 2019, 20:35:49) 
+[GCC 7.3.0]
+numpy 1.17.2  scipy 1.4.1
+Date: Wed Sep 15 17:23:24 2021
+PySCF version 1.7.6a1
+PySCF path  /share/home/srwang/pyscf/pyscf
+GIT ORIG_HEAD 80f71dfe77ac5f9caae26788acf76446987635bd
+GIT HEAD      ref: refs/heads/master
+GIT master branch  80f71dfe77ac5f9caae26788acf76446987635bd
+
+[ENV] PYSCF_EXT_PATH /share/home/srwang/pyscf_ext/fciqmc:
+[CONFIG] conf_file /share/home/srwang/.pyscf_conf.py
+[INPUT] verbose = 4
+[INPUT] num. atoms = 2
+[INPUT] num. electrons = 46
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 2
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 V      0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr
+[INPUT]  2 V      0.000000000000   0.000000000000   1.770000000000 AA    0.000000000000   0.000000000000   3.344815240480 Bohr
+
+nuclear repulsion = 158.155222924678
+number of shells = 30
+number of NR pGTOs = 184
+number of NR cGTOs = 90
+basis = def2-tzvp
+ecp = {}
+CPU time:         1.05
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmps0wv1jmb
+max_memory 4000 MB (current use 106 MB)
+number electrons alpha = 24  beta = 22
+Set gradient conv threshold to 3.16228e-05
+init E= -1885.12896781977
+  alpha nocc = 24  HOMO = -0.219273872269442  LUMO = -0.124656417878415
+  beta  nocc = 22  HOMO = -0.290053830588862  LUMO = -0.219273872269442
+
+WARN: system HOMO -0.219273872269442 >= system LUMO -0.219273872269442
+
+cycle= 1 E= -1885.18280034892  delta_E= -0.0538  |g|= 0.539  |ddm|= 1.72
+  alpha nocc = 24  HOMO = -0.104691165688615  LUMO = 0.0267809339798172
+  beta  nocc = 22  HOMO = -0.0983330351085804  LUMO = 0.0293398583635152
+cycle= 2 E= -1885.22365677584  delta_E= -0.0409  |g|= 0.515  |ddm|= 0.839
+  alpha nocc = 24  HOMO = -0.215951125678334  LUMO = 0.00882635524209971
+  beta  nocc = 22  HOMO = -0.195637507636763  LUMO = 0.0115527708231848
+cycle= 3 E= -1885.3076505295  delta_E= -0.084  |g|= 0.036  |ddm|= 0.35
+  alpha nocc = 24  HOMO = -0.220172034092585  LUMO = 0.00819383681533599
+  beta  nocc = 22  HOMO = -0.198016735372313  LUMO = 0.00926844090351359
+cycle= 4 E= -1885.30879961158  delta_E= -0.00115  |g|= 0.0178  |ddm|= 0.0619
+  alpha nocc = 24  HOMO = -0.223826700811112  LUMO = 0.0068431853316636
+  beta  nocc = 22  HOMO = -0.198981393293415  LUMO = 0.00642364616256824
+cycle= 5 E= -1885.30925679309  delta_E= -0.000457  |g|= 0.00712  |ddm|= 0.0387
+  alpha nocc = 24  HOMO = -0.22591543673358  LUMO = 0.00700099120704918
+  beta  nocc = 22  HOMO = -0.197523138225906  LUMO = 0.00442596014140964
+cycle= 6 E= -1885.30952679814  delta_E= -0.00027  |g|= 0.00377  |ddm|= 0.0419
+  alpha nocc = 24  HOMO = -0.227674177078187  LUMO = 0.00789005724556367
+  beta  nocc = 22  HOMO = -0.196395918273116  LUMO = 0.00354899898724204
+cycle= 7 E= -1885.30962730293  delta_E= -0.000101  |g|= 0.002  |ddm|= 0.0289
+  alpha nocc = 24  HOMO = -0.228931765013354  LUMO = 0.00856605836310267
+  beta  nocc = 22  HOMO = -0.19569701046332  LUMO = 0.00297963197979846
+cycle= 8 E= -1885.30966012019  delta_E= -3.28e-05  |g|= 0.000661  |ddm|= 0.0198
+  alpha nocc = 24  HOMO = -0.229202155605989  LUMO = 0.0087617664494393
+  beta  nocc = 22  HOMO = -0.195474176870518  LUMO = 0.00286987030259595
+cycle= 9 E= -1885.30966249045  delta_E= -2.37e-06  |g|= 0.000163  |ddm|= 0.00515
+  alpha nocc = 24  HOMO = -0.229234774289723  LUMO = 0.00873410309515012
+  beta  nocc = 22  HOMO = -0.195469448671638  LUMO = 0.00284090242839439
+cycle= 10 E= -1885.30966256485  delta_E= -7.44e-08  |g|= 6.65e-05  |ddm|= 0.000825
+  alpha nocc = 24  HOMO = -0.229232297881588  LUMO = 0.00872847303685871
+  beta  nocc = 22  HOMO = -0.195468149302225  LUMO = 0.00284199359804079
+cycle= 11 E= -1885.30966256505  delta_E= -2.04e-10  |g|= 0.000161  |ddm|= 0.00017
+  alpha nocc = 24  HOMO = -0.229229571764346  LUMO = 0.00872467070722755
+  beta  nocc = 22  HOMO = -0.195466643322231  LUMO = 0.00284369625043845
+cycle= 12 E= -1885.30966257518  delta_E= -1.01e-08  |g|= 2.67e-05  |ddm|= 0.00013
+  alpha nocc = 24  HOMO = -0.229229259975681  LUMO = 0.0087186848741796
+  beta  nocc = 22  HOMO = -0.195467253681452  LUMO = 0.00284679674448051
+cycle= 13 E= -1885.309662578  delta_E= -2.83e-09  |g|= 1.27e-05  |ddm|= 0.000137
+  alpha nocc = 24  HOMO = -0.22922767399854  LUMO = 0.00871812990521223
+  beta  nocc = 22  HOMO = -0.195466476531967  LUMO = 0.00284912173463235
+cycle= 14 E= -1885.30966257846  delta_E= -4.6e-10  |g|= 6.85e-06  |ddm|= 4.24e-05
+  alpha nocc = 24  HOMO = -0.229227955142367  LUMO = 0.00871768783207176
+  beta  nocc = 22  HOMO = -0.19546694687788  LUMO = 0.00284957704221159
+Extra cycle  E= -1885.30966257856  delta_E= -9.46e-11  |g|= 4.8e-06  |ddm|= 1.71e-05
+converged SCF energy = -1885.30966257856  <S^2> = 2.0384725  2S+1 = 3.0255396
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.46  e= [1.080949]  max|de|= 1.08  lindep= 0.97
+davidson 1 2  |r|= 0.52  e= [0.592639]  max|de|= -0.488  lindep= 0.994
+davidson 2 3  |r|= 0.916  e= [0.464027]  max|de|= -0.129  lindep= 0.989
+davidson 3 4  |r|= 0.33  e= [0.076051]  max|de|= -0.388  lindep= 0.994
+davidson 4 5  |r|= 0.444  e= [-0.104299]  max|de|= -0.18  lindep= 0.998
+davidson 5 6  |r|= 0.445  e= [-0.24568]  max|de|= -0.141  lindep= 0.87
+davidson 6 7  |r|= 0.286  e= [-0.358668]  max|de|= -0.113  lindep= 0.983
+davidson 7 8  |r|= 0.225  e= [-0.415995]  max|de|= -0.0573  lindep= 0.975
+davidson 8 9  |r|= 0.238  e= [-0.462494]  max|de|= -0.0465  lindep= 0.936
+davidson 9 10  |r|= 0.128  e= [-0.483953]  max|de|= -0.0215  lindep= 0.959
+davidson 10 11  |r|= 0.0773  e= [-0.492627]  max|de|= -0.00867  lindep= 0.972
+davidson 11 12  |r|= 0.0548  e= [-0.495106]  max|de|= -0.00248  lindep= 0.896
+davidson 12 1  |r|= 0.0548  e= [-0.495106]  max|de|= -2.22e-16  lindep=    1
+davidson 13 2  |r|= 0.0366  e= [-0.495955]  max|de|= -0.000849  lindep= 0.922
+davidson 14 3  |r|= 0.0341  e= [-0.49665]  max|de|= -0.000695  lindep= 0.99
+davidson 15 4  |r|= 0.0261  e= [-0.496853]  max|de|= -0.000203  lindep= 0.988
+davidson 16 5  |r|= 0.0181  e= [-0.497096]  max|de|= -0.000243  lindep= 0.927
+davidson 17 6  |r|= 0.01  e= [-0.49719]  max|de|= -9.42e-05  lindep= 0.953
+davidson 18 7  |r|= 0.0136  e= [-0.497254]  max|de|= -6.41e-05  lindep= 0.92
+root 0 converged  |r|= 0.00719  e= -0.49733125326775207  max|de|= -7.72e-05
+converged 19 8  |r|= 0.00719  e= [-0.497331]  max|de|= -7.72e-05
+UHF/UKS wavefunction has an internal instability.
+
+
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmps0wv1jmb
+max_memory 4000 MB (current use 219 MB)
+number electrons alpha = 24  beta = 22
+******** <class 'pyscf.scf.uhf.UHF'> Newton solver flags ********
+SCF tol = 1e-09
+conv_tol_grad = None
+max. SCF cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmps0wv1jmb
+max_cycle_inner = 12
+max_stepsize = 0.05
+ah_start_tol = 1e+09
+ah_level_shift = 0
+ah_conv_tol = 1e-12
+ah_lindep = 1e-14
+ah_start_cycle = 1
+ah_max_cycle = 40
+ah_grad_trust_region = 2.5
+kf_interval = 4
+kf_trust_region = 5
+canonicalization = True
+max_memory 4000 MB (current use 219 MB)
+Set conv_tol_grad to 3.16228e-05
+  alpha nocc = 24  HOMO = -0.214610607106884  LUMO = 0.0139225240384841
+  beta  nocc = 22  HOMO = -0.187420309110364  LUMO = 0.00756064970095129
+Initial guess E= -1885.41257148595  |g|= 0.0711032
+macro= 0  E= -1885.44192760542  delta_E= -0.0293561  |g|= 0.143957  3 KF 18 JK
+macro= 1  E= -1885.51309784985  delta_E= -0.0711702  |g|= 0.14769  4 KF 20 JK
+macro= 2  E= -1885.52782761838  delta_E= -0.0147298  |g|= 0.00320989  4 KF 15 JK
+macro= 3  E= -1885.52786934451  delta_E= -4.17261e-05  |g|= 0.000127589  3 KF 25 JK
+macro= 4  E= -1885.52786934451  delta_E= -2.27374e-13  |g|= 1.0509e-05  1 KF 2 JK
+Canonicalize SCF orbitals
+macro X = 5  E=-1885.52786934451  |g|= 1.0509e-05  total 16 KF 86 JK
+converged SCF energy = -1885.52786934451  <S^2> = 4.4751691  2S+1 = 4.3474908
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.73  e= [1.391235]  max|de|= 1.39  lindep= 0.979
+davidson 1 2  |r|= 0.445  e= [0.762812]  max|de|= -0.628  lindep=    1
+davidson 2 3  |r|= 0.285  e= [0.384071]  max|de|= -0.379  lindep= 0.991
+davidson 3 4  |r|= 0.526  e= [0.271553]  max|de|= -0.113  lindep= 0.969
+davidson 4 5  |r|= 0.311  e= [0.150322]  max|de|= -0.121  lindep= 0.989
+davidson 5 6  |r|= 0.241  e= [0.102903]  max|de|= -0.0474  lindep= 0.935
+davidson 6 7  |r|= 0.185  e= [0.06191]  max|de|= -0.041  lindep= 0.944
+davidson 7 8  |r|= 0.169  e= [0.036894]  max|de|= -0.025  lindep= 0.872
+davidson 8 9  |r|= 0.127  e= [0.024677]  max|de|= -0.0122  lindep= 0.888
+davidson 9 10  |r|= 0.128  e= [0.016332]  max|de|= -0.00835  lindep= 0.945
+davidson 10 11  |r|= 0.107  e= [0.009629]  max|de|= -0.0067  lindep= 0.93
+davidson 11 12  |r|= 0.0752  e= [0.005274]  max|de|= -0.00436  lindep= 0.88
+davidson 12 1  |r|= 0.0752  e= [0.005274]  max|de|= 7.68e-16  lindep=    1
+davidson 13 2  |r|= 0.0502  e= [0.003773]  max|de|= -0.0015  lindep= 0.893
+davidson 14 3  |r|= 0.054  e= [0.002252]  max|de|= -0.00152  lindep= 0.989
+davidson 15 4  |r|= 0.0571  e= [0.000642]  max|de|= -0.00161  lindep=  0.9
+davidson 16 5  |r|= 0.044  e= [-0.001187]  max|de|= -0.00183  lindep= 0.956
+davidson 17 6  |r|= 0.043  e= [-0.002766]  max|de|= -0.00158  lindep= 0.892
+davidson 18 7  |r|= 0.0359  e= [-0.003516]  max|de|= -0.00075  lindep= 0.957
+davidson 19 8  |r|= 0.0294  e= [-0.003862]  max|de|= -0.000346  lindep= 0.906
+davidson 20 9  |r|= 0.0303  e= [-0.004229]  max|de|= -0.000367  lindep= 0.866
+davidson 21 10  |r|= 0.0214  e= [-0.004579]  max|de|= -0.00035  lindep= 0.95
+davidson 22 11  |r|= 0.0495  e= [-0.005268]  max|de|= -0.000689  lindep= 0.953
+davidson 23 12  |r|= 0.0689  e= [-0.006572]  max|de|= -0.0013  lindep= 0.773
+davidson 24 1  |r|= 0.0689  e= [-0.006572]  max|de|= -3.01e-16  lindep=    1
+davidson 25 2  |r|= 0.0418  e= [-0.007538]  max|de|= -0.000966  lindep= 0.841
+davidson 26 3  |r|= 0.0511  e= [-0.008412]  max|de|= -0.000873  lindep= 0.982
+davidson 27 4  |r|= 0.053  e= [-0.009242]  max|de|= -0.00083  lindep= 0.854
+davidson 28 5  |r|= 0.0429  e= [-0.010016]  max|de|= -0.000774  lindep= 0.835
+davidson 29 6  |r|= 0.0481  e= [-0.010588]  max|de|= -0.000572  lindep= 0.891
+davidson 30 7  |r|= 0.0449  e= [-0.011525]  max|de|= -0.000937  lindep= 0.909
+davidson 31 8  |r|= 0.0532  e= [-0.012752]  max|de|= -0.00123  lindep= 0.816
+davidson 32 9  |r|= 0.0422  e= [-0.014256]  max|de|= -0.0015  lindep= 0.884
+davidson 33 10  |r|= 0.0321  e= [-0.015241]  max|de|= -0.000985  lindep= 0.902
+davidson 34 11  |r|= 0.0292  e= [-0.015735]  max|de|= -0.000494  lindep= 0.967
+davidson 35 12  |r|= 0.0211  e= [-0.016099]  max|de|= -0.000364  lindep= 0.89
+davidson 36 1  |r|= 0.0211  e= [-0.016099]  max|de|= 6.18e-16  lindep=    1
+davidson 37 2  |r|= 0.0193  e= [-0.016324]  max|de|= -0.000226  lindep= 0.951
+davidson 38 3  |r|= 0.018  e= [-0.016503]  max|de|= -0.000179  lindep= 0.985
+davidson 39 4  |r|= 0.0158  e= [-0.016703]  max|de|= -0.0002  lindep= 0.949
+davidson 40 5  |r|= 0.0141  e= [-0.016852]  max|de|= -0.00015  lindep= 0.972
+davidson 41 6  |r|= 0.0116  e= [-0.016946]  max|de|= -9.39e-05  lindep= 0.893
+root 0 converged  |r|= 0.00958  e= -0.01700221314336065  max|de|= -5.58e-05
+converged 42 7  |r|= 0.00958  e= [-0.017002]  max|de|= -5.58e-05
+UHF/UKS wavefunction has an internal instability.
+
+
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmps0wv1jmb
+max_memory 4000 MB (current use 223 MB)
+number electrons alpha = 24  beta = 22
+******** <class 'pyscf.scf.uhf.UHF'> Newton solver flags ********
+SCF tol = 1e-09
+conv_tol_grad = None
+max. SCF cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmps0wv1jmb
+max_cycle_inner = 12
+max_stepsize = 0.05
+ah_start_tol = 1e+09
+ah_level_shift = 0
+ah_conv_tol = 1e-12
+ah_lindep = 1e-14
+ah_start_cycle = 1
+ah_max_cycle = 40
+ah_grad_trust_region = 2.5
+kf_interval = 4
+kf_trust_region = 5
+canonicalization = True
+max_memory 4000 MB (current use 223 MB)
+Set conv_tol_grad to 3.16228e-05
+  alpha nocc = 24  HOMO = -0.230207445061494  LUMO = 0.0269754335544722
+  beta  nocc = 22  HOMO = -0.210993415440503  LUMO = 0.024857003886137
+Initial guess E= -1885.53172975314  |g|= 0.0566594
+macro= 0  E= -1885.53585411269  delta_E= -0.00412436  |g|= 0.0231402  3 KF 14 JK
+macro= 1  E= -1885.53667286116  delta_E= -0.000818748  |g|= 0.000123737  5 KF 34 JK
+macro= 2  E= -1885.53667287583  delta_E= -1.46706e-08  |g|= 1.78603e-05  2 KF 15 JK
+macro= 3  E= -1885.53667287583  delta_E= 5.45697e-12  |g|= 1.14578e-05  1 KF 2 JK
+Canonicalize SCF orbitals
+macro X = 4  E=-1885.53667287583  |g|= 1.14578e-05  total 12 KF 70 JK
+converged SCF energy = -1885.53667287583  <S^2> = 4.7898134  2S+1 = 4.4899057
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.73  e= [1.375798]  max|de|= 1.38  lindep= 0.985
+davidson 1 2  |r|= 0.399  e= [0.870651]  max|de|= -0.505  lindep= 0.997
+davidson 2 3  |r|= 0.346  e= [0.388725]  max|de|= -0.482  lindep= 0.993
+davidson 3 4  |r|= 0.408  e= [0.283049]  max|de|= -0.106  lindep= 0.976
+davidson 4 5  |r|= 0.223  e= [0.214347]  max|de|= -0.0687  lindep= 0.966
+davidson 5 6  |r|= 0.271  e= [0.180197]  max|de|= -0.0342  lindep= 0.835
+davidson 6 7  |r|= 0.22  e= [0.128063]  max|de|= -0.0521  lindep= 0.935
+davidson 7 8  |r|= 0.158  e= [0.104717]  max|de|= -0.0233  lindep= 0.852
+davidson 8 9  |r|= 0.147  e= [0.088797]  max|de|= -0.0159  lindep= 0.936
+davidson 9 10  |r|= 0.184  e= [0.071542]  max|de|= -0.0173  lindep= 0.846
+davidson 10 11  |r|= 0.172  e= [0.048737]  max|de|= -0.0228  lindep= 0.841
+davidson 11 12  |r|= 0.134  e= [0.031142]  max|de|= -0.0176  lindep= 0.811
+davidson 12 1  |r|= 0.134  e= [0.031142]  max|de|= 3.89e-16  lindep= 0.996
+davidson 13 2  |r|= 0.0895  e= [0.024839]  max|de|= -0.0063  lindep= 0.775
+davidson 14 3  |r|= 0.0557  e= [0.02048]  max|de|= -0.00436  lindep= 0.892
+davidson 15 4  |r|= 0.0404  e= [0.019214]  max|de|= -0.00127  lindep= 0.924
+davidson 16 5  |r|= 0.0267  e= [0.018679]  max|de|= -0.000536  lindep= 0.916
+davidson 17 6  |r|= 0.0221  e= [0.018345]  max|de|= -0.000334  lindep= 0.877
+davidson 18 7  |r|= 0.0193  e= [0.018125]  max|de|= -0.00022  lindep= 0.916
+davidson 19 8  |r|= 0.0166  e= [0.01793]  max|de|= -0.000195  lindep= 0.904
+davidson 20 9  |r|= 0.0151  e= [0.017818]  max|de|= -0.000112  lindep= 0.88
+davidson 21 10  |r|= 0.0185  e= [0.017624]  max|de|= -0.000194  lindep= 0.943
+davidson 22 11  |r|= 0.0342  e= [0.017204]  max|de|= -0.00042  lindep= 0.907
+davidson 23 12  |r|= 0.0422  e= [0.016597]  max|de|= -0.000607  lindep= 0.759
+davidson 24 1  |r|= 0.0422  e= [0.016597]  max|de|= -2.74e-16  lindep=    1
+davidson 25 2  |r|= 0.0241  e= [0.016157]  max|de|= -0.00044  lindep= 0.77
+davidson 26 3  |r|= 0.0272  e= [0.015727]  max|de|= -0.00043  lindep= 0.977
+davidson 27 4  |r|= 0.0266  e= [0.015429]  max|de|= -0.000297  lindep= 0.887
+davidson 28 5  |r|= 0.0203  e= [0.015237]  max|de|= -0.000192  lindep= 0.919
+davidson 29 6  |r|= 0.0368  e= [0.01496]  max|de|= -0.000277  lindep= 0.834
+davidson 30 7  |r|= 0.0367  e= [0.014336]  max|de|= -0.000623  lindep= 0.872
+davidson 31 8  |r|= 0.0519  e= [0.01334]  max|de|= -0.000997  lindep= 0.901
+davidson 32 9  |r|= 0.0708  e= [0.011733]  max|de|= -0.00161  lindep= 0.867
+davidson 33 10  |r|= 0.0626  e= [0.009614]  max|de|= -0.00212  lindep= 0.852
+davidson 34 11  |r|= 0.0472  e= [0.007468]  max|de|= -0.00215  lindep= 0.914
+davidson 35 12  |r|= 0.0355  e= [0.006421]  max|de|= -0.00105  lindep= 0.798
+davidson 36 1  |r|= 0.0355  e= [0.006421]  max|de|= -3.04e-17  lindep=    1
+davidson 37 2  |r|= 0.0299  e= [0.005919]  max|de|= -0.000502  lindep= 0.879
+davidson 38 3  |r|= 0.028  e= [0.005428]  max|de|= -0.000491  lindep= 0.972
+davidson 39 4  |r|= 0.0383  e= [0.004883]  max|de|= -0.000545  lindep= 0.886
+davidson 40 5  |r|= 0.0378  e= [0.004255]  max|de|= -0.000628  lindep= 0.928
+davidson 41 6  |r|= 0.0421  e= [0.003227]  max|de|= -0.00103  lindep= 0.878
+davidson 42 7  |r|= 0.0433  e= [0.002204]  max|de|= -0.00102  lindep= 0.898
+davidson 43 8  |r|= 0.0252  e= [0.001609]  max|de|= -0.000595  lindep= 0.89
+davidson 44 9  |r|= 0.0232  e= [0.001342]  max|de|= -0.000267  lindep= 0.916
+davidson 45 10  |r|= 0.0191  e= [0.001065]  max|de|= -0.000277  lindep= 0.915
+davidson 46 11  |r|= 0.0232  e= [0.000752]  max|de|= -0.000312  lindep= 0.899
+davidson 47 12  |r|= 0.022  e= [0.000521]  max|de|= -0.000231  lindep= 0.71
+davidson 48 1  |r|= 0.022  e= [0.000521]  max|de|= 1.09e-16  lindep=    1
+davidson 49 2  |r|= 0.0126  e= [0.000392]  max|de|= -0.000129  lindep= 0.788
+UHF/UKS wavefunction is stable in the internal stability analysis
+UNO ON: [ 2.        2.        2.        2.        2.        2.        2.        1.999999  1.999999  1.999999  1.999995  1.999975  1.999916  1.999817  1.999817
+  1.999654  1.99922   1.99922   1.728108  1.568702  1.568695  1.1949    1.        1.        0.8051    0.431305  0.431298  0.271892  0.00078   0.00078
+  0.000346  0.000183  0.000183  0.000084  0.000025  0.000005  0.000001  0.000001  0.000001  0.        0.        0.        0.        0.        0.
+  0.        0.        0.        0.        0.        0.        0.        0.        0.        0.        0.        0.        0.        0.        0.
+  0.        0.        0.        0.        0.        0.        0.        0.        0.       -0.       -0.       -0.       -0.       -0.       -0.
+ -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.      ]
+nacto, nacta, nactb: 10 6 4
+Converting <class 'pyscf.soscf.newton_ah.newton.<locals>.SecondOrderUHF'> to RHF
+UNO in active space
+             #0      #1      #2      #3      #4      #5      #6      #7      #8      #9     
+  0 V 3s      -0.122                                                                   0.122
+  0 V 4s      -0.223                                                                   0.190
+  0 V 5s       0.193                                  -0.189                          -0.531
+  0 V 6s       0.373                                                                  -0.951
+  0 V 3pz                                             -0.101                                
+  0 V 5pz                                             -0.129                                
+  0 V 3dxy                             0.224  -0.390           0.253                        
+  0 V 3dyz             0.265   0.221                                  -0.277   0.332        
+  0 V 3dz^2                                            0.128                                
+  0 V 3dxz             0.221  -0.265                                   0.332   0.277        
+ 0 V 3dx2-y2                          -0.277  -0.315          -0.312                        
+  0 V 4dxy                             0.173  -0.300           0.191                        
+  0 V 4dyz             0.218   0.182                                  -0.205   0.246        
+  0 V 4dz^2                                            0.116                                
+  0 V 4dxz             0.182  -0.218                                   0.246   0.205        
+ 0 V 4dx2-y2                          -0.214  -0.243          -0.236                        
+  0 V 5dxy                             0.127  -0.239           0.138                        
+  0 V 5dyz             0.141   0.118                                  -0.149   0.179        
+  0 V 5dxz             0.118  -0.141                                   0.179   0.149        
+ 0 V 5dx2-y2                          -0.157  -0.193          -0.170                        
+  1 V 3s      -0.133                                                                  -0.127
+  1 V 4s      -0.240                                                                  -0.191
+  1 V 5s       0.315                                   0.231                           0.619
+  1 V 6s       0.352                                   0.224                           0.838
+  1 V 3dxy                             0.238                  -0.261                        
+  1 V 3dyz            -0.260  -0.217                                  -0.279   0.334        
+  1 V 3dz^2                                            0.506                          -0.109
+  1 V 3dxz            -0.217   0.260                                   0.334   0.279        
+ 1 V 3dx2-y2                          -0.294                   0.322                        
+  1 V 4dxy                             0.182                  -0.194                        
+  1 V 4dyz            -0.216  -0.181                                  -0.209   0.251        
+  1 V 4dz^2                                            0.397                                
+  1 V 4dxz            -0.181   0.216                                   0.251   0.209        
+ 1 V 4dx2-y2                          -0.225                   0.240                        
+  1 V 5dxy                             0.119                  -0.118                        
+  1 V 5dyz            -0.136  -0.114                                  -0.148   0.177        
+  1 V 5dz^2                                            0.244                                
+  1 V 5dxz            -0.114   0.136                                   0.177   0.148        
+ 1 V 5dx2-y2                          -0.147                   0.146                        
+Warning: using user defined active space
+user-defined guess orbs
+             #0      #1      #2      #3      #4      #5      #6      #7     
+  0 V 3s      -0.122                                                        
+  0 V 4s      -0.223                                                        
+  0 V 5s       0.193                                  -0.189                
+  0 V 6s       0.373                                                        
+  0 V 3pz                                             -0.101                
+  0 V 5pz                                             -0.129                
+  0 V 3dxy                             0.224  -0.390           0.253        
+  0 V 3dyz             0.265   0.221                                  -0.277
+  0 V 3dz^2                                            0.128                
+  0 V 3dxz             0.221  -0.265                                   0.332
+ 0 V 3dx2-y2                          -0.277  -0.315          -0.312        
+  0 V 4dxy                             0.173  -0.300           0.191        
+  0 V 4dyz             0.218   0.182                                  -0.205
+  0 V 4dz^2                                            0.116                
+  0 V 4dxz             0.182  -0.218                                   0.246
+ 0 V 4dx2-y2                          -0.214  -0.243          -0.236        
+  0 V 5dxy                             0.127  -0.239           0.138        
+  0 V 5dyz             0.141   0.118                                  -0.149
+  0 V 5dxz             0.118  -0.141                                   0.179
+ 0 V 5dx2-y2                          -0.157  -0.193          -0.170        
+  1 V 3s      -0.133                                                        
+  1 V 4s      -0.240                                                        
+  1 V 5s       0.315                                   0.231                
+  1 V 6s       0.352                                   0.224                
+  1 V 3dxy                             0.238                  -0.261        
+  1 V 3dyz            -0.260  -0.217                                  -0.279
+  1 V 3dz^2                                            0.506                
+  1 V 3dxz            -0.217   0.260                                   0.334
+ 1 V 3dx2-y2                          -0.294                   0.322        
+  1 V 4dxy                             0.182                  -0.194        
+  1 V 4dyz            -0.216  -0.181                                  -0.209
+  1 V 4dz^2                                            0.397                
+  1 V 4dxz            -0.181   0.216                                   0.251
+ 1 V 4dx2-y2                          -0.225                   0.240        
+  1 V 5dxy                             0.119                  -0.118        
+  1 V 5dyz            -0.136  -0.114                                  -0.148
+  1 V 5dz^2                                            0.244                
+  1 V 5dxz            -0.114   0.136                                   0.177
+ 1 V 5dx2-y2                          -0.147                   0.146        
+
+******** <class 'pyscf.mcscf.mc1step.CASSCF'> ********
+CAS (5e+3e, 8o), ncore = 19, nvir = 63
+max_cycle_macro = 200
+max_cycle_micro = 4
+conv_tol = 1e-07
+conv_tol_grad = None
+orbital rotation max_stepsize = 0.02
+augmented hessian ah_max_cycle = 30
+augmented hessian ah_conv_tol = 1e-12
+augmented hessian ah_linear dependence = 1e-14
+augmented hessian ah_level shift = 0
+augmented hessian ah_start_tol = 2.5
+augmented hessian ah_start_cycle = 3
+augmented hessian ah_grad_trust_region = 3
+kf_trust_region = 3
+kf_interval = 4
+ci_response_space = 4
+ci_grad_trust_region = 3
+with_dep4 0
+natorb = True
+canonicalization = True
+sorting_mo_energy = False
+ao2mo_level = 2
+chkfile = /share/home/srwang/pyAutoMR/examples/guess/tmps0wv1jmb
+max_memory 1000 MB (current use 223 MB)
+internal_rotation = False
+******** <class 'pyscf.fci.direct_spin1.FCISolver'> ********
+max. cycles = 100
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 1000 MB
+nroots = 1
+pspace_size = 400
+spin = 2
+CASCI E = -1885.61769183915  S^2 = 2.0000102
+Set conv_tol_grad to 0.000316228
+macro iter 1 (17 JK  4 micro), CASSCF E = -1885.63020837214  dE = -0.012516533  S^2 = 2.0000000
+               |grad[o]|=0.0912  |grad[c]|= 0.013609804962953958  |ddm|=0.108
+macro iter 2 (14 JK  4 micro), CASSCF E = -1885.63028011963  dE = -7.1747484e-05  S^2 = 2.0000000
+               |grad[o]|=0.00719  |grad[c]|= 0.0009361239788565671  |ddm|=0.0119
+macro iter 3 (13 JK  4 micro), CASSCF E = -1885.63028121663  dE = -1.0970048e-06  S^2 = 2.0000000
+               |grad[o]|=0.000856  |grad[c]|= 0.00014153425844403225  |ddm|=0.00155
+macro iter 4 (3 JK  1 micro), CASSCF E = -1885.63028123609  dE = -1.9460913e-08  S^2 = 2.0000000
+               |grad[o]|=0.000149  |grad[c]|= 6.977963374429764e-05  |ddm|=8.81e-05
+1-step CASSCF converged in 4 macro (47 JK 13 micro) steps
+CASSCF canonicalization
+Natural occ [1.808828 1.808825 1.571053 0.999895 0.999599 0.42957  0.191117 0.191113]
+Natural orbital (expansion on AOs) in CAS space
+               #1        #2        #3        #4        #5       
+  0 V 1s      -0.00000   0.00000  -0.00000   0.00190  -0.01024
+  0 V 2s       0.00000  -0.00000   0.00001  -0.00660   0.03549
+  0 V 3s       0.00000   0.00000  -0.00001   0.01482  -0.07972
+  0 V 4s      -0.00000   0.00000  -0.00001   0.01616  -0.08699
+  0 V 5s       0.00001   0.00000  -0.00001   0.04007  -0.21592
+  0 V 6s       0.00000  -0.00000   0.00001  -0.01176   0.06315
+  0 V 2px     -0.02324   0.02653   0.00000  -0.00000   0.00000
+  0 V 2py      0.02653   0.02324   0.00000   0.00000   0.00000
+  0 V 2pz     -0.00000  -0.00000   0.00000  -0.00620   0.03339
+  0 V 3px      0.06606  -0.07539  -0.00000   0.00000  -0.00000
+  0 V 3py     -0.07539  -0.06606  -0.00000   0.00000  -0.00000
+  0 V 3pz      0.00000   0.00000  -0.00001   0.01735  -0.09347
+  0 V 4px      0.01133  -0.01293   0.00000   0.00000  -0.00000
+  0 V 4py     -0.01293  -0.01133   0.00000  -0.00000   0.00000
+  0 V 4pz      0.00000   0.00000  -0.00000   0.00745  -0.04008
+  0 V 5px     -0.02904   0.03314  -0.00000   0.00000  -0.00000
+  0 V 5py      0.03313   0.02903  -0.00000   0.00000  -0.00000
+  0 V 5pz      0.00000   0.00000  -0.00002   0.03154  -0.16975
+  0 V 3dxy     0.00000   0.00000   0.19903  -0.41105  -0.07641
+  0 V 3dyz     0.26267   0.23017   0.00000   0.00000   0.00000
+  0 V 3dz^2   -0.00000  -0.00000   0.00004  -0.02515   0.13464
+  0 V 3dxz    -0.23016   0.26269  -0.00000   0.00000   0.00000
+ 0 V 3dx2-y2  -0.00000   0.00000  -0.24642  -0.33199  -0.06171
+  0 V 4dxy     0.00000   0.00000   0.15499  -0.31040  -0.05770
+  0 V 4dyz     0.21433   0.18781   0.00000   0.00000   0.00000
+  0 V 4dz^2   -0.00000  -0.00000   0.00004  -0.02281   0.12224
+  0 V 4dxz    -0.18780   0.21434   0.00000   0.00000   0.00000
+ 0 V 4dx2-y2  -0.00000   0.00000  -0.19189  -0.25071  -0.04660
+  0 V 5dxy     0.00000  -0.00000   0.12060  -0.21769  -0.04047
+  0 V 5dyz     0.13637   0.11949  -0.00000  -0.00000   0.00000
+  0 V 5dz^2    0.00000  -0.00000   0.00002  -0.00600   0.03194
+  0 V 5dxz    -0.11949   0.13638  -0.00000   0.00000   0.00000
+ 0 V 5dx2-y2   0.00000  -0.00000  -0.14931  -0.17582  -0.03268
+  0 V 6dxy    -0.00000   0.00000   0.03223  -0.04402  -0.00819
+  0 V 6dyz     0.01959   0.01716   0.00000   0.00000   0.00000
+  0 V 6dz^2    0.00000   0.00000   0.00000   0.00159  -0.00861
+  0 V 6dxz    -0.01716   0.01959  -0.00000   0.00000   0.00000
+ 0 V 6dx2-y2  -0.00000   0.00000  -0.03991  -0.03556  -0.00661
+  0 V 4f-3     0.00022  -0.00039   0.00000   0.00000   0.00000
+  0 V 4f-2     0.00000  -0.00000   0.00655  -0.00381  -0.00071
+  0 V 4f-1     0.01330   0.01165  -0.00000  -0.00000   0.00000
+  0 V 4f 0     0.00000  -0.00000   0.00000  -0.00285   0.01534
+  0 V 4f 1    -0.01165   0.01330   0.00000   0.00000   0.00000
+  0 V 4f 2    -0.00000  -0.00000  -0.00811  -0.00308  -0.00057
+  0 V 4f 3    -0.00039  -0.00022  -0.00000  -0.00000  -0.00000
+  1 V 1s      -0.00000   0.00000  -0.00000   0.00102  -0.00550
+  1 V 2s       0.00000  -0.00000   0.00000  -0.00274   0.01469
+  1 V 3s      -0.00000   0.00000  -0.00001   0.00960  -0.05156
+  1 V 4s      -0.00000   0.00000  -0.00001   0.00540  -0.02895
+  1 V 5s      -0.00000  -0.00000   0.00001  -0.04625   0.24923
+  1 V 6s      -0.00000  -0.00000   0.00001  -0.01681   0.09045
+  1 V 2px     -0.02476   0.02826  -0.00000   0.00000   0.00000
+  1 V 2py      0.02826   0.02476  -0.00000   0.00000   0.00000
+  1 V 2pz      0.00000   0.00000  -0.00000  -0.00032   0.00175
+  1 V 3px      0.07076  -0.08076   0.00000  -0.00000  -0.00000
+  1 V 3py     -0.08076  -0.07076   0.00000  -0.00000  -0.00000
+  1 V 3pz     -0.00000  -0.00000   0.00000   0.00152  -0.00831
+  1 V 4px      0.00988  -0.01127  -0.00000   0.00000  -0.00000
+  1 V 4py     -0.01127  -0.00988  -0.00000  -0.00000  -0.00000
+  1 V 4pz     -0.00000  -0.00000   0.00000  -0.00006   0.00025
+  1 V 5px     -0.03229   0.03685   0.00000  -0.00000   0.00000
+  1 V 5py      0.03685   0.03229   0.00000   0.00000   0.00000
+  1 V 5pz      0.00000   0.00000   0.00001  -0.00155   0.00813
+  1 V 3dxy    -0.00000   0.00000   0.24787  -0.02766  -0.00524
+  1 V 3dyz    -0.25282  -0.22151  -0.00000   0.00000  -0.00000
+  1 V 3dz^2   -0.00000  -0.00000   0.00007  -0.09460   0.50913
+  1 V 3dxz     0.22152  -0.25280  -0.00000   0.00000  -0.00000
+ 1 V 3dx2-y2   0.00000   0.00000  -0.30690  -0.02237  -0.00411
+  1 V 4dxy     0.00000   0.00000   0.18949  -0.02594  -0.00490
+  1 V 4dyz    -0.20860  -0.18277  -0.00000   0.00000  -0.00000
+  1 V 4dz^2   -0.00000  -0.00000   0.00005  -0.07318   0.39382
+  1 V 4dxz     0.18278  -0.20859   0.00000   0.00000  -0.00000
+ 1 V 4dx2-y2   0.00000   0.00000  -0.23461  -0.02097  -0.00386
+  1 V 5dxy    -0.00000  -0.00000   0.13501  -0.02380  -0.00448
+  1 V 5dyz    -0.13056  -0.11439  -0.00000  -0.00000  -0.00000
+  1 V 5dz^2   -0.00000  -0.00000   0.00003  -0.04688   0.25236
+  1 V 5dxz     0.11440  -0.13055  -0.00000   0.00000  -0.00000
+ 1 V 5dx2-y2   0.00000   0.00000  -0.16716  -0.01924  -0.00355
+  1 V 6dxy     0.00000   0.00000   0.02810  -0.00436  -0.00082
+  1 V 6dyz    -0.01865  -0.01634  -0.00000   0.00000  -0.00000
+  1 V 6dz^2   -0.00000  -0.00000   0.00001  -0.01144   0.06162
+  1 V 6dxz     0.01633  -0.01864  -0.00000   0.00000  -0.00000
+ 1 V 6dx2-y2   0.00000  -0.00000  -0.03479  -0.00352  -0.00065
+  1 V 4f-3     0.00018  -0.00033  -0.00000   0.00000  -0.00000
+  1 V 4f-2    -0.00000   0.00000  -0.00704   0.00732   0.00136
+  1 V 4f-1     0.01531   0.01342  -0.00000  -0.00000  -0.00000
+  1 V 4f 0    -0.00000  -0.00000  -0.00000   0.00165  -0.00885
+  1 V 4f 1    -0.01342   0.01531  -0.00000   0.00000  -0.00000
+  1 V 4f 2    -0.00000  -0.00000   0.00872   0.00592   0.00110
+  1 V 4f 3    -0.00033  -0.00018   0.00000  -0.00000   0.00000
+               #6        #7        #8       
+  0 V 1s       0.00000  -0.00000  -0.00000
+  0 V 2s      -0.00000   0.00000  -0.00000
+  0 V 3s       0.00001   0.00000  -0.00000
+  0 V 4s       0.00001  -0.00000   0.00000
+  0 V 5s       0.00005  -0.00001   0.00001
+  0 V 6s       0.00000  -0.00000   0.00000
+  0 V 2px     -0.00000  -0.00850  -0.00755
+  0 V 2py      0.00000  -0.00756   0.00849
+  0 V 2pz     -0.00001   0.00000   0.00000
+  0 V 3px     -0.00000   0.01646   0.01463
+  0 V 3py     -0.00000   0.01464  -0.01645
+  0 V 3pz      0.00002  -0.00000  -0.00000
+  0 V 4px      0.00000   0.03487   0.03101
+  0 V 4py      0.00000   0.03101  -0.03487
+  0 V 4pz      0.00001  -0.00000   0.00000
+  0 V 5px     -0.00000   0.07046   0.06268
+  0 V 5py      0.00000   0.06267  -0.07048
+  0 V 5pz      0.00003  -0.00000   0.00001
+  0 V 3dxy     0.27077   0.00000  -0.00000
+  0 V 3dyz    -0.00000   0.30420  -0.34203
+  0 V 3dz^2    0.00003  -0.00000   0.00000
+  0 V 3dxz     0.00000   0.34202   0.30420
+ 0 V 3dx2-y2  -0.33525   0.00000   0.00000
+  0 V 4dxy     0.20206   0.00000   0.00000
+  0 V 4dyz     0.00000   0.21559  -0.24241
+  0 V 4dz^2    0.00002  -0.00000   0.00000
+  0 V 4dxz    -0.00000   0.24240   0.21560
+ 0 V 4dx2-y2  -0.25018   0.00000   0.00000
+  0 V 5dxy     0.13595  -0.00000  -0.00000
+  0 V 5dyz     0.00000   0.12031  -0.13528
+  0 V 5dz^2    0.00002  -0.00000   0.00000
+  0 V 5dxz     0.00000   0.13526   0.12031
+ 0 V 5dx2-y2  -0.16832   0.00000  -0.00000
+  0 V 6dxy     0.02327  -0.00000   0.00000
+  0 V 6dyz    -0.00000   0.01411  -0.01586
+  0 V 6dz^2    0.00001  -0.00000  -0.00000
+  0 V 6dxz    -0.00000   0.01586   0.01411
+ 0 V 6dx2-y2  -0.02881  -0.00000   0.00000
+  0 V 4f-3    -0.00000  -0.00046  -0.00026
+  0 V 4f-2    -0.00031  -0.00000  -0.00000
+  0 V 4f-1     0.00000  -0.00450   0.00506
+  0 V 4f 0    -0.00000   0.00000  -0.00000
+  0 V 4f 1    -0.00000  -0.00506  -0.00450
+  0 V 4f 2     0.00038   0.00000  -0.00000
+  0 V 4f 3     0.00000  -0.00026   0.00046
+  1 V 1s       0.00000   0.00000  -0.00000
+  1 V 2s       0.00000  -0.00000  -0.00000
+  1 V 3s       0.00000  -0.00000  -0.00000
+  1 V 4s      -0.00001   0.00000   0.00000
+  1 V 5s      -0.00006   0.00000  -0.00001
+  1 V 6s      -0.00001   0.00000  -0.00000
+  1 V 2px      0.00000   0.00638   0.00568
+  1 V 2py     -0.00000   0.00568  -0.00639
+  1 V 2pz     -0.00000   0.00000   0.00000
+  1 V 3px     -0.00000  -0.01000  -0.00890
+  1 V 3py      0.00000  -0.00890   0.01002
+  1 V 3pz      0.00001  -0.00000  -0.00000
+  1 V 4px      0.00000  -0.03780  -0.03362
+  1 V 4py     -0.00000  -0.03362   0.03780
+  1 V 4pz      0.00000  -0.00000   0.00000
+  1 V 5px      0.00000  -0.07032  -0.06254
+  1 V 5py     -0.00000  -0.06254   0.07032
+  1 V 5pz      0.00002  -0.00000   0.00001
+  1 V 3dxy    -0.25594  -0.00000   0.00000
+  1 V 3dyz    -0.00000   0.30959  -0.34808
+  1 V 3dz^2   -0.00007   0.00000  -0.00000
+  1 V 3dxz     0.00000   0.34808   0.30958
+ 1 V 3dx2-y2   0.31688  -0.00000   0.00000
+  1 V 4dxy    -0.18338  -0.00000   0.00000
+  1 V 4dyz     0.00000   0.22280  -0.25050
+  1 V 4dz^2   -0.00005   0.00000  -0.00000
+  1 V 4dxz    -0.00000   0.25051   0.22280
+ 1 V 4dx2-y2   0.22705  -0.00000   0.00000
+  1 V 5dxy    -0.09007  -0.00000   0.00000
+  1 V 5dyz     0.00000   0.12239  -0.13760
+  1 V 5dz^2   -0.00004   0.00000  -0.00000
+  1 V 5dxz     0.00000   0.13761   0.12238
+ 1 V 5dx2-y2   0.11151  -0.00000  -0.00000
+  1 V 6dxy    -0.00043  -0.00000   0.00000
+  1 V 6dyz    -0.00000   0.01521  -0.01710
+  1 V 6dz^2   -0.00001   0.00000  -0.00000
+  1 V 6dxz    -0.00000   0.01710   0.01521
+ 1 V 6dx2-y2   0.00053  -0.00000   0.00000
+  1 V 4f-3    -0.00000   0.00048   0.00027
+  1 V 4f-2    -0.00279  -0.00000  -0.00000
+  1 V 4f-1     0.00000   0.00206  -0.00232
+  1 V 4f 0     0.00000   0.00000   0.00000
+  1 V 4f 1     0.00000   0.00232   0.00206
+  1 V 4f 2     0.00346   0.00000   0.00000
+  1 V 4f 3     0.00000   0.00027  -0.00048
+<CAS-nat-orb|mo-hf>  20  21    0.98759488
+<CAS-nat-orb|mo-hf>  21  20    0.98759486
+<CAS-nat-orb|mo-hf>  22  22    0.99665242
+<CAS-nat-orb|mo-hf>  23  23    0.97763645
+<CAS-nat-orb|mo-hf>  24  24    0.97632482
+<CAS-nat-orb|mo-hf>  25  25    0.99672472
+<CAS-nat-orb|mo-hf>  26  27    0.98085101
+<CAS-nat-orb|mo-hf>  27  26    0.98085007
+CASSCF energy = -1885.63028123609
+CASCI E = -1885.63028123609  E(CI) = -14.8882740489205  S^2 = 2.0000000
+Natrual Orbs
+             #0      #1      #2      #3      #4      #5      #6      #7     
+  0 V 3s      -0.122                                                        
+  0 V 4s      -0.223                                                        
+  0 V 5s       0.193                                  -0.189                
+  0 V 6s       0.373                                                        
+  0 V 3pz                                             -0.101                
+  0 V 5pz                                             -0.129                
+  0 V 3dxy                             0.224  -0.390           0.253        
+  0 V 3dyz             0.265   0.221                                  -0.277
+  0 V 3dz^2                                            0.128                
+  0 V 3dxz             0.221  -0.265                                   0.332
+ 0 V 3dx2-y2                          -0.277  -0.315          -0.312        
+  0 V 4dxy                             0.173  -0.300           0.191        
+  0 V 4dyz             0.218   0.182                                  -0.205
+  0 V 4dz^2                                            0.116                
+  0 V 4dxz             0.182  -0.218                                   0.246
+ 0 V 4dx2-y2                          -0.214  -0.243          -0.236        
+  0 V 5dxy                             0.127  -0.239           0.138        
+  0 V 5dyz             0.141   0.118                                  -0.149
+  0 V 5dxz             0.118  -0.141                                   0.179
+ 0 V 5dx2-y2                          -0.157  -0.193          -0.170        
+  1 V 3s      -0.133                                                        
+  1 V 4s      -0.240                                                        
+  1 V 5s       0.315                                   0.231                
+  1 V 6s       0.352                                   0.224                
+  1 V 3dxy                             0.238                  -0.261        
+  1 V 3dyz            -0.260  -0.217                                  -0.279
+  1 V 3dz^2                                            0.506                
+  1 V 3dxz            -0.217   0.260                                   0.334
+ 1 V 3dx2-y2                          -0.294                   0.322        
+  1 V 4dxy                             0.182                  -0.194        
+  1 V 4dyz            -0.216  -0.181                                  -0.209
+  1 V 4dz^2                                            0.397                
+  1 V 4dxz            -0.181   0.216                                   0.251
+ 1 V 4dx2-y2                          -0.225                   0.240        
+  1 V 5dxy                             0.119                  -0.118        
+  1 V 5dyz            -0.136  -0.114                                  -0.148
+  1 V 5dz^2                                            0.244                
+  1 V 5dxz            -0.114   0.136                                   0.177
+ 1 V 5dx2-y2                          -0.147                   0.146        
+***** CI components ROOT 0 ******
+ c**2   Gaussian-type vector
+ 0.591849  111aa000
+ 0.082034  110aa100
+ 0.044139  11aaba00
+ 0.042990  11abaa00
+ 0.020971  101aa010
+ 0.020971  011aa001
+ c**2     ORCA-type vector
+ 0.591849  22211000
+ 0.087129  22111100
+ 0.082034  22011200
+ 0.020971  20211020
+ 0.020971  02211002
+Density matrix diagonal elements [1.808828 1.808825 1.571053 0.999895 0.999599 0.42957  0.191117 0.191113]
+Sr    (-1)',   E = -0.04135625226764
+Si    (+1)',   E = -0.00332353383117
+Sijrs (0)  ,   E = -0.19054386063408
+Sijr  (+1) ,   E = -0.09130762062834
+Srsi  (-1) ,   E = -0.20207188452100
+Srs   (-2) ,   E = -0.06984972778529
+Sij   (+2) ,   E = -0.02329624773546
+Sir   (0)' ,   E = -0.11620925027891
+Nevpt2 Energy = -0.737958377681887
+#INFO: **** input file is /share/home/srwang/pyAutoMR/examples/guess/V2.py ****
+from pyscf import scf,dft, gto, lib
+from automr import guess, autocas
+
+lib.num_threads(8)
+#mf=guess.from_fch_simp("v2.fchk", xc='pbe0')
+
+#mf2.verbose=9
+#mf2.stability()
+mol = gto.Mole(atom='''V 0.0 0.0 0.0; V 0.0 0.0 1.77''', basis='def2-tzvp', spin=2)
+mol.verbose = 4
+mol.build()
+mf = scf.UHF(mol)
+mf.kernel()
+mf = guess.check_stab(mf, newton=True)
+mf2 = autocas.cas(mf, (8, (5,3)) )
+mf4 = autocas.nevpt2(mf2)
+
+mol2 = gto.Mole(atom='''V 0.0 0.0 0.0''', basis='def2-tzvp', spin=3)
+mol2.verbose = 4
+mol2.build()
+mfb = scf.UHF(mol2)
+mfb.kernel()
+mfb = guess.check_stab(mfb, newton=True)
+mfb2 = autocas.cas(mfb)
+mfb4 = autocas.nevpt2(mfb2)
+
+mol3 = gto.Mole(atom='''V 0.0 0.0 0.0''', basis='def2-tzvp', spin=1)
+mol3.verbose = 4
+mol3.build()
+mfc = scf.UHF(mol3)
+mfc.kernel()
+mfc = guess.check_stab(mfc, newton=True)
+mfc2 = autocas.cas(mfc)
+mfc4 = autocas.nevpt2(mfc2)
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='xn01', release='3.10.0-1127.el7.x86_64', version='#1 SMP Tue Feb 18 16:39:12 EST 2020', machine='x86_64', processor='x86_64')  Threads 8
+Python 3.7.4 (default, Aug 13 2019, 20:35:49) 
+[GCC 7.3.0]
+numpy 1.17.2  scipy 1.4.1
+Date: Wed Sep 15 17:23:33 2021
+PySCF version 1.7.6a1
+PySCF path  /share/home/srwang/pyscf/pyscf
+GIT ORIG_HEAD 80f71dfe77ac5f9caae26788acf76446987635bd
+GIT HEAD      ref: refs/heads/master
+GIT master branch  80f71dfe77ac5f9caae26788acf76446987635bd
+
+[ENV] PYSCF_EXT_PATH /share/home/srwang/pyscf_ext/fciqmc:
+[CONFIG] conf_file /share/home/srwang/.pyscf_conf.py
+[INPUT] verbose = 4
+[INPUT] num. atoms = 1
+[INPUT] num. electrons = 23
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 3
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 V      0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr
+
+nuclear repulsion = 0
+number of shells = 15
+number of NR pGTOs = 92
+number of NR cGTOs = 45
+basis = def2-tzvp
+ecp = {}
+CPU time:        63.90
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmpyqtfh6t2
+max_memory 4000 MB (current use 308 MB)
+number electrons alpha = 13  beta = 10
+Set gradient conv threshold to 3.16228e-05
+init E= -942.028039138213
+
+WARN: alpha nocc = 13  HOMO -0.0884211051764365 >= LUMO -0.0884211051764357
+
+  beta  nocc = 10  HOMO = -0.249933532382717  LUMO = -0.0884211051764437
+
+WARN: system HOMO -0.0884211051764365 >= system LUMO -0.0884211051764437
+
+cycle= 1 E= -942.784382261422  delta_E= -0.756  |g|= 0.301  |ddm|= 0.839
+  alpha nocc = 13  HOMO = -0.277183315808848  LUMO = 0.00981615434916363
+  beta  nocc = 10  HOMO = -0.242012223529985  LUMO = 0.0647370243888618
+cycle= 2 E= -942.848421155653  delta_E= -0.064  |g|= 0.19  |ddm|= 0.355
+  alpha nocc = 13  HOMO = -0.244900890013423  LUMO = 0.113260383784118
+  beta  nocc = 10  HOMO = -0.216450658105574  LUMO = 0.130277523306818
+cycle= 3 E= -942.858818997775  delta_E= -0.0104  |g|= 0.0455  |ddm|= 0.226
+  alpha nocc = 13  HOMO = -0.24351172152067  LUMO = 0.113779842896295
+  beta  nocc = 10  HOMO = -0.21470187276354  LUMO = 0.129668603959293
+cycle= 4 E= -942.860840358915  delta_E= -0.00202  |g|= 0.0122  |ddm|= 0.0979
+  alpha nocc = 13  HOMO = -0.246612019699453  LUMO = 0.108305463268827
+  beta  nocc = 10  HOMO = -0.216508726372809  LUMO = 0.125977680070468
+cycle= 5 E= -942.861205584923  delta_E= -0.000365  |g|= 0.0093  |ddm|= 0.0401
+  alpha nocc = 13  HOMO = -0.247086635519696  LUMO = 0.107745418827971
+  beta  nocc = 10  HOMO = -0.216479213088419  LUMO = 0.125580603122469
+cycle= 6 E= -942.861514662727  delta_E= -0.000309  |g|= 0.00917  |ddm|= 0.0189
+  alpha nocc = 13  HOMO = -0.24715230935192  LUMO = 0.107861327432464
+  beta  nocc = 10  HOMO = -0.216419695364446  LUMO = 0.125661908104536
+cycle= 7 E= -942.861726124985  delta_E= -0.000211  |g|= 0.00921  |ddm|= 0.0103
+  alpha nocc = 13  HOMO = -0.247790034993041  LUMO = 0.107202020211556
+  beta  nocc = 10  HOMO = -0.216304256133321  LUMO = 0.12499751930412
+cycle= 8 E= -942.861295589087  delta_E= 0.000431  |g|= 0.00876  |ddm|= 0.0255
+  alpha nocc = 13  HOMO = -0.24933449663898  LUMO = 0.105722103877398
+  beta  nocc = 10  HOMO = -0.216000246161387  LUMO = 0.123913484179765
+cycle= 9 E= -942.860386824878  delta_E= 0.000909  |g|= 0.00622  |ddm|= 0.0865
+  alpha nocc = 13  HOMO = -0.248724658255892  LUMO = 0.10824190010238
+  beta  nocc = 10  HOMO = -0.215375791456346  LUMO = 0.124339769259525
+cycle= 10 E= -942.860114345271  delta_E= 0.000272  |g|= 0.00409  |ddm|= 0.0752
+  alpha nocc = 13  HOMO = -0.247598206806682  LUMO = 0.103473717823786
+  beta  nocc = 10  HOMO = -0.216238821329431  LUMO = 0.12473196554414
+cycle= 11 E= -942.860159325086  delta_E= -4.5e-05  |g|= 0.00247  |ddm|= 0.0354
+  alpha nocc = 13  HOMO = -0.247091861623746  LUMO = 0.105581917885524
+  beta  nocc = 10  HOMO = -0.216394167529508  LUMO = 0.125015948670594
+cycle= 12 E= -942.860168516326  delta_E= -9.19e-06  |g|= 0.00162  |ddm|= 0.0141
+  alpha nocc = 13  HOMO = -0.247023606174534  LUMO = 0.107627568215496
+  beta  nocc = 10  HOMO = -0.21645011216538  LUMO = 0.125049325052619
+cycle= 13 E= -942.860172350414  delta_E= -3.83e-06  |g|= 0.0006  |ddm|= 0.00745
+  alpha nocc = 13  HOMO = -0.246978255795903  LUMO = 0.107131102408369
+  beta  nocc = 10  HOMO = -0.216467472000987  LUMO = 0.125175700222516
+cycle= 14 E= -942.860173448391  delta_E= -1.1e-06  |g|= 0.000437  |ddm|= 0.00272
+  alpha nocc = 13  HOMO = -0.247140860808976  LUMO = 0.107310753724273
+  beta  nocc = 10  HOMO = -0.216394039274163  LUMO = 0.125144735111505
+cycle= 15 E= -942.860174460137  delta_E= -1.01e-06  |g|= 0.000277  |ddm|= 0.0041
+  alpha nocc = 13  HOMO = -0.247214087729363  LUMO = 0.106986372550757
+  beta  nocc = 10  HOMO = -0.216344411661645  LUMO = 0.125175276925905
+cycle= 16 E= -942.86017501524  delta_E= -5.55e-07  |g|= 0.000191  |ddm|= 0.00278
+  alpha nocc = 13  HOMO = -0.247242785445426  LUMO = 0.107167495228156
+  beta  nocc = 10  HOMO = -0.216314748162377  LUMO = 0.125170604262427
+cycle= 17 E= -942.860175191618  delta_E= -1.76e-07  |g|= 8.26e-05  |ddm|= 0.00162
+  alpha nocc = 13  HOMO = -0.24719759232508  LUMO = 0.107204253593642
+  beta  nocc = 10  HOMO = -0.216343095017928  LUMO = 0.125161526056828
+cycle= 18 E= -942.860175235708  delta_E= -4.41e-08  |g|= 2.74e-05  |ddm|= 0.00126
+  alpha nocc = 13  HOMO = -0.247191234334181  LUMO = 0.107197875537962
+  beta  nocc = 10  HOMO = -0.216354475593079  LUMO = 0.125150294010964
+cycle= 19 E= -942.860175239152  delta_E= -3.44e-09  |g|= 8.52e-06  |ddm|= 0.000344
+  alpha nocc = 13  HOMO = -0.247187019022167  LUMO = 0.107199871654861
+  beta  nocc = 10  HOMO = -0.216356708425301  LUMO = 0.125149668862805
+cycle= 20 E= -942.860175239301  delta_E= -1.49e-10  |g|= 5.37e-06  |ddm|= 0.000105
+  alpha nocc = 13  HOMO = -0.247188202056265  LUMO = 0.107199410919814
+  beta  nocc = 10  HOMO = -0.216355843065899  LUMO = 0.125149729992496
+Extra cycle  E= -942.860175239392  delta_E= -9.17e-11  |g|= 4.47e-06  |ddm|= 3.3e-05
+converged SCF energy = -942.860175239392  <S^2> = 3.761716  2S+1 = 4.0058537
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.62  e= [1.335926]  max|de|= 1.34  lindep= 0.981
+davidson 1 2  |r|= 0.446  e= [0.752385]  max|de|= -0.584  lindep= 0.96
+davidson 2 3  |r|= 0.477  e= [0.401072]  max|de|= -0.351  lindep=    1
+davidson 3 4  |r|= 0.441  e= [0.173349]  max|de|= -0.228  lindep= 0.958
+davidson 4 5  |r|= 0.205  e= [0.096254]  max|de|= -0.0771  lindep= 0.796
+davidson 5 6  |r|= 0.23  e= [0.060425]  max|de|= -0.0358  lindep= 0.91
+davidson 6 7  |r|= 0.197  e= [0.036943]  max|de|= -0.0235  lindep= 0.836
+davidson 7 8  |r|= 0.352  e= [-0.000797]  max|de|= -0.0377  lindep= 0.865
+davidson 8 9  |r|= 0.203  e= [-0.031824]  max|de|= -0.031  lindep= 0.888
+davidson 9 10  |r|= 0.151  e= [-0.043804]  max|de|= -0.012  lindep= 0.813
+davidson 10 11  |r|= 0.184  e= [-0.053514]  max|de|= -0.00971  lindep= 0.813
+davidson 11 12  |r|= 0.0954  e= [-0.062501]  max|de|= -0.00899  lindep= 0.909
+davidson 12 1  |r|= 0.0954  e= [-0.062501]  max|de|= 2.78e-16  lindep=    1
+davidson 13 2  |r|= 0.06  e= [-0.065261]  max|de|= -0.00276  lindep= 0.926
+davidson 14 3  |r|= 0.0474  e= [-0.068051]  max|de|= -0.00279  lindep= 0.987
+davidson 15 4  |r|= 0.0533  e= [-0.070154]  max|de|= -0.0021  lindep= 0.942
+davidson 16 5  |r|= 0.0426  e= [-0.071201]  max|de|= -0.00105  lindep= 0.847
+davidson 17 6  |r|= 0.033  e= [-0.071817]  max|de|= -0.000615  lindep= 0.883
+davidson 18 7  |r|= 0.0311  e= [-0.072318]  max|de|= -0.000501  lindep= 0.801
+davidson 19 8  |r|= 0.0116  e= [-0.072486]  max|de|= -0.000168  lindep= 0.865
+root 0 converged  |r|= 0.0043  e= -0.07250339018680933  max|de|= -1.79e-05
+converged 20 9  |r|= 0.0043  e= [-0.072503]  max|de|= -1.79e-05
+UHF/UKS wavefunction has an internal instability.
+
+
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmpyqtfh6t2
+max_memory 4000 MB (current use 308 MB)
+number electrons alpha = 13  beta = 10
+******** <class 'pyscf.scf.uhf.UHF'> Newton solver flags ********
+SCF tol = 1e-09
+conv_tol_grad = None
+max. SCF cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmpyqtfh6t2
+max_cycle_inner = 12
+max_stepsize = 0.05
+ah_start_tol = 1e+09
+ah_level_shift = 0
+ah_conv_tol = 1e-12
+ah_lindep = 1e-14
+ah_start_cycle = 1
+ah_max_cycle = 40
+ah_grad_trust_region = 2.5
+kf_interval = 4
+kf_trust_region = 5
+canonicalization = True
+max_memory 4000 MB (current use 308 MB)
+Set conv_tol_grad to 3.16228e-05
+  alpha nocc = 13  HOMO = -0.246465853449972  LUMO = 0.110704383275376
+  beta  nocc = 10  HOMO = -0.215414917521526  LUMO = 0.135394461820971
+Initial guess E= -942.871433529944  |g|= 0.020502
+macro= 0  E= -942.872327220415  delta_E= -0.00089369  |g|= 4.35206e-05  4 KF 18 JK
+macro= 1  E= -942.872327220467  delta_E= -5.20686e-11  |g|= 1.00977e-05  1 KF 3 JK
+Canonicalize SCF orbitals
+macro X = 2  E=-942.872327220467  |g|= 1.00977e-05  total 6 KF 24 JK
+converged SCF energy = -942.872327220467  <S^2> = 3.7617647  2S+1 = 4.005878
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.59  e= [1.263119]  max|de|= 1.26  lindep= 0.923
+davidson 1 2  |r|= 0.466  e= [0.490463]  max|de|= -0.773  lindep= 0.998
+davidson 2 3  |r|= 0.281  e= [0.155461]  max|de|= -0.335  lindep= 0.992
+davidson 3 4  |r|= 0.226  e= [0.095371]  max|de|= -0.0601  lindep= 0.981
+davidson 4 5  |r|= 0.0906  e= [0.079317]  max|de|= -0.0161  lindep= 0.957
+davidson 5 6  |r|= 0.15  e= [0.072909]  max|de|= -0.00641  lindep= 0.876
+davidson 6 7  |r|= 0.344  e= [0.020576]  max|de|= -0.0523  lindep= 0.885
+davidson 7 8  |r|= 0.0924  e= [0.004491]  max|de|= -0.0161  lindep= 0.85
+davidson 8 9  |r|= 0.0556  e= [0.002194]  max|de|= -0.0023  lindep= 0.825
+davidson 9 10  |r|= 0.0431  e= [0.001092]  max|de|= -0.0011  lindep= 0.838
+davidson 10 11  |r|= 0.039  e= [0.000475]  max|de|= -0.000617  lindep= 0.708
+davidson 11 12  |r|= 0.0178  e= [0.000086]  max|de|= -0.000389  lindep= 0.711
+davidson 12 1  |r|= 0.0178  e= [0.000086]  max|de|= -1.25e-16  lindep= 0.999
+root 0 converged  |r|= 0.00972  e= 2.1515688736852313e-05  max|de|= -6.48e-05
+converged 13 2  |r|= 0.00972  e= [0.000022]  max|de|= -6.48e-05
+UHF/UKS wavefunction is stable in the internal stability analysis
+UNO ON: [ 2.        2.        2.        1.999999  1.999999  1.999999  1.999703  1.999703  1.999703  1.994998  1.        1.        1.        0.005002  0.000297
+  0.000297  0.000297  0.000001  0.000001  0.000001  0.        0.        0.        0.        0.        0.        0.        0.        0.        0.
+  0.        0.        0.        0.        0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.      ]
+nacto, nacta, nactb: 3 3 0
+Converting <class 'pyscf.soscf.newton_ah.newton.<locals>.SecondOrderUHF'> to RHF
+UNO in active space
+             #0      #1      #2     
+  0 V 3dxy     0.121          -0.337
+  0 V 3dyz     0.285   0.284   0.292
+  0 V 3dz^2           -0.332   0.384
+  0 V 3dxz    -0.253  -0.198        
+ 0 V 3dx2-y2  -0.431   0.343        
+  0 V 4dxy                    -0.244
+  0 V 4dyz     0.206   0.205   0.211
+  0 V 4dz^2           -0.240   0.278
+  0 V 4dxz    -0.183  -0.143        
+ 0 V 4dx2-y2  -0.312   0.248        
+  0 V 5dxy                    -0.124
+  0 V 5dyz     0.105   0.105   0.108
+  0 V 5dz^2           -0.122   0.141
+ 0 V 5dx2-y2  -0.159   0.126        
+
+******** <class 'pyscf.mcscf.mc1step.CASSCF'> ********
+CAS (3e+0e, 3o), ncore = 10, nvir = 32
+max_cycle_macro = 200
+max_cycle_micro = 4
+conv_tol = 1e-07
+conv_tol_grad = None
+orbital rotation max_stepsize = 0.02
+augmented hessian ah_max_cycle = 30
+augmented hessian ah_conv_tol = 1e-12
+augmented hessian ah_linear dependence = 1e-14
+augmented hessian ah_level shift = 0
+augmented hessian ah_start_tol = 2.5
+augmented hessian ah_start_cycle = 3
+augmented hessian ah_grad_trust_region = 3
+kf_trust_region = 3
+kf_interval = 4
+ci_response_space = 4
+ci_grad_trust_region = 3
+with_dep4 0
+natorb = True
+canonicalization = True
+sorting_mo_energy = False
+ao2mo_level = 2
+chkfile = /share/home/srwang/pyAutoMR/examples/guess/tmpyqtfh6t2
+max_memory 1000 MB (current use 308 MB)
+internal_rotation = False
+******** <class 'pyscf.fci.direct_spin1.FCISolver'> ********
+max. cycles = 100
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 1000 MB
+nroots = 1
+pspace_size = 400
+spin = 3
+CASCI E = -942.867946037681  S^2 = 3.7500000
+Set conv_tol_grad to 0.000316228
+macro iter 1 (9 JK  3 micro), CASSCF E = -942.867949918348  dE = -3.8806666e-06  S^2 = 3.7500000
+               |grad[o]|=0.00455  |grad[c]|= 3.1675646678941405e-06  |ddm|=7.69e-16
+macro iter 2 (1 JK  1 micro), CASSCF E = -942.867949918348  dE = 1.1368684e-13  S^2 = 3.7500000
+               |grad[o]|=2.81e-05  |grad[c]|= 4.707345624410664e-14  |ddm|=    0
+1-step CASSCF converged in 2 macro (10 JK 4 micro) steps
+CASSCF canonicalization
+Natural occ [1. 1. 1.]
+Natural orbital (expansion on AOs) in CAS space
+               #1        #2        #3       
+  0 V 1s       0.00000   0.00000  -0.00000
+  0 V 2s      -0.00000  -0.00000   0.00000
+  0 V 3s       0.00000   0.00000  -0.00000
+  0 V 4s       0.00000   0.00000  -0.00000
+  0 V 5s       0.00000   0.00000  -0.00000
+  0 V 6s       0.00000   0.00000  -0.00000
+  0 V 2px      0.00000  -0.00000   0.00000
+  0 V 2py      0.00000  -0.00000  -0.00000
+  0 V 2pz     -0.00000  -0.00000  -0.00000
+  0 V 3px     -0.00000   0.00000  -0.00000
+  0 V 3py     -0.00000   0.00000   0.00000
+  0 V 3pz      0.00000   0.00000   0.00000
+  0 V 4px      0.00000   0.00000  -0.00000
+  0 V 4py     -0.00000  -0.00000  -0.00000
+  0 V 4pz     -0.00000   0.00000  -0.00000
+  0 V 5px      0.00001  -0.00001   0.00001
+  0 V 5py      0.00000  -0.00000  -0.00000
+  0 V 5pz     -0.00000  -0.00000  -0.00000
+  0 V 3dxy     0.12092  -0.05364  -0.33743
+  0 V 3dyz     0.28506   0.28381   0.29170
+  0 V 3dz^2   -0.07096  -0.33218   0.38374
+  0 V 3dxz    -0.25258  -0.19799  -0.03649
+ 0 V 3dx2-y2  -0.43128   0.34315   0.05642
+  0 V 4dxy     0.08742  -0.03878  -0.24395
+  0 V 4dyz     0.20609   0.20518   0.21088
+  0 V 4dz^2   -0.05130  -0.24015   0.27743
+  0 V 4dxz    -0.18260  -0.14314  -0.02638
+ 0 V 4dx2-y2  -0.31180   0.24809   0.04079
+  0 V 5dxy     0.04460  -0.01979  -0.12446
+  0 V 5dyz     0.10514   0.10469   0.10759
+  0 V 5dz^2   -0.02618  -0.12252   0.14155
+  0 V 5dxz    -0.09316  -0.07303  -0.01346
+ 0 V 5dx2-y2  -0.15908   0.12657   0.02081
+  0 V 6dxy     0.00304  -0.00135  -0.00847
+  0 V 6dyz     0.00716   0.00713   0.00732
+  0 V 6dz^2   -0.00178  -0.00834   0.00963
+  0 V 6dxz    -0.00634  -0.00497  -0.00091
+ 0 V 6dx2-y2  -0.01083   0.00862   0.00142
+  0 V 4f-3    -0.00000   0.00000   0.00000
+  0 V 4f-2     0.00000   0.00000  -0.00000
+  0 V 4f-1     0.00000  -0.00000  -0.00000
+  0 V 4f 0     0.00000   0.00000  -0.00000
+  0 V 4f 1     0.00000  -0.00000  -0.00000
+  0 V 4f 2     0.00000  -0.00000  -0.00000
+  0 V 4f 3    -0.00000  -0.00000   0.00000
+<CAS-nat-orb|mo-hf>  11  11    0.99999971
+<CAS-nat-orb|mo-hf>  12  12    0.99999971
+<CAS-nat-orb|mo-hf>  13  13    0.99999970
+CASSCF energy = -942.867949918348
+CASCI E = -942.867949918348  E(CI) = -3.50093037490456  S^2 = 3.7500000
+Natrual Orbs
+             #0      #1      #2     
+  0 V 3dxy     0.121          -0.337
+  0 V 3dyz     0.285   0.284   0.292
+  0 V 3dz^2           -0.332   0.384
+  0 V 3dxz    -0.253  -0.198        
+ 0 V 3dx2-y2  -0.431   0.343        
+  0 V 4dxy                    -0.244
+  0 V 4dyz     0.206   0.205   0.211
+  0 V 4dz^2           -0.240   0.278
+  0 V 4dxz    -0.183  -0.143        
+ 0 V 4dx2-y2  -0.312   0.248        
+  0 V 5dxy                    -0.124
+  0 V 5dyz     0.105   0.105   0.108
+  0 V 5dz^2           -0.122   0.141
+ 0 V 5dx2-y2  -0.159   0.126        
+***** CI components ROOT 0 ******
+ c**2   Gaussian-type vector
+ 1.000000  aaa    
+ c**2     ORCA-type vector
+ 1.000000  111    
+Density matrix diagonal elements [1. 1. 1.]
+Sr    (-1)',   E = -0.00000000010425
+Si    (+1)',   E = -0.00000000000056
+Sijrs (0)  ,   E = -0.12750754197028
+Sijr  (+1) ,   E = -0.04624673939076
+Srsi  (-1) ,   E = -0.08439875106245
+Srs   (-2) ,   E = -0.01247516271479
+Sij   (+2) ,   E = -0.00281569459753
+Sir   (0)' ,   E = -0.02569636189763
+Nevpt2 Energy = -0.299140251738264
+#INFO: **** input file is /share/home/srwang/pyAutoMR/examples/guess/V2.py ****
+from pyscf import scf,dft, gto, lib
+from automr import guess, autocas
+
+lib.num_threads(8)
+#mf=guess.from_fch_simp("v2.fchk", xc='pbe0')
+
+#mf2.verbose=9
+#mf2.stability()
+mol = gto.Mole(atom='''V 0.0 0.0 0.0; V 0.0 0.0 1.77''', basis='def2-tzvp', spin=2)
+mol.verbose = 4
+mol.build()
+mf = scf.UHF(mol)
+mf.kernel()
+mf = guess.check_stab(mf, newton=True)
+mf2 = autocas.cas(mf, (8, (5,3)) )
+mf4 = autocas.nevpt2(mf2)
+
+mol2 = gto.Mole(atom='''V 0.0 0.0 0.0''', basis='def2-tzvp', spin=3)
+mol2.verbose = 4
+mol2.build()
+mfb = scf.UHF(mol2)
+mfb.kernel()
+mfb = guess.check_stab(mfb, newton=True)
+mfb2 = autocas.cas(mfb)
+mfb4 = autocas.nevpt2(mfb2)
+
+mol3 = gto.Mole(atom='''V 0.0 0.0 0.0''', basis='def2-tzvp', spin=1)
+mol3.verbose = 4
+mol3.build()
+mfc = scf.UHF(mol3)
+mfc.kernel()
+mfc = guess.check_stab(mfc, newton=True)
+mfc2 = autocas.cas(mfc)
+mfc4 = autocas.nevpt2(mfc2)
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='xn01', release='3.10.0-1127.el7.x86_64', version='#1 SMP Tue Feb 18 16:39:12 EST 2020', machine='x86_64', processor='x86_64')  Threads 8
+Python 3.7.4 (default, Aug 13 2019, 20:35:49) 
+[GCC 7.3.0]
+numpy 1.17.2  scipy 1.4.1
+Date: Wed Sep 15 17:23:33 2021
+PySCF version 1.7.6a1
+PySCF path  /share/home/srwang/pyscf/pyscf
+GIT ORIG_HEAD 80f71dfe77ac5f9caae26788acf76446987635bd
+GIT HEAD      ref: refs/heads/master
+GIT master branch  80f71dfe77ac5f9caae26788acf76446987635bd
+
+[ENV] PYSCF_EXT_PATH /share/home/srwang/pyscf_ext/fciqmc:
+[CONFIG] conf_file /share/home/srwang/.pyscf_conf.py
+[INPUT] verbose = 4
+[INPUT] num. atoms = 1
+[INPUT] num. electrons = 23
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 1
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 V      0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr
+
+nuclear repulsion = 0
+number of shells = 15
+number of NR pGTOs = 92
+number of NR cGTOs = 45
+basis = def2-tzvp
+ecp = {}
+CPU time:        68.65
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmpklfnfj04
+max_memory 4000 MB (current use 309 MB)
+number electrons alpha = 12  beta = 11
+Set gradient conv threshold to 3.16228e-05
+init E= -942.028039138213
+
+WARN: alpha nocc = 12  HOMO -0.0884211051764376 >= LUMO -0.0884211051764374
+
+
+WARN: beta  nocc = 11  HOMO -0.0884211051764396 >= LUMO -0.0884211051764376
+
+
+WARN: system HOMO -0.0884211051764376 >= system LUMO -0.0884211051764376
+
+cycle= 1 E= -942.720187151426  delta_E= -0.692  |g|= 0.284  |ddm|= 0.839
+  alpha nocc = 12  HOMO = -0.265188723298107  LUMO = 0.0245999846086669
+  beta  nocc = 11  HOMO = -0.253325663643729  LUMO = 0.0360633387951306
+cycle= 2 E= -942.770835631668  delta_E= -0.0506  |g|= 0.178  |ddm|= 0.321
+  alpha nocc = 12  HOMO = -0.237497827562579  LUMO = 0.115158313680116
+  beta  nocc = 11  HOMO = -0.22781959166547  LUMO = 0.124604014307345
+cycle= 3 E= -942.779249128408  delta_E= -0.00841  |g|= 0.04  |ddm|= 0.198
+  alpha nocc = 12  HOMO = -0.235844450305766  LUMO = 0.116317774236392
+  beta  nocc = 11  HOMO = -0.22627433348199  LUMO = 0.121649554176716
+cycle= 4 E= -942.780601328432  delta_E= -0.00135  |g|= 0.00768  |ddm|= 0.0715
+  alpha nocc = 12  HOMO = -0.23780483590044  LUMO = 0.11197585798842
+  beta  nocc = 11  HOMO = -0.228042939932951  LUMO = 0.117490521504779
+cycle= 5 E= -942.780710521392  delta_E= -0.000109  |g|= 0.00343  |ddm|= 0.0332
+  alpha nocc = 12  HOMO = -0.23796157652675  LUMO = 0.111454906241493
+  beta  nocc = 11  HOMO = -0.228146494596084  LUMO = 0.116992447719141
+cycle= 6 E= -942.780753378666  delta_E= -4.29e-05  |g|= 0.00303  |ddm|= 0.00994
+  alpha nocc = 12  HOMO = -0.238002759706714  LUMO = 0.111461736946124
+  beta  nocc = 11  HOMO = -0.22817843192329  LUMO = 0.116952249372214
+cycle= 7 E= -942.78082221115  delta_E= -6.88e-05  |g|= 0.00297  |ddm|= 0.0102
+  alpha nocc = 12  HOMO = -0.238001004498325  LUMO = 0.111464430114084
+  beta  nocc = 11  HOMO = -0.228177261235563  LUMO = 0.116956006278783
+cycle= 8 E= -942.780823149232  delta_E= -9.38e-07  |g|= 0.00297  |ddm|= 0.00014
+  alpha nocc = 12  HOMO = -0.237824728166291  LUMO = 0.111857331288079
+  beta  nocc = 11  HOMO = -0.228068517061222  LUMO = 0.117429737080774
+cycle= 9 E= -942.780825684786  delta_E= -2.54e-06  |g|= 0.00232  |ddm|= 0.0105
+  alpha nocc = 12  HOMO = -0.237690007208136  LUMO = 0.112073228875137
+  beta  nocc = 11  HOMO = -0.227999942323381  LUMO = 0.117845200089295
+cycle= 10 E= -942.780883041847  delta_E= -5.74e-05  |g|= 0.00106  |ddm|= 0.0257
+  alpha nocc = 12  HOMO = -0.237913628449888  LUMO = 0.111586468135129
+  beta  nocc = 11  HOMO = -0.228175490420821  LUMO = 0.117069173322354
+cycle= 11 E= -942.780893800713  delta_E= -1.08e-05  |g|= 0.000395  |ddm|= 0.0126
+  alpha nocc = 12  HOMO = -0.237936377973173  LUMO = 0.111506357454056
+  beta  nocc = 11  HOMO = -0.228153434891919  LUMO = 0.117035951656345
+cycle= 12 E= -942.780894960901  delta_E= -1.16e-06  |g|= 0.00023  |ddm|= 0.00244
+  alpha nocc = 12  HOMO = -0.23791919168843  LUMO = 0.111650343090297
+  beta  nocc = 11  HOMO = -0.228111244721526  LUMO = 0.117151362982486
+cycle= 13 E= -942.780895480764  delta_E= -5.2e-07  |g|= 0.000109  |ddm|= 0.00212
+  alpha nocc = 12  HOMO = -0.237919579838262  LUMO = 0.11159619352086
+  beta  nocc = 11  HOMO = -0.228118611179309  LUMO = 0.11711444360099
+cycle= 14 E= -942.780895579292  delta_E= -9.85e-08  |g|= 7.44e-05  |ddm|= 0.00068
+  alpha nocc = 12  HOMO = -0.237925763759789  LUMO = 0.111576163912806
+  beta  nocc = 11  HOMO = -0.228135112907602  LUMO = 0.117087746371297
+cycle= 15 E= -942.780895639718  delta_E= -6.04e-08  |g|= 5.12e-05  |ddm|= 0.000633
+  alpha nocc = 12  HOMO = -0.237913866080103  LUMO = 0.111615217437329
+  beta  nocc = 11  HOMO = -0.228126804718  LUMO = 0.11712883234418
+cycle= 16 E= -942.780895672583  delta_E= -3.29e-08  |g|= 3.06e-05  |ddm|= 0.00052
+  alpha nocc = 12  HOMO = -0.237916960302804  LUMO = 0.11159999079604
+  beta  nocc = 11  HOMO = -0.228129298914009  LUMO = 0.117110107738882
+cycle= 17 E= -942.780895681982  delta_E= -9.4e-09  |g|= 1.03e-05  |ddm|= 0.000354
+  alpha nocc = 12  HOMO = -0.237918544345642  LUMO = 0.111600754656109
+  beta  nocc = 11  HOMO = -0.228127947845438  LUMO = 0.117111792806283
+cycle= 18 E= -942.780895682682  delta_E= -7e-10  |g|= 6.94e-06  |ddm|= 8.66e-05
+  alpha nocc = 12  HOMO = -0.237919312043599  LUMO = 0.111599825974145
+  beta  nocc = 11  HOMO = -0.228127819149166  LUMO = 0.11711075553904
+Extra cycle  E= -942.780895682827  delta_E= -1.45e-10  |g|= 7.34e-06  |ddm|= 1.72e-05
+converged SCF energy = -942.780895682827  <S^2> = 0.75265771  2S+1 = 2.0026559
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|= 2.53  e= [1.286437]  max|de|= 1.29  lindep= 0.996
+davidson 1 2  |r|= 0.454  e= [0.720488]  max|de|= -0.566  lindep= 0.97
+davidson 2 3  |r|= 0.255  e= [0.304486]  max|de|= -0.416  lindep= 0.966
+davidson 3 4  |r|= 0.269  e= [0.220538]  max|de|= -0.0839  lindep= 0.964
+davidson 4 5  |r|= 0.176  e= [0.189587]  max|de|= -0.031  lindep= 0.873
+davidson 5 6  |r|= 0.329  e= [0.10355]  max|de|= -0.086  lindep= 0.878
+davidson 6 7  |r|= 0.171  e= [0.069678]  max|de|= -0.0339  lindep= 0.852
+davidson 7 8  |r|= 0.298  e= [0.028434]  max|de|= -0.0412  lindep= 0.959
+davidson 8 9  |r|= 0.343  e= [-0.03861]  max|de|= -0.067  lindep= 0.914
+davidson 9 10  |r|= 0.367  e= [-0.141118]  max|de|= -0.103  lindep= 0.832
+davidson 10 11  |r|= 0.133  e= [-0.170675]  max|de|= -0.0296  lindep= 0.864
+davidson 11 12  |r|= 0.0906  e= [-0.174852]  max|de|= -0.00418  lindep= 0.87
+davidson 12 1  |r|= 0.0906  e= [-0.174852]  max|de|= -1.39e-16  lindep=    1
+davidson 13 2  |r|= 0.0716  e= [-0.176186]  max|de|= -0.00133  lindep= 0.853
+davidson 14 3  |r|= 0.0394  e= [-0.177191]  max|de|= -0.001  lindep= 0.813
+davidson 15 4  |r|= 0.018  e= [-0.177547]  max|de|= -0.000356  lindep= 0.945
+davidson 16 5  |r|= 0.0112  e= [-0.177649]  max|de|= -0.000102  lindep= 0.864
+root 0 converged  |r|= 0.00808  e= -0.17769963362355626  max|de|= -5.09e-05
+converged 17 6  |r|= 0.00808  e= [-0.1777]  max|de|= -5.09e-05
+UHF/UKS wavefunction has an internal instability.
+
+
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmpklfnfj04
+max_memory 4000 MB (current use 309 MB)
+number electrons alpha = 12  beta = 11
+******** <class 'pyscf.scf.uhf.UHF'> Newton solver flags ********
+SCF tol = 1e-09
+conv_tol_grad = None
+max. SCF cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /share/home/srwang/pyAutoMR/examples/guess/tmpklfnfj04
+max_cycle_inner = 12
+max_stepsize = 0.05
+ah_start_tol = 1e+09
+ah_level_shift = 0
+ah_conv_tol = 1e-12
+ah_lindep = 1e-14
+ah_start_cycle = 1
+ah_max_cycle = 40
+ah_grad_trust_region = 2.5
+kf_interval = 4
+kf_trust_region = 5
+canonicalization = True
+max_memory 4000 MB (current use 309 MB)
+Set conv_tol_grad to 3.16228e-05
+  alpha nocc = 12  HOMO = -0.236243075910766  LUMO = 0.113928782064716
+  beta  nocc = 11  HOMO = -0.226692102660877  LUMO = 0.121031703203305
+Initial guess E= -942.811762801583  |g|= 0.0221763
+macro= 0  E= -942.816802182595  delta_E= -0.00503938  |g|= 0.111547  4 KF 22 JK
+macro= 1  E= -942.819602135246  delta_E= -0.00279995  |g|= 0.00352567  5 KF 26 JK
+macro= 2  E= -942.819533498932  delta_E= 6.86363e-05  |g|= 0.00392951  3 KF 16 JK
+macro= 3  E= -942.819719203484  delta_E= -0.000185705  |g|= 5.05954e-05  5 KF 36 JK
+macro= 4  E= -942.819719239302  delta_E= -3.58177e-08  |g|= 5.86397e-05  2 KF 21 JK
+macro= 5  E= -942.819719239303  delta_E= -6.82121e-13  |g|= 8.70121e-06  1 KF 2 JK
+Canonicalize SCF orbitals
+macro X = 6  E=-942.819719239303  |g|= 8.70121e-06  total 21 KF 130 JK
+converged SCF energy = -942.819719239303  <S^2> = 1.7551053  2S+1 = 2.8320348
+**** checking UHF/UKS internal stability ...
+tol 0.0001  toloose 0.01
+max_cycle 50  max_space 12  max_memory 2000  incore True
+davidson 0 1  |r|=  2.6  e= [1.12292]  max|de|= 1.12  lindep= 0.998
+davidson 1 2  |r|= 0.423  e= [0.398355]  max|de|= -0.725  lindep= 0.975
+davidson 2 3  |r|= 0.267  e= [0.101994]  max|de|= -0.296  lindep= 0.987
+davidson 3 4  |r|= 0.203  e= [0.047481]  max|de|= -0.0545  lindep= 0.975
+davidson 4 5  |r|= 0.11  e= [0.030984]  max|de|= -0.0165  lindep= 0.92
+davidson 5 6  |r|= 0.123  e= [0.020929]  max|de|= -0.0101  lindep= 0.899
+davidson 6 7  |r|= 0.0991  e= [0.014165]  max|de|= -0.00676  lindep= 0.886
+davidson 7 8  |r|= 0.0754  e= [0.010609]  max|de|= -0.00356  lindep= 0.889
+davidson 8 9  |r|= 0.0833  e= [0.007504]  max|de|= -0.00311  lindep= 0.887
+davidson 9 10  |r|= 0.0564  e= [0.005548]  max|de|= -0.00196  lindep= 0.845
+davidson 10 11  |r|= 0.0639  e= [0.003841]  max|de|= -0.00171  lindep= 0.92
+davidson 11 12  |r|= 0.0358  e= [0.00273]  max|de|= -0.00111  lindep= 0.902
+davidson 12 1  |r|= 0.0358  e= [0.00273]  max|de|= 7.35e-16  lindep=    1
+davidson 13 2  |r|= 0.0246  e= [0.002332]  max|de|= -0.000398  lindep= 0.929
+davidson 14 3  |r|= 0.0211  e= [0.001899]  max|de|= -0.000433  lindep= 0.972
+davidson 15 4  |r|= 0.027  e= [0.00157]  max|de|= -0.000329  lindep= 0.91
+davidson 16 5  |r|= 0.0168  e= [0.001421]  max|de|= -0.000149  lindep= 0.823
+davidson 17 6  |r|= 0.0123  e= [0.001337]  max|de|= -8.37e-05  lindep= 0.931
+davidson 18 7  |r|= 0.0165  e= [0.001249]  max|de|= -8.9e-05  lindep= 0.805
+davidson 19 8  |r|= 0.0114  e= [0.001162]  max|de|= -8.63e-05  lindep= 0.784
+root 0 converged  |r|= 0.0073  e= 0.0011194124352267648  max|de|= -4.28e-05
+converged 20 9  |r|= 0.0073  e= [0.001119]  max|de|= -4.28e-05
+UHF/UKS wavefunction is stable in the internal stability analysis
+UNO ON: [ 2.        2.        2.        2.        2.        1.999979  1.999681  1.999681  1.999155  1.998951  1.000015  1.        0.999985  0.001049  0.000845
+  0.000319  0.000319  0.000021  0.        0.        0.        0.        0.        0.        0.        0.        0.        0.        0.        0.
+  0.        0.        0.        0.        0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.      ]
+nacto, nacta, nactb: 3 2 1
+Converting <class 'pyscf.soscf.newton_ah.newton.<locals>.SecondOrderUHF'> to RHF
+UNO in active space
+             #0      #1      #2     
+  0 V 3dxy             0.460   0.176
+  0 V 3dyz                    -0.342
+  0 V 3dz^2    0.516  -0.156   0.179
+  0 V 3dxz             0.311        
+ 0 V 3dx2-y2   0.258   0.108  -0.401
+  0 V 4dxy             0.333   0.127
+  0 V 4dyz                    -0.248
+  0 V 4dz^2    0.374  -0.112   0.128
+  0 V 4dxz             0.225        
+ 0 V 4dx2-y2   0.189          -0.293
+  0 V 5dxy             0.174        
+  0 V 5dyz                    -0.135
+  0 V 5dz^2    0.201                
+  0 V 5dxz             0.118        
+ 0 V 5dx2-y2   0.109          -0.164
+
+******** <class 'pyscf.mcscf.mc1step.CASSCF'> ********
+CAS (2e+1e, 3o), ncore = 10, nvir = 32
+max_cycle_macro = 200
+max_cycle_micro = 4
+conv_tol = 1e-07
+conv_tol_grad = None
+orbital rotation max_stepsize = 0.02
+augmented hessian ah_max_cycle = 30
+augmented hessian ah_conv_tol = 1e-12
+augmented hessian ah_linear dependence = 1e-14
+augmented hessian ah_level shift = 0
+augmented hessian ah_start_tol = 2.5
+augmented hessian ah_start_cycle = 3
+augmented hessian ah_grad_trust_region = 3
+kf_trust_region = 3
+kf_interval = 4
+ci_response_space = 4
+ci_grad_trust_region = 3
+with_dep4 0
+natorb = True
+canonicalization = True
+sorting_mo_energy = False
+ao2mo_level = 2
+chkfile = /share/home/srwang/pyAutoMR/examples/guess/tmpklfnfj04
+max_memory 1000 MB (current use 309 MB)
+internal_rotation = False
+******** <class 'pyscf.fci.direct_spin1.FCISolver'> ********
+max. cycles = 100
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 1000 MB
+nroots = 1
+pspace_size = 400
+spin = 1
+CASCI E = -942.865121903704  S^2 = 3.7500000
+Set conv_tol_grad to 0.000316228
+macro iter 1 (19 JK  4 micro), CASSCF E = -942.86788433942  dE = -0.0027624357  S^2 = 3.7500000
+               |grad[o]|=0.0346  |grad[c]|= 0.002000499519572938  |ddm|=7.69e-16
+macro iter 2 (19 JK  4 micro), CASSCF E = -942.867949889732  dE = -6.5550312e-05  S^2 = 3.7500000
+               |grad[o]|=0.00869  |grad[c]|= 4.714705327675108e-05  |ddm|=1.96e-31
+macro iter 3 (8 JK  1 micro), CASSCF E = -942.867949917369  dE = -2.7637043e-08  S^2 = 3.7500000
+               |grad[o]|=0.000139  |grad[c]|= 1.4236461183187052e-08  |ddm|=5.77e-16
+1-step CASSCF converged in 3 macro (46 JK 9 micro) steps
+CASSCF canonicalization
+Natural occ [1. 1. 1.]
+Natural orbital (expansion on AOs) in CAS space
+               #1        #2        #3       
+  0 V 1s      -0.00000   0.00000   0.00000
+  0 V 2s      -0.00000   0.00000   0.00000
+  0 V 3s      -0.00001   0.00000   0.00000
+  0 V 4s       0.00000  -0.00000  -0.00001
+  0 V 5s       0.00001  -0.00000  -0.00001
+  0 V 6s      -0.00001   0.00000   0.00000
+  0 V 2px     -0.00000  -0.00000  -0.00000
+  0 V 2py      0.00000  -0.00000  -0.00000
+  0 V 2pz      0.00000   0.00000   0.00000
+  0 V 3px      0.00000   0.00000   0.00000
+  0 V 3py     -0.00000   0.00000   0.00000
+  0 V 3pz     -0.00000  -0.00000  -0.00000
+  0 V 4px      0.00000  -0.00000   0.00000
+  0 V 4py     -0.00000  -0.00000  -0.00000
+  0 V 4pz      0.00000   0.00000  -0.00000
+  0 V 5px     -0.00000  -0.00000  -0.00000
+  0 V 5py      0.00000  -0.00000  -0.00000
+  0 V 5pz      0.00001   0.00001   0.00000
+  0 V 3dxy     0.06662   0.44973   0.03489
+  0 V 3dyz     0.04996  -0.05942  -0.29856
+  0 V 3dz^2    0.53369  -0.09545   0.22728
+  0 V 3dxz     0.08029   0.36773  -0.06191
+ 0 V 3dx2-y2   0.22918  -0.02437  -0.45264
+  0 V 4dxy     0.04817   0.32514   0.02522
+  0 V 4dyz     0.03612  -0.04295  -0.21584
+  0 V 4dz^2    0.38583  -0.06900   0.16431
+  0 V 4dxz     0.05805   0.26585  -0.04476
+ 0 V 4dx2-y2   0.16569  -0.01761  -0.32724
+  0 V 5dxy     0.02457   0.16589   0.01287
+  0 V 5dyz     0.01843  -0.02192  -0.11012
+  0 V 5dz^2    0.19685  -0.03520   0.08383
+  0 V 5dxz     0.02962   0.13564  -0.02283
+ 0 V 5dx2-y2   0.08452  -0.00899  -0.16696
+  0 V 6dxy     0.00168   0.01129   0.00088
+  0 V 6dyz     0.00125  -0.00149  -0.00750
+  0 V 6dz^2    0.01339  -0.00240   0.00571
+  0 V 6dxz     0.00201   0.00923  -0.00156
+ 0 V 6dx2-y2   0.00575  -0.00061  -0.01135
+  0 V 4f-3    -0.00000   0.00000   0.00000
+  0 V 4f-2     0.00000  -0.00000  -0.00000
+  0 V 4f-1    -0.00000   0.00000  -0.00000
+  0 V 4f 0     0.00000   0.00000   0.00000
+  0 V 4f 1     0.00000  -0.00000  -0.00000
+  0 V 4f 2     0.00000   0.00000  -0.00000
+  0 V 4f 3     0.00000   0.00000   0.00000
+<CAS-nat-orb|mo-hf>  11  11    0.99259708
+<CAS-nat-orb|mo-hf>  12  12    0.94393613
+<CAS-nat-orb|mo-hf>  13  13    0.94713970
+CASSCF energy = -942.867949917369
+CASCI E = -942.867949917369  E(CI) = -3.50092642035452  S^2 = 3.7500000
+Natrual Orbs
+             #0      #1      #2     
+  0 V 3dxy             0.460   0.176
+  0 V 3dyz                    -0.342
+  0 V 3dz^2    0.516  -0.156   0.179
+  0 V 3dxz             0.311        
+ 0 V 3dx2-y2   0.258   0.108  -0.401
+  0 V 4dxy             0.333   0.127
+  0 V 4dyz                    -0.248
+  0 V 4dz^2    0.374  -0.112   0.128
+  0 V 4dxz             0.225        
+ 0 V 4dx2-y2   0.189          -0.293
+  0 V 5dxy             0.174        
+  0 V 5dyz                    -0.135
+  0 V 5dz^2    0.201                
+  0 V 5dxz             0.118        
+ 0 V 5dx2-y2   0.109          -0.164
+***** CI components ROOT 0 ******
+ c**2   Gaussian-type vector
+ 0.333333  aba    
+ 0.333333  aab    
+ 0.333333  baa    
+ c**2     ORCA-type vector
+ 1.000000  111    
+Density matrix diagonal elements [1. 1. 1.]
+Sr    (-1)',   E = -0.00000000023205
+Si    (+1)',   E = -0.00000000000465
+Sijrs (0)  ,   E = -0.12750765644175
+Sijr  (+1) ,   E = -0.04624678071308
+Srsi  (-1) ,   E = -0.08439872332903
+Srs   (-2) ,   E = -0.01247510639066
+Sij   (+2) ,   E = -0.00281570167404
+Sir   (0)' ,   E = -0.02569618683242
+Nevpt2 Energy = -0.299140155617676

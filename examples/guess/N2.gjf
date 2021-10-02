@@ -1,0 +1,12 @@
+%nproc=4
+%mem=4gb
+%chk=N2.chk
+# rpbe1pbe def2tzvp stable=(opt,rrhf)
+
+title
+
+0 1
+N 0.0 0.0 0.0
+N  0.0 0.0 9.0
+
+

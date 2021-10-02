@@ -82,7 +82,7 @@ def _from_fchk(mol, fch, cycle=None, xc=None):
 def mix_tight(xyz, bas, charge=0, xc=None):
     return mix(xyz, bas, charge, 'tight', xc=xc)
 
-def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
+def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None, newton=False):
     mol = gto.Mole()
     mol.atom = xyz
     #with open(xyz, 'r') as f:
@@ -94,8 +94,12 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
     mol.verbose = 4
     mol.build()
 
-    t1 = time.time() 
-    mf = scf.RHF(mol)
+    t1 = time.time()
+    if xc is None: 
+        mf = scf.RHF(mol)
+    else:
+        mf = dft.RKS(mol)
+        mf.xc = xc
     mf.conv_tol = 1e-5
     #mf.verbose = 4
     mf.kernel() # Guess by 1e is poor,
@@ -121,7 +125,7 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None):
         print('Warning: S too small, symmetry breaking may be failed')
     
     if conv == 'tight' and not skipstb:
-        mf_mix = check_stab(mf_mix)
+        mf_mix = check_stab(mf_mix, newton)
 
     t2 = time.time()
     print('time for guess: %.3f' % (t2-t1))
@@ -194,6 +198,7 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
     mol.atom = xyz
     mol.basis = bas
     mol.verbose = 4
+    mol.charge = sum(chgs)
     mol.build()
     
     t1 = time.time() 
