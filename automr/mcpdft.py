@@ -81,7 +81,12 @@ def _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf):
     e_otx = 0.0; e_otc = 0.0
     if ot is not None:
         adm1s = np.stack (_casdms.make_rdm1s (ci, ncas, nelecas), axis=0)
-        adm2 = get_2CDM_from_2RDM (_casdms.make_rdm12 (_rdms.ci, ncas, nelecas)[1], adm1s)
+        adm2s = _casdms.make_rdm12s (_rdms.ci, ncas, nelecas)[1]
+        #print(adm2s)
+        adm2s = get_2CDMs_from_2RDMs (adm2s, adm1s)
+        adm2_ss = adm2s[0] + adm2s[2]
+        adm2_os = adm2s[1]
+        adm2 = adm2_ss + adm2_os + adm2_os.transpose (2,3,0,1)
         mo_cas = mo_coeff[:,ncore:][:,:ncas]
         e_otx = get_E_ot (xfnal, dm1s, adm2, mo_cas, max_memory=mc.max_memory)
         e_otc = get_E_ot (cfnal, dm1s, adm2, mo_cas, max_memory=mc.max_memory)
