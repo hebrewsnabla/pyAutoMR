@@ -37,13 +37,18 @@ def dump(mc, thresh=1e-2):
     for ici, ci in enumerate(civecs):
         print('***** CI components ROOT %d ******' % ici)
         ncas = mc.ncas
-        na, nb = mc.nelecas
+        #na, nb = mc.nelecas
+        #print(mc.fcisolver.nelec)
+        spin = mc.fcisolver.spin
+        na,nb =  fci.addons._unpack_nelec(mc.nelecas, spin)
         #print(mc.ci)
         lena, lenb = ci.shape
         dump_g = {}
         dump_o = {}
         for i in range(lena):
             for j in range(lenb):
+                #print('ncas %d na %d i %d'%(ncas, na,i))
+                #print(fci.cistring.num_strings(ncas, na) )
                 veca = fci.cistring.addr2str(ncas, na, i)
                 vecb = fci.cistring.addr2str(ncas, nb, j)
                 coeff = ci[i,j]
