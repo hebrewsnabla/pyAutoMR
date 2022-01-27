@@ -230,7 +230,9 @@ def sort_mo(mf, sort, ncore, base=1):
     mf.mo_coeff = mo
     return mf
 
-def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=False, suhf=False, lmo=True, sort=None, dry=False):
+def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, 
+            gvb=False, suhf=False, lmo=True, sort=None, dry=False,
+            symmetry=None):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         if suhf:
@@ -260,6 +262,8 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, gvb=Fal
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
     nopen = nacta - nactb
 
+    if symmetry is not None:
+        mf.mol.build(symmetry=symmetry)
     mc = mcscf.CASSCF(mf,nacto,(nacta,nactb))
     mc.fcisolver.max_memory = max_memory // 2
     mc.max_memory = max_memory // 2
