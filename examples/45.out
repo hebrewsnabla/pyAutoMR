@@ -1,0 +1,329 @@
+fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.
+Warning: lo/auto_pair not found. Orbital localization is disabled. Install MOKIT if you need that.
+Warning: pyphf not found. SUHF is disabled. Install ExSCF if you need that.
+#INFO: **** input file is /home/wsr/pyAutoMR/examples/45-SA-CASSCF.py ****
+from pyscf import lib, mcscf
+from automr import guess, autocas
+
+lib.num_threads(4)
+
+mf = guess.gen(xyz='''Co 0.0 0.0 0.0''', bas='def2-tzvp', charge=2, spin=3)
+
+mc = autocas.cas(mf, (5,(5,2)), dry=True)
+
+mc = mc.state_average_([1e0/7e0,1e0/7e0,1e0/7e0,1e0/7e0,1e0/7e0,1e0/7e0,1e0/7e0])
+mc.kernel()
+ave_mo = mc.mo_coeff.copy()
+
+mc = mcscf.CASCI(mf, 5, (5,2))
+
+mc.fcisolver.spin = 1
+mc.fcisolver.nroots = 20
+mc.kernel(ave_mo)
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='yoga', release='5.10.16.3-microsoft-standard-WSL2', version='#1 SMP Fri Apr 2 22:23:49 UTC 2021', machine='x86_64', processor='x86_64')  Threads 4
+Python 3.6.15 (default, Sep 23 2021, 15:41:43) [GCC]
+numpy 1.17.3  scipy 1.3.3
+Date: Thu Jan 27 19:04:15 2022
+PySCF version 2.0.1
+PySCF path  /home/wsr/pyscf
+GIT HEAD (branch master) f1ec3c1786b236cf63c5d16e85dd579d6567f9b3
+
+[ENV] PYSCF_EXT_PATH /home/wsr/gvb:
+[CONFIG] conf_file None
+[INPUT] verbose = 4
+[INPUT] num. atoms = 1
+[INPUT] num. electrons = 25
+[INPUT] charge = 2
+[INPUT] spin (= nelec alpha-beta = 2S) = 3
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT]  1 Co     0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr
+
+nuclear repulsion = 0
+number of shells = 15
+number of NR pGTOs = 92
+number of NR cGTOs = 45
+basis = def2-tzvp
+ecp = {}
+CPU time:         0.27
+
+
+******** <class 'pyscf.scf.uhf.UHF'> ********
+method = UHF
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+SCF conv_tol = 1e-09
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /home/wsr/pyAutoMR/examples/tmpljhx75s2
+max_memory 4000 MB (current use 67 MB)
+number electrons alpha = 14  beta = 11
+Set gradient conv threshold to 3.16228e-05
+init E= -1380.21947107591
+
+WARN: alpha nocc = 14  HOMO 0.172091856388362 >= LUMO 0.172091856388364
+
+
+WARN: beta  nocc = 11  HOMO 0.172091856388357 >= LUMO 0.172091856388361
+
+
+WARN: system HOMO 0.172091856388362 >= system LUMO 0.172091856388361
+
+cycle= 1 E= -1371.42065508438  delta_E=  8.8  |g|=  5.2  |ddm|= 3.48
+  alpha nocc = 14  HOMO = -3.90897745904777  LUMO = -1.73876246515363
+  beta  nocc = 11  HOMO = -3.85793402127822  LUMO = -3.84048488891591
+cycle= 2 E= -1376.94598132214  delta_E= -5.53  |g|= 4.54  |ddm|= 3.97
+  alpha nocc = 14  HOMO = -1.44687675727606  LUMO = -0.827337397662945
+  beta  nocc = 11  HOMO = -1.35314881196791  LUMO = -0.796435226643269
+cycle= 3 E= -1380.54615134914  delta_E= -3.6  |g|= 0.244  |ddm|= 1.55
+  alpha nocc = 14  HOMO = -1.36403699170744  LUMO = -0.567792574020741
+  beta  nocc = 11  HOMO = -1.25700769818043  LUMO = -0.546631183923631
+cycle= 4 E= -1380.56152861859  delta_E= -0.0154  |g|= 0.0401  |ddm|= 0.128
+  alpha nocc = 14  HOMO = -1.36301787988757  LUMO = -0.565241117359636
+  beta  nocc = 11  HOMO = -1.25283667929504  LUMO = -0.544518436424703
+cycle= 5 E= -1380.56273474145  delta_E= -0.00121  |g|= 0.0186  |ddm|= 0.0285
+  alpha nocc = 14  HOMO = -1.36676450954516  LUMO = -0.56616792243229
+  beta  nocc = 11  HOMO = -1.25466369630222  LUMO = -0.545705673026397
+cycle= 6 E= -1380.5635047392  delta_E= -0.00077  |g|= 0.0168  |ddm|= 0.0204
+  alpha nocc = 14  HOMO = -1.37106810238985  LUMO = -0.566854276218306
+  beta  nocc = 11  HOMO = -1.2566226858979  LUMO = -0.546633843421048
+cycle= 7 E= -1380.56510445055  delta_E= -0.0016  |g|= 0.0162  |ddm|= 0.0454
+  alpha nocc = 14  HOMO = -1.37083773574876  LUMO = -0.566514219713713
+  beta  nocc = 11  HOMO = -1.25773812687711  LUMO = -0.546218465668115
+cycle= 8 E= -1380.56642308829  delta_E= -0.00132  |g|= 0.0157  |ddm|= 0.0385
+  alpha nocc = 14  HOMO = -1.37085581821967  LUMO = -0.566509295618107
+  beta  nocc = 11  HOMO = -1.25777363762934  LUMO = -0.546210319345951
+cycle= 9 E= -1380.56645720141  delta_E= -3.41e-05  |g|= 0.0157  |ddm|= 0.000995
+  alpha nocc = 14  HOMO = -1.36973417114606  LUMO = -0.566496056249901
+  beta  nocc = 11  HOMO = -1.25632311417068  LUMO = -0.546016250375237
+cycle= 10 E= -1380.56363977299  delta_E= 0.00282  |g|= 0.0115  |ddm|= 0.11
+  alpha nocc = 14  HOMO = -1.36552547366581  LUMO = -0.566486592624852
+  beta  nocc = 11  HOMO = -1.27886970843839  LUMO = -0.54603684911263
+cycle= 11 E= -1380.56204934754  delta_E= 0.00159  |g|= 0.016  |ddm|= 0.157
+  alpha nocc = 14  HOMO = -1.36534859077146  LUMO = -0.566575922013376
+  beta  nocc = 11  HOMO = -1.27826704397825  LUMO = -0.546076094620675
+cycle= 12 E= -1380.56204220078  delta_E= 7.15e-06  |g|= 0.0164  |ddm|= 0.00274
+  alpha nocc = 14  HOMO = -1.36695219497422  LUMO = -0.56647660231266
+  beta  nocc = 11  HOMO = -1.2619609784202  LUMO = -0.546056326650242
+cycle= 13 E= -1380.56213018996  delta_E= -8.8e-05  |g|= 0.00778  |ddm|= 0.0216
+  alpha nocc = 14  HOMO = -1.36873609724716  LUMO = -0.566392528375579
+  beta  nocc = 11  HOMO = -1.25883985331032  LUMO = -0.546058339144119
+cycle= 14 E= -1380.5621456723  delta_E= -1.55e-05  |g|= 0.00296  |ddm|= 0.00337
+  alpha nocc = 14  HOMO = -1.3694534459456  LUMO = -0.566407123414714
+  beta  nocc = 11  HOMO = -1.25373418442385  LUMO = -0.546075553115284
+cycle= 15 E= -1380.56214217177  delta_E= 3.5e-06  |g|= 0.000157  |ddm|= 0.0087
+  alpha nocc = 14  HOMO = -1.36944376838069  LUMO = -0.566412365366885
+  beta  nocc = 11  HOMO = -1.25405048873468  LUMO = -0.546084118148334
+cycle= 16 E= -1380.56214215513  delta_E= 1.66e-08  |g|= 0.00014  |ddm|= 0.000386
+  alpha nocc = 14  HOMO = -1.36947367898307  LUMO = -0.566411687060486
+  beta  nocc = 11  HOMO = -1.25382605286067  LUMO = -0.54608544172936
+cycle= 17 E= -1380.56214215985  delta_E= -4.72e-09  |g|= 4.31e-05  |ddm|= 0.000406
+  alpha nocc = 14  HOMO = -1.3694680269175  LUMO = -0.566411844727106
+  beta  nocc = 11  HOMO = -1.25389880345401  LUMO = -0.546085548359319
+cycle= 18 E= -1380.56214215969  delta_E= 1.63e-10  |g|= 3.98e-06  |ddm|= 0.000132
+  alpha nocc = 14  HOMO = -1.36946750844649  LUMO = -0.566411807031813
+  beta  nocc = 11  HOMO = -1.25389785594183  LUMO = -0.546085387294347
+Extra cycle  E= -1380.5621421597  delta_E= -1.52e-11  |g|= 2.88e-06  |ddm|= 3.5e-06
+converged SCF energy = -1380.5621421597  <S^2> = 3.753832  2S+1 = 4.0019155
+UNO ON: [ 2.        2.        2.        2.        2.        1.999983  1.999823  1.999772  1.999772  1.999367  1.999367  1.        1.        1.        0.000633
+  0.000633  0.000228  0.000228  0.000177  0.000017  0.        0.        0.        0.        0.        0.        0.        0.        0.        0.
+  0.        0.        0.        0.        0.        0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.       -0.      ]
+nacto, nacta, nactb: 3 3 0
+UNO in active space
+             #0      #1      #2     
+ 0 Co 3dxy            -0.543  -0.316
+ 0 Co 3dyz    -0.477                
+ 0 Co 3dz^2           -0.316   0.552
+ 0 Co 3dxz    -0.422                
+ 0 Co 4dxy            -0.361  -0.208
+ 0 Co 4dyz    -0.315                
+ 0 Co 4dz^2           -0.210   0.364
+ 0 Co 4dxz    -0.278                
+ 0 Co 5dxy            -0.158        
+ 0 Co 5dyz    -0.132                
+ 0 Co 5dz^2                    0.153
+ 0 Co 5dxz    -0.117                
+Warning: using user defined active space
+user-defined guess orbs
+             #0      #1      #2      #3      #4     
+ 0 Co 3dxy            -0.543  -0.316                
+ 0 Co 3dyz    -0.477                           0.344
+ 0 Co 3dz^2           -0.316   0.552                
+ 0 Co 3dxz    -0.422                          -0.389
+0 Co 3dx2-y2                          -0.515        
+ 0 Co 4dxy            -0.361  -0.208                
+ 0 Co 4dyz    -0.315                                
+ 0 Co 4dz^2           -0.210   0.364                
+ 0 Co 4dxz    -0.278                                
+ 0 Co 5dxy            -0.158           0.103        
+ 0 Co 5dyz    -0.132                          -0.554
+ 0 Co 5dz^2                    0.153                
+ 0 Co 5dxz    -0.117                           0.627
+0 Co 5dx2-y2                           0.831        
+ 0 Co 6dxz                                     0.110
+0 Co 6dx2-y2                           0.146        
+
+******** <class 'pyscf.mcscf.addons._state_average_mcscf_solver.<locals>.StateAverageMCSCF'> ********
+CAS (5e+2e, 5o), ncore = 9, nvir = 31
+max_cycle_macro = 200
+max_cycle_micro = 4
+conv_tol = 1e-07
+conv_tol_grad = None
+orbital rotation max_stepsize = 0.02
+augmented hessian ah_max_cycle = 30
+augmented hessian ah_conv_tol = 1e-12
+augmented hessian ah_linear dependence = 1e-14
+augmented hessian ah_level shift = 1e-08
+augmented hessian ah_start_tol = 2.5
+augmented hessian ah_start_cycle = 3
+augmented hessian ah_grad_trust_region = 3
+kf_trust_region = 3
+kf_interval = 4
+ci_response_space = 4
+ci_grad_trust_region = 3
+with_dep4 0
+natorb = True
+canonicalization = True
+sorting_mo_energy = False
+ao2mo_level = 2
+chkfile = /home/wsr/pyAutoMR/examples/tmpljhx75s2
+max_memory 1000 MB (current use 84 MB)
+internal_rotation = False
+******** <class 'pyscf.mcscf.addons.state_average.<locals>.FakeCISolver'> ********
+max. cycles = 100
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 1000 MB
+nroots = 7
+pspace_size = 400
+spin = 3
+State-average over 7 states with weights [0.14285714285714285, 0.14285714285714285, 0.14285714285714285, 0.14285714285714285, 0.14285714285714285, 0.14285714285714285, 0.14285714285714285]
+CASCI E = -1380.56592297383  S^2 = 3.7500000
+Set conv_tol_grad to 0.000316228
+macro iter 1 (12 JK  4 micro), CASSCF E = -1380.57046506515  dE = -0.0045420913  S^2 = 3.7500000
+               |grad[o]|=0.188  |grad[c]|= None  |ddm|=0.0182
+macro iter 2 (10 JK  3 micro), CASSCF E = -1380.57046530682  dE = -2.4167457e-07  S^2 = 3.7500000
+               |grad[o]|=0.000885  |grad[c]|= None  |ddm|=3.47e-05
+macro iter 3 (1 JK  1 micro), CASSCF E = -1380.57046530682  dE = 0  S^2 = 3.7500000
+               |grad[o]|=1.93e-05  |grad[c]|= None  |ddm|=5.18e-16
+1-step CASSCF converged in 3 macro (23 JK 8 micro) steps
+CASSCF canonicalization
+Natural occ [1.400012 1.400008 1.400003 1.399994 1.399984]
+Natural orbital (expansion on meta-Lowdin AOs) in CAS space
+               #1        #2        #3        #4        #5       
+ 0 Co 1s       0.00000  -0.00000   0.00000   0.00000   0.00000
+ 0 Co 2s       0.00000   0.00000  -0.00000  -0.00000  -0.00000
+ 0 Co 3s      -0.00000   0.00000  -0.00000  -0.00000  -0.00000
+ 0 Co 4s       0.00000   0.00000   0.00000  -0.00000   0.00000
+ 0 Co 5s      -0.00000   0.00000  -0.00000   0.00000  -0.00000
+ 0 Co 6s       0.00000  -0.00000   0.00000   0.00000  -0.00000
+ 0 Co 2px     -0.00000   0.00000   0.00000  -0.00000   0.00000
+ 0 Co 2py     -0.00000   0.00000  -0.00000   0.00000  -0.00000
+ 0 Co 2pz      0.00000  -0.00000   0.00000  -0.00000  -0.00000
+ 0 Co 3px     -0.00000  -0.00000   0.00000  -0.00000   0.00000
+ 0 Co 3py     -0.00000  -0.00000   0.00000   0.00000  -0.00000
+ 0 Co 3pz      0.00000  -0.00000   0.00000  -0.00000  -0.00000
+ 0 Co 4px     -0.00000   0.00001  -0.00000   0.00000   0.00000
+ 0 Co 4py     -0.00000   0.00000  -0.00000  -0.00000   0.00000
+ 0 Co 4pz     -0.00000   0.00000  -0.00000  -0.00000   0.00000
+ 0 Co 5px      0.00000  -0.00000  -0.00000   0.00000  -0.00000
+ 0 Co 5py      0.00000  -0.00000   0.00000  -0.00000  -0.00000
+ 0 Co 5pz      0.00000  -0.00000   0.00000   0.00000   0.00000
+ 0 Co 3dxy    -0.61885   0.02046   0.01970  -0.01166  -0.77981
+ 0 Co 3dyz     0.00901  -0.69774   0.17258   0.68872  -0.03140
+ 0 Co 3dz^2    0.77998   0.00329   0.01946  -0.03992  -0.61780
+ 0 Co 3dxz    -0.02460  -0.68094   0.11377  -0.71734   0.01526
+0 Co 3dx2-y2  -0.00179   0.20270   0.97393  -0.03721   0.03190
+ 0 Co 4dxy     0.05056  -0.00167  -0.00161   0.00095   0.06371
+ 0 Co 4dyz    -0.00074   0.05700  -0.01410  -0.05627   0.00257
+ 0 Co 4dz^2   -0.06372  -0.00027  -0.00159   0.00326   0.05048
+ 0 Co 4dxz     0.00201   0.05563  -0.00929   0.05861  -0.00125
+0 Co 4dx2-y2   0.00015  -0.01656  -0.07957   0.00304  -0.00261
+ 0 Co 5dxy    -0.01182   0.00039   0.00038  -0.00022  -0.01489
+ 0 Co 5dyz     0.00017  -0.01332   0.00330   0.01315  -0.00060
+ 0 Co 5dz^2    0.01490   0.00006   0.00037  -0.00076  -0.01180
+ 0 Co 5dxz    -0.00047  -0.01300   0.00217  -0.01370   0.00029
+0 Co 5dx2-y2  -0.00003   0.00387   0.01860  -0.00071   0.00061
+ 0 Co 6dxy    -0.01957   0.00065   0.00062  -0.00037  -0.02466
+ 0 Co 6dyz     0.00028  -0.02207   0.00546   0.02178  -0.00099
+ 0 Co 6dz^2    0.02467   0.00010   0.00062  -0.00126  -0.01954
+ 0 Co 6dxz    -0.00078  -0.02153   0.00360  -0.02269   0.00048
+0 Co 6dx2-y2  -0.00006   0.00641   0.03080  -0.00118   0.00101
+ 0 Co 4f-3     0.00000   0.00000   0.00000   0.00000   0.00000
+ 0 Co 4f-2     0.00000   0.00000   0.00000  -0.00000  -0.00000
+ 0 Co 4f-1    -0.00000  -0.00000   0.00000   0.00000  -0.00000
+ 0 Co 4f 0    -0.00000  -0.00000  -0.00000   0.00000  -0.00000
+ 0 Co 4f 1    -0.00000   0.00000   0.00000  -0.00000   0.00000
+ 0 Co 4f 2     0.00000   0.00000   0.00000  -0.00000   0.00000
+ 0 Co 4f 3     0.00000   0.00000  -0.00000   0.00000  -0.00000
+<CAS-nat-orb|mo-hf>  10  14    0.98608741
+<CAS-nat-orb|mo-hf>  11  12    0.97745920
+<CAS-nat-orb|mo-hf>  12  11    0.97281195
+<CAS-nat-orb|mo-hf>  13  10    0.99751647
+<CAS-nat-orb|mo-hf>  14  13    0.98631743
+CASSCF energy = -1380.57046530682
+CASCI E = -1380.57046530682  E(CI) = -28.5798913413796  S^2 = 3.7500000
+CASCI state-averaged energy = -1380.57046530682
+CASCI energy for each state
+  State 0 weight 0.142857  E = -1380.57046544223 S^2 = 3.7500000
+  State 1 weight 0.142857  E = -1380.5704654253 S^2 = 3.7500000
+  State 2 weight 0.142857  E = -1380.5704653246 S^2 = 3.7500000
+  State 3 weight 0.142857  E = -1380.57046529776 S^2 = 3.7500000
+  State 4 weight 0.142857  E = -1380.57046526647 S^2 = 3.7500000
+  State 5 weight 0.142857  E = -1380.57046523852 S^2 = 3.7500000
+  State 6 weight 0.142857  E = -1380.57046515289 S^2 = 3.7500000
+
+******** CASCI flags ********
+CAS (5e+2e, 5o), ncore = 9, nvir = 31
+natorb = False
+canonicalization = True
+sorting_mo_energy = False
+max_memory 4000 (MB)
+******** <class 'pyscf.fci.direct_spin1.FCISolver'> ********
+max. cycles = 200
+conv_tol = 1e-08
+davidson only = False
+linear dependence = 1e-10
+level shift = 0.001
+max iter space = 12
+max_memory 4000 MB
+nroots = 20
+pspace_size = 400
+spin = 1
+
+WARN: Mulitple states found in CASCI solver. First state is used to compute the natural orbitals in active space.
+
+Density matrix diagonal elements [1.556493 1.322057 1.773547 1.210277 1.137625]
+CASCI converged
+CASCI state 0  E = -1380.5704654424  E(CI) = -28.5798914769512  S^2 = 3.7500000
+CASCI state 1  E = -1380.57046542532  E(CI) = -28.5798914598772  S^2 = 3.7500000
+CASCI state 2  E = -1380.57046532463  E(CI) = -28.5798913591821  S^2 = 3.7500000
+CASCI state 3  E = -1380.57046529788  E(CI) = -28.5798913324334  S^2 = 3.7500000
+CASCI state 4  E = -1380.57046526664  E(CI) = -28.5798913011972  S^2 = 3.7500000
+CASCI state 5  E = -1380.57046523868  E(CI) = -28.5798912732312  S^2 = 3.7500000
+CASCI state 6  E = -1380.5704651529  E(CI) = -28.5798911874579  S^2 = 3.7500000
+CASCI state 7  E = -1380.48411680254  E(CI) = -28.4935428370961  S^2 = 3.7500000
+CASCI state 8  E = -1380.48411645007  E(CI) = -28.4935424846283  S^2 = 3.7500000
+CASCI state 9  E = -1380.48411634773  E(CI) = -28.4935423822826  S^2 = 3.7500000
+CASCI state 10  E = -1380.48363149921  E(CI) = -28.4930575337701  S^2 = 0.7500000
+CASCI state 11  E = -1380.48363149271  E(CI) = -28.4930575272613  S^2 = 0.7500000
+CASCI state 12  E = -1380.48363147554  E(CI) = -28.4930575100973  S^2 = 0.7500000
+CASCI state 13  E = -1380.48363145816  E(CI) = -28.4930574927143  S^2 = 0.7500000
+CASCI state 14  E = -1380.48363142229  E(CI) = -28.4930574568448  S^2 = 0.7500000
+CASCI state 15  E = -1380.48363138588  E(CI) = -28.4930574204363  S^2 = 0.7500000
+CASCI state 16  E = -1380.4836313819  E(CI) = -28.4930574164539  S^2 = 0.7500000
+CASCI state 17  E = -1380.48363132953  E(CI) = -28.4930573640834  S^2 = 0.7500000
+CASCI state 18  E = -1380.48363132852  E(CI) = -28.4930573630747  S^2 = 0.7500000
+CASCI state 19  E = -1380.45484864757  E(CI) = -28.4642746821223  S^2 = 0.7500000
