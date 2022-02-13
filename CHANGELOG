@@ -1,7 +1,9 @@
-version 0.2.1 (Sep 15, 2021)
+version 0.2.1 (Jan 26, 2022)
 * allow SOSCF in check_stab
 * support for RHF/RKS, ROHF/ROKS in check_stab
 * support for UKS in from_fch_simp
+* allow newton in mix; allow chg != 0 in frag
+* fix bug in cidump
 
 version 0.2.0 (Aug 29, 2021)
 * move everything to pyAutoMR.automr
