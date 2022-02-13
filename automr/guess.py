@@ -3,8 +3,9 @@ import numpy as np
 try:
     from fch2py import fch2py
     import gaussian
+    from rwwfn import read_eigenvalues_from_fch as readeig
 except:
-    print('fch2py not found. Interface with fch is disabled. Install MOKIT if you need that.')
+    print('fch2py, rwwfn not found. Interface with fch is disabled. Install MOKIT if you need that.')
 from automr import stability, dump_mat, autocas
 import time
 import copy
@@ -32,9 +33,24 @@ def gen(xyz, bas, charge, spin, conv='tight', level_shift=0, xc=None):
 
     return mf
 
-def from_fch_simp(fch, cycle=None, xc=None):
+def from_fch_noiter(fch, no=True):
     mol = gaussian.load_mol_from_fch(fch)
-    return _from_fchk(mol, fch, cycle, xc)    
+    mf = _from_fchk(mol, fch, no=no)
+    return mf 
+
+
+def from_fch_simp(fch, cycle=None, xc=None, no=False):
+    mol = gaussian.load_mol_from_fch(fch)
+    mf = _from_fchk(mol, fch, xc)    
+    dm = mf.make_rdm1()
+    if cycle is None:
+        if xc is None:
+            cycle = 2
+        else:
+            cycle = 6
+    mf.max_cycle = cycle
+    mf.kernel(dm)
+    return mf
 
 def from_fchk(xyz, bas, fch, cycle=None, xc=None):
     mol = gto.Mole()
@@ -46,14 +62,25 @@ def from_fchk(xyz, bas, fch, cycle=None, xc=None):
     #mol.output = 'test.pylog'
     mol.verbose = 4
     mol.build()
-    return _from_fchk(mol, fch, cycle, xc)
+    mf = _from_fchk(mol, fch, xc)
+    dm = mf.make_rdm1()
+    if cycle is None:
+        if xc is None:
+            cycle = 2
+        else:
+            cycle = 6
+    mf.max_cycle = cycle
+    mf.kernel(dm)
+    return mf
 
-def _from_fchk(mol, fch, cycle=None, xc=None):    
+def _from_fchk(mol, fch, xc=None, no=False):    
     if xc is None:
         mf = scf.UHF(mol)
     else:
         mf = dft.UKS(mol)
         mf.xc = xc
+    if no:
+        mf = scf.RHF(mol)
     #mf.init_guess = '1e'
     #mf.init_guess_breaksym = True
     mf.max_cycle = 1
@@ -66,17 +93,14 @@ def _from_fchk(mol, fch, cycle=None, xc=None):
     #Sdiag = S.diagonal()
     alpha_coeff = fch2py(fch, nbf, nif, 'a')
     beta_coeff  = fch2py(fch, nbf, nif, 'b')
-    mf.mo_coeff = (alpha_coeff, beta_coeff)
+    if no:
+        mf.mo_coeff = alpha
+        noon = readeig(fch, nif, 'a')
+        mf.mo_occ = noon
+    else:
+        mf.mo_coeff = (alpha_coeff, beta_coeff)
     # read done
     
-    dm = mf.make_rdm1()
-    if cycle is None:
-        if xc is None:
-            cycle = 2
-        else:
-            cycle = 6
-    mf.max_cycle = cycle
-    mf.kernel(dm)
     return mf
 
 def mix_tight(xyz, bas, charge=0, xc=None):
