@@ -24,6 +24,7 @@ Install
 * RHF -> vir MO projection -> PM LMO -> CASSCF
 * CASSCF -> NEVPT2
 * CASSCF -> MC-PDFT
+* CASSCF(dry run) -> SA-CASSCF
 
 UHF, RHF can be auto-detected.
 
@@ -56,4 +57,3 @@ mf2 = autocas.cas(mf)
 ## TODO
 * UNO -> GVB(Q-Chem) -> CASSCF
 * TDDFT NO -> CASSCF
-* SA-CASSCF
