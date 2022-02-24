@@ -44,7 +44,7 @@ def do_suhf(mf):
     return mf, no, noon, nacto, (nacta, nactb), ndb, nex
 
 
-def get_uno(mf, st='st2', uks=False):
+def get_uno(mf, st='st2', uks=False, thresh=1.98):
     mol = mf.mol 
     mo = mf.mo_coeff
     S = mol.intor_symmetric('int1e_ovlp')
@@ -57,7 +57,7 @@ def get_uno(mf, st='st2', uks=False):
     elif st=='st2':
         dm = mf.make_rdm1()
         unos, noon = get_uno_st2(dm[0] + dm[1], S)
-        nacto, ndb, nex = check_uno(noon)
+        nacto, ndb, nex = check_uno(noon, thresh)
     print('UNO ON:', noon)
     #ndb, nocc, nopen = idx
     #nacto = nocc - ndb
@@ -69,6 +69,7 @@ def get_uno(mf, st='st2', uks=False):
     else:
         mf = mf.to_rhf()
     mf.mo_coeff = unos
+    #mf.mo_occ = noon
     print('UNO in active space')
     dump_mat.dump_mo(mol, unos[:,ndb:ndb+nacto], ncol=10)
     return mf, unos, noon, nacto, (nacta, nactb), ndb, nex
