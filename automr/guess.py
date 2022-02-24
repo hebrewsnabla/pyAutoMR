@@ -87,14 +87,15 @@ def _from_fchk(mol, fch, xc=None, no=False):
     mf.kernel()
     
     # read MOs from .fch(k) file
-    nbf = mf.mo_coeff[0].shape[0]
-    nif = mf.mo_coeff[0].shape[1]
+    nbf = mf.mo_coeff.shape[-2]
+    nif = mf.mo_coeff.shape[-1]
     #S = mol.intor_symmetric('int1e_ovlp')
     #Sdiag = S.diagonal()
     alpha_coeff = fch2py(fch, nbf, nif, 'a')
-    beta_coeff  = fch2py(fch, nbf, nif, 'b')
+    if not no:
+        beta_coeff  = fch2py(fch, nbf, nif, 'b')
     if no:
-        mf.mo_coeff = alpha
+        mf.mo_coeff = alpha_coeff
         noon = readeig(fch, nif, 'a')
         mf.mo_occ = noon
     else:
