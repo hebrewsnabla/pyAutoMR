@@ -180,7 +180,40 @@ def get_locorb(mf, localize='pm1', pair=True):
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
     return mf, alpha_coeff, npair, ncore
 
-def do_gvb(mf, npair):
+def loc_asrot(mf, nacto, nelecact, ncore):
+    #idx2 = idx[0] + npair - 1
+    #idx3 = idx2 + idx[2]
+    #npair = min(npair,3)
+    #idx1 = idx2 - npair
+    #idx4 = idx3 + npair
+    mol = mf.mol
+    na, nb = nelecact
+    nopen = na-nb
+    npair = (nacto - nopen)//2
+    occ_idx = range(ncore,ncore+npair)
+    vir_idx = range(ncore+nacto-npair,ncore+nacto)
+    nbf = mf.mo_coeff.shape[0]
+    S = mf.get_ovlp()
+    occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
+    #vir_loc_orb = assoc_rot(nbf, npair, mf.mo_coeff[0][:,occ_idx], occ_loc_orb, mf.mo_coeff[0][:,vir_idx])
+    vir_loc_orb = assoc_rot(mf.mo_coeff[:,occ_idx], occ_loc_orb, mf.mo_coeff[:,vir_idx])
+    mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
+    mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
+    return mf
+
+def assoc_rot(mo_g, mo_g_loc, mo_u):
+    #p,l,u = scipy.linalg.lu(mo_g)
+    #pl = p @ l
+    #y = scipy.linalg.solve_triangular(pl, mo_g_loc)
+    #v = scipy.linalg.solve_triangular(u, y)
+    lu, piv, _ = scipy.linalg.lapack.dgetrf(mo_g)
+    v, _ = scipy.linalg.lapack.dgetrs(lu, piv, mo_g_loc)
+    tmp = np.flip(mo_u, axis=1)
+    tmp = tmp @ v
+    new_mo_u = np.flip(mo_u, axis=1)
+    return new_mo_u 
+
+def do_gvb_qchem(mf, npair):
     mo = mf.mo_coeff
     basename = str(os.getpid())
     bridge.py2qchem(mf, basename)
@@ -190,6 +223,20 @@ def do_gvb(mf, npair):
     gvbno = bridge.qchem2py(basename)[0]
     mf.mo_coeff = gvbno
     dump_mat.dump_mo(mf.mol, gvbno, ncol=10)
+    return mf, gvbno, npair
+
+def do_gvb(mf, npair, ndb):
+    thenof = nof.SOPNOF(mf, npair*2, npair)
+    thenof.verbose = 5
+    #thenof.mo_occ = noon / 2
+    thenof.fcisolver = nof.fakeFCISolver()
+    thenof.fcisolver.ncore = ndb
+    thenof.fcisolver.npair = npair
+    thenof.internal_rotation = True
+    thenof.mc2step()
+
+    
+
     return mf, gvbno, npair
 
 
@@ -245,7 +292,7 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
             mf, lmos, npair, ndb = get_locorb(mf)
             if gvb:
                 #npair=2
-                mf, gvbno, npair = do_gvb(mf, npair)
+                mf, gvbno, npair = do_gvb(mf, npair, ndb)
             nacto = npair*2
             nacta = nactb = npair
         #else:

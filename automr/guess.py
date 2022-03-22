@@ -198,7 +198,7 @@ def check_stab(mf_mix, newton=False, res=False):
     mf_mix.mo_coeff = mo
     return mf_mix
 
-def from_frag_tight(xyz, bas, frags, chgs, spins):
+def from_frag_tight(xyz, bas, frags, chgs, spins, newton):
     if not isinstance(spins[0], list):
         spins = [spins]
     lowest_mf = None
@@ -207,7 +207,7 @@ def from_frag_tight(xyz, bas, frags, chgs, spins):
     for s in spins:
         print('Attempt spins ', s)
         mf = from_frag(xyz, bas, frags, chgs, s, cycle=70)
-        mf = check_stab(mf)
+        mf = check_stab(mf, newton=newton)
         if mf.e_tot < lowest_e:
             lowest_e = mf.e_tot
             lowest_mf = mf
