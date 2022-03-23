@@ -118,7 +118,9 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None, newto
     #mol.output = 'test.pylog'
     mol.verbose = 4
     mol.build()
+    return _mix(mol, conv, cycle, skipstb, xc, newton)
 
+def _mix(mol, conv='loose', cycle=5, skipstb=False, xc=None, newton=False):
     t1 = time.time()
     if xc is None: 
         mf = scf.RHF(mol)

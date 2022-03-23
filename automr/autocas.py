@@ -7,6 +7,7 @@ from functools import partial, reduce
 try:
     from lo import pm
     from auto_pair import pair_by_tdm
+    #from assoc_rot import assoc_rot
 except:
     print('Warning: lo/auto_pair not found. Orbital localization is disabled. Install MOKIT if you need that.')
 from pyscf.lo.boys import dipole_integral
@@ -195,13 +196,16 @@ def loc_asrot(mf, nacto, nelecact, ncore):
     nbf = mf.mo_coeff.shape[0]
     S = mf.get_ovlp()
     occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
-    #vir_loc_orb = assoc_rot(nbf, npair, mf.mo_coeff[0][:,occ_idx], occ_loc_orb, mf.mo_coeff[0][:,vir_idx])
-    vir_loc_orb = assoc_rot(mf.mo_coeff[:,occ_idx], occ_loc_orb, mf.mo_coeff[:,vir_idx])
+    vir_loc_orb = assoc_rot_py(mf.mo_coeff[:,occ_idx], occ_loc_orb, mf.mo_coeff[:,vir_idx])
     mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
     mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
+    print('MOs after assoc_rot')
+    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ncore:ncore+nacto], ncol=10)
+    #vir_loc_orb2 = assoc_rot(nbf, npair, mf.mo_coeff[:,occ_idx], occ_loc_orb, mf.mo_coeff[:,vir_idx])
+    #dump_mat.dump_mo(mf.mol,vir_loc_orb2, ncol=10)
     return mf
 
-def assoc_rot(mo_g, mo_g_loc, mo_u):
+def assoc_rot_py(mo_g, mo_g_loc, mo_u):
     #p,l,u = scipy.linalg.lu(mo_g)
     #pl = p @ l
     #y = scipy.linalg.solve_triangular(pl, mo_g_loc)
@@ -217,7 +221,7 @@ def assoc_rot(mo_g, mo_g_loc, mo_u):
     #v, _ = scipy.linalg.lapack.dgetrs(lu, piv, mo_g_loc)
     tmp = np.flip(mo_u, axis=1)
     tmp = tmp @ v
-    new_mo_u = np.flip(mo_u, axis=1)
+    new_mo_u = np.flip(tmp, axis=1)
     return new_mo_u 
 
 def do_gvb_qchem(mf, npair):
