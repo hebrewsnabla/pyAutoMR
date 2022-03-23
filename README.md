@@ -4,7 +4,7 @@ The method used by this program is quite similar to [MOKIT](https://gitlab.com/j
 
 This program aims to do:
 * HF guess strategy
-* automatic guess for CASSCF/SUHF 
+* automatic guess for CASSCF/GVB/SUHF 
 * interface for post-MR
 
 ## Installation
@@ -13,15 +13,16 @@ Pre-requisites
 * [PySCF](https://github.com/pyscf/pyscf)
 * [mrh](https://github.com/MatthewRHermes/mrh) (optional, for MC-PDFT)
 * [ExSCF](https://github.com/hebrewsnabla/ExSCF) (optional, for SUHF)
+* [pyNOF](https://github.com/hebrewsnabla/pyNOF) (optional, for GVB)
 
 
 Install
 * git clone and add `/path/to/pyAutoMR` to your `PYTHONPATH`
 
 ## Features
-* UHF -> UNO -> CASSCF
+* UHF -> UNO (-> PM LMO -> assoc rot) (-> GVB) -> CASSCF
 * UHF -> SUHF -> CASSCF
-* RHF -> vir MO projection -> PM LMO -> CASSCF
+* RHF (-> vir MO projection -> PM LMO) -> CASSCF
 * CASSCF -> NEVPT2
 * CASSCF -> MC-PDFT
 * CASSCF(dry run) -> SA-CASSCF
@@ -55,5 +56,4 @@ mf2 = autocas.cas(mf)
 * [UHF case](https://blog-quoi.readthedocs.io/en/latest/mr_tutor.html#uhf-case)
 
 ## TODO
-* UNO -> GVB(Q-Chem) -> CASSCF
 * TDDFT NO -> CASSCF
