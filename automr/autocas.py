@@ -206,8 +206,15 @@ def assoc_rot(mo_g, mo_g_loc, mo_u):
     #pl = p @ l
     #y = scipy.linalg.solve_triangular(pl, mo_g_loc)
     #v = scipy.linalg.solve_triangular(u, y)
-    lu, piv, _ = scipy.linalg.lapack.dgetrf(mo_g)
-    v, _ = scipy.linalg.lapack.dgetrs(lu, piv, mo_g_loc)
+    #print(mo_g.shape, np.linalg.matrix_rank(mo_g))
+    #v0 = np.linalg.pinv(mo_g)
+    #print(np.linalg.norm(mo_g @ v0 @ mo_g_loc - mo_g_loc))
+    
+    v, res, r, s = np.linalg.lstsq(mo_g, mo_g_loc, rcond=-1)
+    #print(np.linalg.norm(mo_g @ v - mo_g_loc), res, r, s)
+    
+    #lu, piv, _ = scipy.linalg.lapack.dgetrf(mo_g)
+    #v, _ = scipy.linalg.lapack.dgetrs(lu, piv, mo_g_loc)
     tmp = np.flip(mo_u, axis=1)
     tmp = tmp @ v
     new_mo_u = np.flip(mo_u, axis=1)
