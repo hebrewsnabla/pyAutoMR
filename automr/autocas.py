@@ -13,11 +13,16 @@ except:
 from pyscf.lo import PM
 from pyscf.lo.boys import dipole_integral
 from automr import dump_mat, bridge, cidump
+from automr.util import check_uno
 import sys, os
 try:
     from pyphf import suscf
 except:
     print('Warning: pyphf not found. SUHF is disabled. Install ExSCF if you need that.')
+try:
+    import nof
+except:
+    print('Warning: pyNOF not found. GVB is disabled. Install pyNOF if you need that.')
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
@@ -45,6 +50,26 @@ def do_suhf(mf):
     dump_mat.dump_mo(mol, no[:,ndb:ndb+nacto], ncol=10)
     return mf, no, noon, nacto, (nacta, nactb), ndb, nex
 
+def get_gvbno(thenof, mf, thresh=1.98):
+    mol = mf.mol 
+    mo = thenof.mo_coeff
+    S = mol.intor_symmetric('int1e_ovlp')
+    na, nb = thenof.nelecas
+    nopen = na - nb
+    dm = thenof.make_rdm1()
+    no, noon = get_uno_st2(dm, S)
+    nacto, ndb, nex = check_uno(noon, thresh)
+    print('GVBNO ON:', noon)
+    #ndb, nocc, nopen = idx
+    #nacto = nocc - ndb
+    nacta = (nacto + nopen)//2
+    nactb = (nacto - nopen)//2
+    print('nacto, nacta, nactb: %d %d %d' % (nacto, nacta, nactb))
+    mf.mo_coeff = no
+    #mf.mo_occ = noon
+    print('GVBNO in active space')
+    dump_mat.dump_mo(mol, no[:,ndb:ndb+nacto], ncol=10)
+    return mf, no, noon, nacto, (nacta, nactb), ndb, nex
 
 def get_uno(mf, st='st2', uks=False, thresh=1.98):
     mol = mf.mol 
@@ -75,12 +100,6 @@ def get_uno(mf, st='st2', uks=False, thresh=1.98):
     print('UNO in active space')
     dump_mat.dump_mo(mol, unos[:,ndb:ndb+nacto], ncol=10)
     return mf, unos, noon, nacto, (nacta, nactb), ndb, nex
-
-def check_uno(noon, thresh=1.98):
-    ndb = np.count_nonzero(noon > thresh)
-    nex = np.count_nonzero(noon < (2.0-thresh))
-    nacto = len(noon) - ndb - nex
-    return nacto, ndb, nex
 
 def get_uno_st2(dm, S):
     A = reduce(np.dot, (S, dm, S))
@@ -250,7 +269,7 @@ def do_gvb_qchem(mf, npair):
     return mf, gvbno, npair
 
 def do_gvb(mf, npair, ndb):
-    thenof = nof.SOPNOF(mf, npair*2, npair)
+    thenof = nof.SOPNOF(mf, npair*2, npair*2)
     thenof.verbose = 5
     #thenof.mo_occ = noon / 2
     thenof.fcisolver = nof.fakeFCISolver()
@@ -260,8 +279,10 @@ def do_gvb(mf, npair, ndb):
     thenof.mc2step()
 
     
-
-    return mf, gvbno, npair
+    mf, gvbno, noon, nacto, (nacta, nactb), ndb, nex = get_gvbno(thenof, mf, thresh=1.98)
+    nopen = nacta - nactb
+    npair = (nacto - nopen)//2
+    return mf, gvbno, noon, npair
 
 
 def check_uhf(mf):
@@ -318,7 +339,7 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
             mf, lmos, npair, ndb = get_locorb(mf, localize=lmo)
             if gvb:
                 #npair=2
-                mf, gvbno, npair = do_gvb(mf, npair, ndb)
+                mf, gvbno, noon, npair = do_gvb(mf, npair, ndb)
             nacto = npair*2
             nacta = nactb = npair
         #else:

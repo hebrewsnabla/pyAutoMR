@@ -2,7 +2,7 @@ from pyscf import lib, scf
 #from pyphf import guess, suscf
 from automr import autocas, guess
 
-lib.num_threads(8)
+#lib.num_threads(8)
 
 xyz = '''C                 -2.94294278    0.39039038    0.00000000
  C                 -1.54778278    0.39039038    0.00000000
@@ -23,4 +23,5 @@ mf = guess.mix(xyz, bas, conv='tight')
 
 #mf2 = autocas.cas(mf, lmo='pm1')
 mf2 = autocas.cas(mf, lmo='pm')
+# pm: pm in pyscf, pm1: pm in MOKIT
 
