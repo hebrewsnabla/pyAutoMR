@@ -9,7 +9,7 @@ This program aims to do:
 
 ## Installation
 Pre-requisites
-* MOKIT (no need to fully compile, only lo, autopair are needed)
+* MOKIT (no need to fully compile, only `autopair` is needed)
 * [PySCF](https://github.com/pyscf/pyscf)
 * [mrh](https://github.com/MatthewRHermes/mrh) (optional, for MC-PDFT)
 * [ExSCF](https://github.com/hebrewsnabla/ExSCF) (optional, for SUHF)
@@ -22,7 +22,7 @@ Install
 ## Features
 * UHF -> UNO (-> PM LMO -> assoc rot) (-> GVB) -> CASSCF
 * UHF -> SUHF -> CASSCF
-* RHF (-> vir MO projection -> PM LMO) -> CASSCF
+* RHF (-> vir MO projection -> PM LMO -> pairing) -> CASSCF
 * CASSCF -> NEVPT2
 * CASSCF -> MC-PDFT
 * CASSCF(dry run) -> SA-CASSCF

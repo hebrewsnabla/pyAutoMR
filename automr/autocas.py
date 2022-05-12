@@ -10,6 +10,7 @@ try:
     #from assoc_rot import assoc_rot
 except:
     print('Warning: lo/auto_pair not found. Orbital localization is disabled. Install MOKIT if you need that.')
+from pyscf.lo import PM
 from pyscf.lo.boys import dipole_integral
 from automr import dump_mat, bridge, cidump
 import sys, os
@@ -153,22 +154,15 @@ def get_locorb(mf, localize='pm1', pair=True):
 
     npair = np.sum(mf2.mo_occ==0)
     print('npair', npair)
-    if localize=='pm1':
-        idx2 = np.count_nonzero(mf.mo_occ)
-        idx1 = idx2 - npair
-        idx3 = idx2 + npair
-        print('MOs after projection')
-        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
-        occ_idx = range(idx1,idx2)
-        vir_idx = range(idx2,idx3)
-        S = mol.intor_symmetric('int1e_ovlp')
-        occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
-        vir_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,vir_idx],S,'mulliken')
-        mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
-        mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
-        print('MOs after PM localization')
-        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
-    
+    idx2 = np.count_nonzero(mf.mo_occ)
+    idx1 = idx2 - npair
+    idx3 = idx2 + npair
+    print('MOs after projection')
+    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
+    occ_idx = range(idx1,idx2)
+    vir_idx = range(idx2,idx3)
+    if localize:
+        mf = loc(mf, occ_idx, vir_idx, localize)
     if pair:
         mo_dipole = dipole_integral(mol, mf.mo_coeff)
         ncore = idx1
@@ -181,7 +175,25 @@ def get_locorb(mf, localize='pm1', pair=True):
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
     return mf, alpha_coeff, npair, ncore
 
-def loc_asrot(mf, nacto, nelecact, ncore):
+def loc(mf, occ_idx, vir_idx, localize='pm1'):
+    mol = mf.mol
+    if localize=='pm1':
+        S = mol.intor_symmetric('int1e_ovlp')
+        nbf = mf.mo_coeff.shape[0]
+        nif = mf.mo_coeff.shape[1]
+        npair = len(occ_idx)
+        occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
+        vir_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,vir_idx],S,'mulliken')
+    elif localize=='pm':
+        occ_loc_orb = PM(mol, mf.mo_coeff[:,occ_idx], mf).kernel()
+        vir_loc_orb = PM(mol, mf.mo_coeff[:,vir_idx], mf).kernel()
+    mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
+    mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
+    print('MOs after PM localization')
+    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,range(occ_idx[0], vir_idx[-1]+1)], ncol=10)
+    return mf
+
+def loc_asrot(mf, nacto, nelecact, ncore, localize='pm1'):
     #idx2 = idx[0] + npair - 1
     #idx3 = idx2 + idx[2]
     #npair = min(npair,3)
@@ -193,12 +205,13 @@ def loc_asrot(mf, nacto, nelecact, ncore):
     npair = (nacto - nopen)//2
     occ_idx = range(ncore,ncore+npair)
     vir_idx = range(ncore+nacto-npair,ncore+nacto)
-    nbf = mf.mo_coeff.shape[0]
+    """nbf = mf.mo_coeff.shape[0]
     S = mf.get_ovlp()
     occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
     vir_loc_orb = assoc_rot_py(mf.mo_coeff[:,occ_idx], occ_loc_orb, mf.mo_coeff[:,vir_idx])
     mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
-    mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
+    mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()"""
+    mf = loc(mf, occ_idx, vir_idx, localize=localize)
     print('MOs after assoc_rot')
     dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ncore:ncore+nacto], ncol=10)
     #vir_loc_orb2 = assoc_rot(nbf, npair, mf.mo_coeff[:,occ_idx], occ_loc_orb, mf.mo_coeff[:,vir_idx])
@@ -290,7 +303,7 @@ def sort_mo(mf, sort, ncore, base=1):
     return mf
 
 def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, 
-            gvb=False, suhf=False, lmo=True, sort=None, dry=False,
+            gvb=False, suhf=False, lmo='pm1', sort=None, dry=False,
             symmetry=None):
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
@@ -298,9 +311,11 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = do_suhf(mf)
         else:
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
+        if lmo:
+            mf = loc_asrot(mf, nacto, (nacta, nactb), ndb, localize=lmo)
     else:
         if lmo:
-            mf, lmos, npair, ndb = get_locorb(mf)
+            mf, lmos, npair, ndb = get_locorb(mf, localize=lmo)
             if gvb:
                 #npair=2
                 mf, gvbno, npair = do_gvb(mf, npair, ndb)
