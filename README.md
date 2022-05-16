@@ -22,7 +22,7 @@ Install
 ## Features
 * UHF -> UNO (-> PM LMO -> assoc rot) (-> GVB) -> CASSCF
 * UHF -> SUHF -> CASSCF
-* RHF (-> vir MO projection -> PM LMO -> pairing) -> CASSCF
+* RHF (-> vir MO projection -> PM LMO -> pairing) (-> GVB ) -> CASSCF
 * CASSCF -> NEVPT2
 * CASSCF -> MC-PDFT
 * CASSCF(dry run) -> SA-CASSCF

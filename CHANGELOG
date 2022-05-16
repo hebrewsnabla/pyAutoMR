@@ -1,3 +1,16 @@
+
+version 0.3.0 (May 16, 2022)
+* GVB interface to pyNOF
+* UNO -> PM LMO -> assoc. rot. -> GVB -> CASSCF
+* RHF -> proj. -> PM LMO -> pairing -> GVB -> CASSCF
+* allow do pm with pyscf
+* allow level_shift in mix
+
+version 0.2.2 (Feb 24, 2022)
+* allow symmetry in autocas
+* allow reading natural orbital with from_fch_noiter
+* allow user-defined thresh in get_uno
+
 version 0.2.1 (Jan 26, 2022)
 * allow SOSCF in check_stab
 * support for RHF/RKS, ROHF/ROKS in check_stab
