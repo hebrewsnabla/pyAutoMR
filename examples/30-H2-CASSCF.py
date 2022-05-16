@@ -12,7 +12,7 @@ mf = guess.mix(xyz, bas, conv='tight')
 #mf = guess.from_frag(xyz, bas, [[0],[1]], [0,0], [3,-3], cycle=50)
 #mf = guess.check_stab(mf)
 
-mf2 = autocas.cas(mf, lmo=False)
+mf2 = autocas.cas(mf)
 # UNO -> CASSCF, no localization in this case.
 
 

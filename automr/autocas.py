@@ -235,7 +235,7 @@ def loc_asrot(mf, nacto, nelecact, ncore, localize='pm1'):
     dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ncore:ncore+nacto], ncol=10)
     #vir_loc_orb2 = assoc_rot(nbf, npair, mf.mo_coeff[:,occ_idx], occ_loc_orb, mf.mo_coeff[:,vir_idx])
     #dump_mat.dump_mo(mf.mol,vir_loc_orb2, ncol=10)
-    return mf
+    return mf, npair
 
 def assoc_rot_py(mo_g, mo_g_loc, mo_u):
     #p,l,u = scipy.linalg.lu(mo_g)
@@ -324,8 +324,11 @@ def sort_mo(mf, sort, ncore, base=1):
     return mf
 
 def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, 
-            gvb=False, suhf=False, lmo='pm1', sort=None, dry=False,
+            gvb=False, suhf=False, lmo=False, sort=None, dry=False,
             symmetry=None):
+    '''
+        lmo: False, 'pm', 'pm1'
+    '''
     is_uhf, mf = check_uhf(mf)
     if is_uhf:
         if suhf:
@@ -333,20 +336,39 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
         else:
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
         if lmo:
-            mf = loc_asrot(mf, nacto, (nacta, nactb), ndb, localize=lmo)
+            mf, npair = loc_asrot(mf, nacto, (nacta, nactb), ndb, localize=lmo)
+            if gvb:
+                if nacta - nactb != 0:
+                    raise NotImplementedError('GVB for nopen > 0 not implemented')
+                nacto0 = nacto
+                mf, gvbno, noon, npair = do_gvb(mf, npair, ndb)
+                nacto = npair*2
+                nacta = nactb = npair
     else:
         if lmo:
             mf, lmos, npair, ndb = get_locorb(mf, localize=lmo)
             if gvb:
-                #npair=2
+                #nacto0 = npair*2
                 mf, gvbno, noon, npair = do_gvb(mf, npair, ndb)
+            else:
+                print('''Warning: LMO obtained but no GVB performed. 
+                                  That's not reliable usually.''')
             nacto = npair*2
             nacta = nactb = npair
-        #else:
+        else:
+            print('Warning: no lmo step so no special actions on RHF orbitals')
         #    ndb = np.count_nonzero(mf.mo_occ) - nacto//2
         
     if act_user is not None:
         print('Warning: using user defined active space')
+        if is_uhf:
+            if act_user[0] > nacto0:
+                print('Warning: User defined active space larger than UNO-determined space.')
+            elif gvb and act_user[0] > nacto:
+                print('Warning: User defined active space larger than GVB-determined space.')
+        else:
+            if gvb and act_user[0] > nacto:
+                print('Warning: User defined active space larger than GVB-determined space.')
         nacto = act_user[0]
         nacta, nactb = act_user[1]
         print('user-defined guess orbs')

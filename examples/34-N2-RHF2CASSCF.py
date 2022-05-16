@@ -11,6 +11,7 @@ bas = 'cc-pvdz'
 mf = guess.gen(xyz, bas, 0, 0)
 #guess.check_stab(mf)
 
-mf2 = autocas.cas(mf)
-#cidump.dump(mf2)
-
+#mf2 = autocas.cas(mf, lmo='pm', gvb=True)
+# This will invoke CAS(4,4)
+mf2 = autocas.cas(mf, lmo='pm', gvb=True, act_user=(6,(3,3)))
+# User can enlarge the active space

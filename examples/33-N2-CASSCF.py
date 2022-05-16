@@ -11,7 +11,7 @@ bas = 'cc-pvdz'
 mf = guess.from_frag(xyz, bas, [[0],[1]], [0,0], [3,-3], cycle=50)
 mf = guess.check_stab(mf)
 
-mf2 = autocas.cas(mf)
-#cidump.dump(mf2)
-
+#mf2 = autocas.cas(mf)
 # UNO -> CASSCF, no localization in this case.
+mf2 = autocas.cas(mf, lmo='pm', gvb=True)
+# UNO -> PM LMO -> assoc. rot. -> GVB -> CASSCF, no localization in this case.
