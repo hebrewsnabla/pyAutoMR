@@ -14,3 +14,4 @@ mf = guess.check_stab(mf)
 mf2 = autocas.cas(mf)
 #cidump.dump(mf2)
 
+# UNO -> CASSCF, no localization in this case.

@@ -107,7 +107,8 @@ def _from_fchk(mol, fch, xc=None, no=False):
 def mix_tight(xyz, bas, charge=0, xc=None):
     return mix(xyz, bas, charge, 'tight', xc=xc)
 
-def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None, newton=False):
+def mix(xyz, bas, charge=0, conv='loose', cycle=5, level_shift=0.0, 
+        skipstb=False, xc=None, newton=False):
     mol = gto.Mole()
     mol.atom = xyz
     #with open(xyz, 'r') as f:
@@ -118,9 +119,10 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, skipstb=False, xc=None, newto
     #mol.output = 'test.pylog'
     mol.verbose = 4
     mol.build()
-    return _mix(mol, conv, cycle, skipstb, xc, newton)
+    return _mix(mol, conv, cycle, level_shift, skipstb, xc, newton)
 
-def _mix(mol, conv='loose', cycle=5, skipstb=False, xc=None, newton=False):
+def _mix(mol, conv='loose', cycle=5, level_shift=0.0,
+         skipstb=False, xc=None, newton=False):
     t1 = time.time()
     if xc is None: 
         mf = scf.RHF(mol)
@@ -143,6 +145,7 @@ def _mix(mol, conv='loose', cycle=5, skipstb=False, xc=None, newton=False):
         mf_mix.conv_tol = 1e-3
         mf_mix.max_cycle = cycle
     elif conv == 'tight':
+        mf_mix.level_shift = level_shift
         mf_mix.max_cycle = 100
     mf_mix.kernel(dm0=dm_mix)
     if not mf_mix.converged and conv == 'tight':
