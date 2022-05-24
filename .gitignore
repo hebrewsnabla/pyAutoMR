@@ -4,3 +4,4 @@ __pycache__/
 uno.out
 /examples/scan/
 /examples/*out*
+/examples/*/*out*

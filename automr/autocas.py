@@ -178,8 +178,8 @@ def get_locorb(mf, localize='pm1', pair=True):
     idx3 = idx2 + npair
     print('MOs after projection')
     dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
-    occ_idx = range(idx1,idx2)
-    vir_idx = range(idx2,idx3)
+    occ_idx = slice(idx1,idx2)
+    vir_idx = slice(idx2,idx3)
     if localize:
         mf = loc(mf, occ_idx, vir_idx, localize)
     if pair:
@@ -222,8 +222,8 @@ def loc_asrot(mf, nacto, nelecact, ncore, localize='pm1'):
     na, nb = nelecact
     nopen = na-nb
     npair = (nacto - nopen)//2
-    occ_idx = range(ncore,ncore+npair)
-    vir_idx = range(ncore+nacto-npair,ncore+nacto)
+    occ_idx = slice(ncore,ncore+npair)
+    vir_idx = slice(ncore+nacto-npair,ncore+nacto)
     """nbf = mf.mo_coeff.shape[0]
     S = mf.get_ovlp()
     occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
