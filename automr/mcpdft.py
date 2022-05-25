@@ -93,7 +93,7 @@ def _get_e_decomp (mc, ot, mo_coeff, ci, e_mcscf):
     e_c = e_mcscf - e_nn - e_core - e_coul - e_x
     return e_nn, e_core, e_coul, e_x, e_otx, e_otc, e_c
 
-def get_E_ot (ot, oneCDMs, twoCDM_amo, ao2amo, max_memory=2000, hermi=1):
+def get_E_ot2 (ot, oneCDMs, twoCDM_amo, ao2amo, max_memory=2000, hermi=1):
     ''' E_MCPDFT = h_pq l_pq + 1/2 v_pqrs l_pq l_rs + E_ot[rho,Pi] 
         or, in other terms, 
         E_MCPDFT = T_KS[rho] + E_ext[rho] + E_coul[rho] + E_ot[rho, Pi]
@@ -141,12 +141,15 @@ def get_E_ot (ot, oneCDMs, twoCDM_amo, ao2amo, max_memory=2000, hermi=1):
     return E_ot
 
 class PDFT(_PDFT):
-    def __init__(self, mc, my_ot):
+    def __init__(self, mc, my_ot, grids_level=4):
         self.mc = mc
         self.mol = mc.mol
         self.verbose = 5
         self.stdout = mc.stdout
-        self._init_ot_grids(my_ot, grids_level=4)
+        grids_attr = {}
+        if grids_level is not None:
+            grids_attr['level'] = grids_level
+        self._init_ot_grids(my_ot, grids_attr)
     def kernel(self):
         ot = self.otfnal
         mc = self.mc

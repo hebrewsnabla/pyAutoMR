@@ -324,13 +324,23 @@ def sort_mo(mf, sort, ncore, base=1):
     return mf
 
 def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, 
-            gvb=False, suhf=False, lmo=False, sort=None, dry=False,
-            symmetry=None):
+            gvb=False, suhf=False, lmo=False, no=(None,None), sort=None, 
+            dry=False, symmetry=None):
     '''
+        mf: RHF/UHF object
         lmo: False, 'pm', 'pm1'
     '''
     is_uhf, mf = check_uhf(mf)
-    if is_uhf:
+    if no[0] is not None:
+        mo_coeff, noon = no
+        nacto, ndb, nex = check_uno(noon)
+        nopen = mf.nelec[0] - mf.nelec[1]
+        nacta = (nacto + nopen)//2
+        nactb = (nacto - nopen)//2
+        mf = mf.to_rhf()
+        mf.mo_coeff = mo_coeff
+        dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
+    elif is_uhf:
         if suhf:
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = do_suhf(mf)
         else:
@@ -378,6 +388,7 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
                 mf = sort_mo(mf, sort, ndb)
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,ndb:ndb+nacto], ncol=10)
     nopen = nacta - nactb
+    #print(mf.mo_coeff.shape)
 
     if symmetry is not None:
         mf.mol.build(symmetry=symmetry)
@@ -386,8 +397,8 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
     mc.max_memory = max_memory // 2
     mc.max_cycle = 200
     mc.fcisolver.spin = nopen
+    mc.fix_spin_(ss=nopen)
     if crazywfn:
-        mc.fix_spin_(ss=nopen)
         mc.fcisolver.level_shift = 0.2
         mc.fcisolver.pspace_size = 1200
         mc.fcisolver.max_space = 100
@@ -401,6 +412,8 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
     #    mf.mo_coeff = mo
     if dry:
         return mc
+    #print(mc.mo_coeff.shape)
+    #print(mc.mo_coeff)
     mc.kernel()
     #mc.analyze(with_meta_lowdin=False)
     if natorb:
