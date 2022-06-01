@@ -61,6 +61,8 @@ mf2 = autocas.cas(mf)
 ## Citation
 Please cite pyAutoMR as
 > Shirong Wang, pyAutoMR, https://github.com/hebrewsnabla/pyAutoMR (accessed month day, year)
+
 and cite every program called by pyAutoMR, such as PySCF, MOKIT, mrh, etc.
+
 If you peform calculations involving GVB, please also cite the following two papers
 > DOI: 10.1021/acs.jctc.8b00854; DOI: 10.1021/acs.jpca.0c05216.
