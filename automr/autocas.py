@@ -209,7 +209,7 @@ def loc(mf, occ_idx, vir_idx, localize='pm1'):
     mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
     mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
     print('MOs after PM localization')
-    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,range(occ_idx[0], vir_idx[-1]+1)], ncol=10)
+    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,slice(occ_idx.start, vir_idx.stop)], ncol=10)
     return mf
 
 def loc_asrot(mf, nacto, nelecact, ncore, localize='pm1'):
