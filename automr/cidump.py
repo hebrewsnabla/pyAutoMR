@@ -1,6 +1,8 @@
 from pyscf import fci
+import numpy as np
 
 def merge_vec(va, vb, n):
+    print(str(bin(va)))
     va = str(bin(va))[2:].rjust(n,'0')[::-1]
     vb = str(bin(vb))[2:].rjust(n,'0')[::-1]
     v = ['0']*n
@@ -43,22 +45,28 @@ def dump(mc, thresh=1e-2):
         na,nb =  fci.addons._unpack_nelec(mc.nelecas, spin)
         #print(mc.ci)
         lena, lenb = ci.shape
+        addra, addrb = np.where(abs(ci) > np.sqrt(thresh))
         dump_g = {}
         dump_o = {}
-        for i in range(lena):
-            for j in range(lenb):
-                #print('ncas %d na %d i %d'%(ncas, na,i))
-                #print(fci.cistring.num_strings(ncas, na) )
-                veca = fci.cistring.addr2str(ncas, na, i)
-                vecb = fci.cistring.addr2str(ncas, nb, j)
-                coeff = ci[i,j]
-                if coeff**2 > thresh:
-                    vec, veco, va, vb = merge_vec(veca, vecb, ncas)
-                    dump_g[vec] = coeff**2
-                    if veco in dump_o:
-                        dump_o[veco] += coeff**2
-                    else:
-                        dump_o[veco] = coeff**2
+        print(addra)
+        print(addrb)
+        for k in range(len(addra)):
+            #for j in addrb:
+            i = addra[k]
+            j = addrb[k]
+            #print('ncas %d na %d i %d'%(ncas, na,i))
+            #print(fci.cistring.num_strings(ncas, na) )
+            veca = fci.cistring.addr2str(ncas, na, i)
+            vecb = fci.cistring.addr2str(ncas, nb, j)
+            coeff = ci[i,j]
+            #    if coeff**2 > thresh:
+            #print(veca)
+            vec, veco, va, vb = merge_vec(veca, vecb, ncas)
+            dump_g[vec] = coeff**2
+            if veco in dump_o:
+                dump_o[veco] += coeff**2
+            else:
+                dump_o[veco] = coeff**2
         dump_g = sorted(dump_g.items(),  key=lambda d: d[1], reverse=True)
         dump_o = sorted(dump_o.items(),  key=lambda d: d[1], reverse=True)
         #print(dump_g)
