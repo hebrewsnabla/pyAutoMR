@@ -2,7 +2,7 @@ from pyscf import fci
 import numpy as np
 
 def merge_vec(va, vb, n):
-    print(str(bin(va)))
+    #print(str(bin(va)))
     va = str(bin(va))[2:].rjust(n,'0')[::-1]
     vb = str(bin(vb))[2:].rjust(n,'0')[::-1]
     v = ['0']*n
@@ -48,8 +48,8 @@ def dump(mc, thresh=1e-2):
         addra, addrb = np.where(abs(ci) > np.sqrt(thresh))
         dump_g = {}
         dump_o = {}
-        print(addra)
-        print(addrb)
+        #print(addra)
+        #print(addrb)
         for k in range(len(addra)):
             #for j in addrb:
             i = addra[k]
