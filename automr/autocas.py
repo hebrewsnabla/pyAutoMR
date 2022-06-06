@@ -13,7 +13,7 @@ except:
 from pyscf.lo import PM
 from pyscf.lo.boys import dipole_integral
 from automr import dump_mat, bridge, cidump
-from automr.util import check_uno
+from automr.util import check_uno, chemcore
 import sys, os
 try:
     from pyphf import suscf
@@ -174,7 +174,8 @@ def get_locorb(mf, localize='pm1', pair=True):
     npair = np.sum(mf2.mo_occ==0)
     print('npair', npair)
     idx2 = np.count_nonzero(mf.mo_occ)
-    idx1 = idx2 - npair
+    ncore = chemcore(mol)
+    idx1 = min(idx2 - npair, ncore)
     idx3 = idx2 + npair
     print('MOs after projection')
     dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
@@ -184,15 +185,16 @@ def get_locorb(mf, localize='pm1', pair=True):
         mf = loc(mf, occ_idx, vir_idx, localize)
     if pair:
         mo_dipole = dipole_integral(mol, mf.mo_coeff)
-        ncore = idx1
+        #ncore = idx1
         nopen = np.sum(mf.mo_occ==1)
         nalpha = idx2
         #nvir_lmo = npair
         alpha_coeff = pair_by_tdm(ncore, npair, nopen, nalpha, npair, nbf, nif, mf.mo_coeff, mo_dipole)
         mf.mo_coeff = alpha_coeff.copy()
         print('MOs after pairing')
+        ncore = idx2 - npair
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
-    return mf, alpha_coeff, npair, ncore
+    return mf, mf.mo_coeff, npair, ncore
 
 def loc(mf, occ_idx, vir_idx, localize='pm1'):
     mol = mf.mol
