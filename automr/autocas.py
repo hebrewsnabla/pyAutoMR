@@ -5,30 +5,31 @@ import numpy as np
 import scipy
 from functools import partial, reduce
 try:
-    from lo import pm
+    #from lo import pm
     from auto_pair import pair_by_tdm
     #from assoc_rot import assoc_rot
 except:
-    print('Warning: lo/auto_pair not found. Orbital localization is disabled. Install MOKIT if you need that.')
+    print('Warning: auto_pair not found. Install MOKIT if you need that.')
 from pyscf.lo import PM
 from pyscf.lo.boys import dipole_integral
 from automr import dump_mat, bridge, cidump
 from automr.util import check_uno, chemcore
 import sys, os
-try:
-    from pyphf import suscf
-except:
-    print('Warning: pyphf not found. SUHF is disabled. Install ExSCF if you need that.')
-try:
-    import nof
-except:
-    print('Warning: pyNOF not found. GVB is disabled. Install pyNOF if you need that.')
+#try:
+#    from pyphf import suscf
+#except:
+#    print('Warning: pyphf not found. SUHF is disabled. Install ExSCF if you need that.')
+#try:
+#    import nof
+#except:
+#    print('Warning: pyNOF not found. GVB is disabled. Install pyNOF if you need that.')
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
 np.set_printoptions(precision=6, linewidth=160, suppress=True)
 
 def do_suhf(mf):
+    from pyphf import suscf
     mol = mf.mol 
     #mo = mf.mo_coeff
     #S = mol.intor_symmetric('int1e_ovlp')
@@ -146,7 +147,7 @@ def get_uno_st1(mo, mo_occ, S, thresh=0.98):
 
     return unos, noon, nacto
 
-def get_locorb(mf, localize='pm1', pair=True):
+def get_locorb(mf, localize='pm', pair=True):
     mol = mf.mol
     mo = mf.mo_coeff
     nbf = mf.mo_coeff.shape[0]
@@ -196,9 +197,10 @@ def get_locorb(mf, localize='pm1', pair=True):
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
     return mf, mf.mo_coeff, npair, ncore
 
-def loc(mf, occ_idx, vir_idx, localize='pm1'):
+def loc(mf, occ_idx, vir_idx, localize='pm'):
     mol = mf.mol
     if localize=='pm1':
+        from lo import pm
         S = mol.intor_symmetric('int1e_ovlp')
         nbf = mf.mo_coeff.shape[0]
         nif = mf.mo_coeff.shape[1]
@@ -214,7 +216,7 @@ def loc(mf, occ_idx, vir_idx, localize='pm1'):
     dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,slice(occ_idx.start, vir_idx.stop)], ncol=10)
     return mf
 
-def loc_asrot(mf, nacto, nelecact, ncore, localize='pm1'):
+def loc_asrot(mf, nacto, nelecact, ncore, localize='pm'):
     #idx2 = idx[0] + npair - 1
     #idx3 = idx2 + idx[2]
     #npair = min(npair,3)
@@ -271,6 +273,7 @@ def do_gvb_qchem(mf, npair):
     return mf, gvbno, npair
 
 def do_gvb(mf, npair, ndb):
+    import nof
     thenof = nof.SOPNOF(mf, npair*2, npair*2)
     thenof.verbose = 5
     #thenof.mo_occ = noon / 2
@@ -330,7 +333,9 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
             dry=False, symmetry=None):
     '''
         mf: RHF/UHF object
-        lmo: False, 'pm', 'pm1'
+        lmo: False, 
+             'pm',  # PM from pyscf
+             'pm1'  # PM from mokit
     '''
     is_uhf, mf = check_uhf(mf)
     if no[0] is not None:
