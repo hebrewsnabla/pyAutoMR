@@ -97,6 +97,7 @@ def get_uno(mf, st='st2', uks=False, thresh=1.98):
     else:
         mf = mf.to_rhf()
     mf.mo_coeff = unos
+    mf.mo_occ = mf.mo_occ[0] + mf.mo_occ[1]
     #mf.mo_occ = noon
     print('UNO in active space')
     dump_mat.dump_mo(mol, unos[:,ndb:ndb+nacto], ncol=10)
