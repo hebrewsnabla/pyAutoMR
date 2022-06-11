@@ -92,13 +92,20 @@ def get_uno(mf, st='st2', uks=False, thresh=1.98):
     nacta = (nacto + nopen)//2
     nactb = (nacto - nopen)//2
     print('nacto, nacta, nactb: %d %d %d' % (nacto, nacta, nactb))
+    #print(mf.mo_occ[0], mf.mo_occ[1])
     if uks:
         mf = mf.to_rks()
     else:
         mf = mf.to_rhf()
     mf.mo_coeff = unos
-    mf.mo_occ = mf.mo_occ[0] + mf.mo_occ[1]
+    #if mf.mo_occ[0] == mf.mo_occ[1]:
+    if mf.mo_occ is None:
+        mf.mo_occ = mf.mo_occ[0] + mf.mo_occ[1]
+    #else:
+    #    mf.mo_occ = np.zeros(unos.shape[1])
+    #    mf.mo_occ[
     #mf.mo_occ = noon
+    print(mf.mo_occ)
     print('UNO in active space')
     dump_mat.dump_mo(mol, unos[:,ndb:ndb+nacto], ncol=10)
     return mf, unos, noon, nacto, (nacta, nactb), ndb, nex

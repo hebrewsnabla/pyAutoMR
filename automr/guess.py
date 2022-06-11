@@ -1,4 +1,5 @@
-from pyscf import gto, scf, dft
+from pyscf import gto, scf, dft, lib
+from pyscf.lo import PM, Boys
 import numpy as np
 try:
     from fch2py import fch2py
@@ -366,3 +367,128 @@ def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4):
 
     dm = scf.uhf.make_rdm1( (Ca,Cb), (mo_occ,mo_occ) )
     return dm
+
+def flipspin(xyz, bas, highspin, flipstyle='lmo', fliporb=[-1], site=None, cycle=50):
+    mol = gto.Mole()
+    mol.atom = xyz
+    mol.basis = bas
+    mol.verbose = 4
+    mol.build()
+    return _flipspin(mol, highspin, flipstyle, 
+                     fliporb=fliporb, site=site, cycle=cycle)
+
+def _flipspin(mol, highspin, flipstyle='lmo', fliporb=[-1], site=None, cycle=50):
+    mol.spin = highspin
+    mf = scf.UHF(mol.build())
+    mf.conv_tol = 1e-6
+    mf.run()
+    
+    mf, unos, noon, nacto, nelecact, ncore, _ = autocas.get_uno(mf, thresh=1.98)
+    
+    act_idx = slice(ncore, ncore+nacto)
+    #loc = Boys(mf.mol, mf.mo_coeff[:,act_idx])
+    loc = PM(mf.mol, mf.mo_coeff[:,act_idx], mf)
+    #loc.pop_method = 'meta-lowdin'
+    loc_orb = loc.kernel()
+    dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
+    """pm.pop_method = 'mulliken'
+    loc_orb = pm.kernel()
+    dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
+    pm.pop_method = 'iao'
+    loc_orb = pm.kernel()
+    dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
+    pm.pop_method = 'becke'
+    loc_orb = pm.kernel()
+    dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
+    #mf.mo_coeff[:, act_idx] = loc_orb.copy()
+    #print(mf.mo_occ)    
+    exit() """           
+    
+    atm_loc = mulliken(mf.mol, loc_orb)
+    print('atm_loc', atm_loc)
+    if flipstyle=='lmo':
+        mf_bs = flip_bylmo(mf, act_idx, loc_orb, fliporb)
+    elif flipstyle=='site':
+        mf_bs = flip_bysite(mf, act_idx, loc_orb, atm_loc, [1])
+    else:
+        raise ValueError('flipstyle can only be lmo or site')
+    dm0 = mf_bs.make_rdm1()
+    #mf_bs.level_shift = 0.3
+    mf_bs.max_cycle = cycle
+    #print(mf_bs.mo_coeff[0].shape)
+    print(mf_bs.mo_occ)
+    mf_bs.kernel(dm0=dm0)
+    return mf_bs
+
+
+def mulliken(mol, mo):
+    atm_loc = {}
+    S = mol.intor_symmetric('int1e_ovlp')
+    theta = lib.einsum('ai, ab, bi -> ia', mo, S, mo)
+    for i in range(theta.shape[0]):
+        print('LMO %d' %i, end='')
+        chg = np.zeros(mol.natm)
+        for a, s in enumerate(mol.ao_labels(fmt=None)):
+            chg[s[0]] += theta[i,a]
+        if chg.max() > 0.65:
+            max_idx = chg.argmax()
+            if max_idx in atm_loc:
+                atm_loc[max_idx].append(i)
+            else:
+                atm_loc[max_idx] = [i]
+        for s in range(mol.natm):
+            if chg[s] > 0.05:
+                print('  %d%2s  %.2f  ' % (s, mol.atom_symbol(s), chg[s]), end='')
+        print('')
+    return atm_loc
+
+def flip_bylmo(mf, act_idx, loc_orb, fliporb):
+    mo = mf.mo_coeff
+    mo_core = mo[:, :act_idx.start]
+    mo_ext = mo[:, act_idx.stop:]
+    a = []
+    b = []
+    for i in range(loc_orb.shape[1]):
+        if i in fliporb:
+            b.append(i)
+        else:
+            a.append(i)
+    mo_a = np.hstack((loc_orb[:,a], loc_orb[:,b]))
+    mo_b = np.hstack((loc_orb[:,b], loc_orb[:,a]))
+    #mo_a = np.hstack(tuple(moa)+tuple(mob))
+    #mo_b = np.hstack(tuple(mob)+tuple(moa))
+    #mol_bs = mf.mol
+    #mol_bs.spin = 0
+    mf_bs = mf.to_uhf()
+    mf_bs.mol.spin = 0
+    mf_bs.mol.build()
+    dump_mat.dump_mo(mf_bs.mol, mo_a, ncol=10)
+    #mf_bs.mo_coeff = mo
+    mf_bs.mo_coeff = ( np.hstack((mo_core, mo_a, mo_ext)),
+                       np.hstack((mo_core, mo_b, mo_ext)))
+    return mf_bs
+
+def flip_bysite(mf, act_idx, loc_orb, atm_loc, site):
+    mo = mf.mo_coeff
+    mo_core = mo[:, :act_idx.start]
+    mo_ext = mo[:, act_idx.stop:]
+    moa = []
+    mob = []
+    for atm in atm_loc:
+        mo_atm = loc_orb[:,atm_loc[atm]]
+        if atm in site:
+            mob.append(mo_atm)
+        else:
+            moa.append(mo_atm)
+    mo_a = np.hstack(tuple(moa)+tuple(mob))
+    mo_b = np.hstack(tuple(mob)+tuple(moa))
+    #mol_bs = mf.mol
+    #mol_bs.spin = 0
+    mf_bs = mf.to_uhf() #scf.UHF(mol_bs)
+    mf_bs.mol.spin = 0
+    dump_mat.dump_mo(mf_bs.mol, mo_a, ncol=10)
+    #mf_bs.mo_coeff = mo
+    mf_bs.mo_coeff = ( np.hstack((mo_core, mo_a, mo_ext)),
+                       np.hstack((mo_core, mo_b, mo_ext)))
+    #print(mf_bs.mo_occ)
+    return mf_bs
