@@ -34,6 +34,7 @@ UHF, RHF can be auto-detected.
   + mix
   + fragment
   + from_fch
+  + flipspin (by lmo or by site)
 * internal stability for RHF/RKS, UHF/UKS, ROHF/ROKS
   + optimize wavefunction until stable
 * dump CASCI coefficients
