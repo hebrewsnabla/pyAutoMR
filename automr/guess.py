@@ -230,6 +230,7 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
     mol.basis = bas
     mol.verbose = 4
     mol.charge = sum(chgs)
+    mol.spin = sum(spins)
     mol.build()
     
     t1 = time.time() 
@@ -373,7 +374,7 @@ def flipspin(xyz, bas, highspin, flipstyle='lmo', fliporb=[-1], site=None, cycle
     mol.atom = xyz
     mol.basis = bas
     mol.verbose = 4
-    mol.build()
+    #mol.build()
     return _flipspin(mol, highspin, flipstyle, 
                      fliporb=fliporb, site=site, cycle=cycle)
 
@@ -409,10 +410,12 @@ def _flipspin(mol, highspin, flipstyle='lmo', fliporb=[-1], site=None, cycle=50)
     if flipstyle=='lmo':
         mf_bs = flip_bylmo(mf, act_idx, loc_orb, fliporb)
     elif flipstyle=='site':
-        mf_bs = flip_bysite(mf, act_idx, loc_orb, atm_loc, [1])
+        mf_bs = flip_bysite(mf, act_idx, loc_orb, atm_loc, site)
     else:
         raise ValueError('flipstyle can only be lmo or site')
     dm0 = mf_bs.make_rdm1()
+    #print(dm0[0].trace(), dm0[1].trace())
+    #print(np.linalg.norm(dm0[0]-dm0[1]))
     #mf_bs.level_shift = 0.3
     mf_bs.max_cycle = cycle
     #print(mf_bs.mo_coeff[0].shape)
@@ -460,12 +463,16 @@ def flip_bylmo(mf, act_idx, loc_orb, fliporb):
     #mol_bs = mf.mol
     #mol_bs.spin = 0
     mf_bs = mf.to_uhf()
-    mf_bs.mol.spin = 0
+    nelec = mo_core.shape[1] + len(a), mo_core.shape[1] + len(b)
+    mf_bs.mol.spin = nelec[0] - nelec[1]
     mf_bs.mol.build()
-    dump_mat.dump_mo(mf_bs.mol, mo_a, ncol=10)
     #mf_bs.mo_coeff = mo
+    mf_bs.mo_occ = np.zeros_like(mf_bs.mo_energy)
+    mf_bs.mo_occ[0,:nelec[0]] = 1
+    mf_bs.mo_occ[1,:nelec[1]] = 1
     mf_bs.mo_coeff = ( np.hstack((mo_core, mo_a, mo_ext)),
                        np.hstack((mo_core, mo_b, mo_ext)))
+    dump_mat.dump_mo(mf_bs.mol, mo_a, ncol=10)
     return mf_bs
 
 def flip_bysite(mf, act_idx, loc_orb, atm_loc, site):
@@ -474,21 +481,35 @@ def flip_bysite(mf, act_idx, loc_orb, atm_loc, site):
     mo_ext = mo[:, act_idx.stop:]
     moa = []
     mob = []
+    print('flip lmo on site', site)
+    act_a = 0; act_b = 0
     for atm in atm_loc:
         mo_atm = loc_orb[:,atm_loc[atm]]
         if atm in site:
             mob.append(mo_atm)
+            act_b += mo_atm.shape[1]
         else:
             moa.append(mo_atm)
+            act_a += mo_atm.shape[1]
     mo_a = np.hstack(tuple(moa)+tuple(mob))
     mo_b = np.hstack(tuple(mob)+tuple(moa))
     #mol_bs = mf.mol
     #mol_bs.spin = 0
     mf_bs = mf.to_uhf() #scf.UHF(mol_bs)
-    mf_bs.mol.spin = 0
-    dump_mat.dump_mo(mf_bs.mol, mo_a, ncol=10)
+    #mf_bs.mol.spin = 0
+    nelec = mo_core.shape[1] + act_a, mo_core.shape[1] + act_b
+    mf_bs.mol.spin = nelec[0] - nelec[1]
+    mf_bs.mol.build()
     #mf_bs.mo_coeff = mo
+    mf_bs.mo_occ = np.zeros_like(mf_bs.mo_energy)
+    mf_bs.mo_occ[0,:nelec[0]] = 1
+    mf_bs.mo_occ[1,:nelec[1]] = 1
     mf_bs.mo_coeff = ( np.hstack((mo_core, mo_a, mo_ext)),
                        np.hstack((mo_core, mo_b, mo_ext)))
     #print(mf_bs.mo_occ)
+    dump_mat.dump_mo(mf_bs.mol, mf_bs.mo_coeff[0][:, act_idx], ncol=10)
+    dump_mat.dump_mo(mf_bs.mol, mf_bs.mo_coeff[1][:, act_idx], ncol=10)
+    #dm0 = mf_bs.make_rdm1()
+    #print(dm0[0].trace(), dm0[1].trace())
+    #print(np.linalg.norm(dm0[0]-dm0[1]))
     return mf_bs
