@@ -369,27 +369,30 @@ def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4):
     dm = scf.uhf.make_rdm1( (Ca,Cb), (mo_occ,mo_occ) )
     return dm
 
-def flipspin(xyz, bas, highspin, flipstyle='lmo', fliporb=[-1], site=None, cycle=50):
+def flipspin(xyz, bas, highspin, flipstyle='lmo', loc='pm', fliporb=[-1], site=None, cycle=50):
     mol = gto.Mole()
     mol.atom = xyz
     mol.basis = bas
     mol.verbose = 4
     #mol.build()
     return _flipspin(mol, highspin, flipstyle, 
-                     fliporb=fliporb, site=site, cycle=cycle)
+                     loc=loc, fliporb=fliporb, site=site, cycle=cycle)
 
-def _flipspin(mol, highspin, flipstyle='lmo', fliporb=[-1], site=None, cycle=50):
+def _flipspin(mol, highspin, flipstyle='lmo', loc='pm', fliporb=[-1], site=None, cycle=50):
     mol.spin = highspin
     mf = scf.UHF(mol.build())
     mf.conv_tol = 1e-6
     mf.run()
     
-    mf, unos, noon, nacto, nelecact, ncore, _ = autocas.get_uno(mf, thresh=1.98)
-    
+    mf, unos, noon, _nacto, _, _ncore, _ = autocas.get_uno(mf, thresh=1.98)
+    nacto = min(_nacto, highspin)
+    ncore = _ncore + nacto - _nacto
     act_idx = slice(ncore, ncore+nacto)
-    #loc = Boys(mf.mol, mf.mo_coeff[:,act_idx])
-    loc = PM(mf.mol, mf.mo_coeff[:,act_idx], mf)
-    #loc.pop_method = 'meta-lowdin'
+    if loc=='boys':
+        loc = Boys(mf.mol, mf.mo_coeff[:,act_idx])
+    elif loc=='pm':
+        loc = PM(mf.mol, mf.mo_coeff[:,act_idx], mf)
+        #loc.pop_method = 'meta-lowdin'
     loc_orb = loc.kernel()
     dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
     """pm.pop_method = 'mulliken'
@@ -439,6 +442,12 @@ def mulliken(mol, mo):
                 atm_loc[max_idx].append(i)
             else:
                 atm_loc[max_idx] = [i]
+        else:
+            if -1 in atm_loc:
+                atm_loc[-1].append(i)
+            else:
+                atm_loc[-1] = [i]
+
         for s in range(mol.natm):
             if chg[s] > 0.05:
                 print('  %d%2s  %.2f  ' % (s, mol.atom_symbol(s), chg[s]), end='')
