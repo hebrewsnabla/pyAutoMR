@@ -389,11 +389,11 @@ def _flipspin(mol, highspin, flipstyle='lmo', loc='pm', fliporb=[-1], site=None,
     ncore = _ncore + nacto - _nacto
     act_idx = slice(ncore, ncore+nacto)
     if loc=='boys':
-        loc = Boys(mf.mol, mf.mo_coeff[:,act_idx])
+        locl = Boys(mf.mol, mf.mo_coeff[:,act_idx])
     elif loc=='pm':
-        loc = PM(mf.mol, mf.mo_coeff[:,act_idx], mf)
+        locl = PM(mf.mol, mf.mo_coeff[:,act_idx], mf)
         #loc.pop_method = 'meta-lowdin'
-    loc_orb = loc.kernel()
+    loc_orb = locl.kernel()
     dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
     """pm.pop_method = 'mulliken'
     loc_orb = pm.kernel()
