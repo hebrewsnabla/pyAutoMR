@@ -2,8 +2,8 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 [project]
-name = "automr"
-version = "0.3.0"
+name = "pyAutoMR"
+version = "0.3.0a"
 authors = [
   { name="Shirong Wang", email="srwang20@fudan.edu.cn" },
 ]
@@ -14,7 +14,6 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: POSIX",
-    "Operating System :: UNIX",
 ]
 [project.urls]
 "Homepage" = "https://github.com/hebrewsnabla/pyAutoMR"
