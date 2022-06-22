@@ -5,3 +5,5 @@ uno.out
 /examples/scan/
 /examples/*out*
 /examples/*/*out*
+/dist/
+*egg-info/
