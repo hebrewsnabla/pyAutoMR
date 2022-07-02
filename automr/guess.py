@@ -109,7 +109,7 @@ def mix_tight(xyz, bas, charge=0, xc=None):
     return mix(xyz, bas, charge, 'tight', xc=xc)
 
 def mix(xyz, bas, charge=0, conv='loose', cycle=5, level_shift=0.0, 
-        skipstb=False, xc=None, newton=False):
+        skipstb=False, xc=None, newton=False, hl=[0,0]):
     mol = gto.Mole()
     mol.atom = xyz
     #with open(xyz, 'r') as f:
@@ -120,10 +120,10 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, level_shift=0.0,
     #mol.output = 'test.pylog'
     mol.verbose = 4
     mol.build()
-    return _mix(mol, conv, cycle, level_shift, skipstb, xc, newton)
+    return _mix(mol, conv, cycle, level_shift, skipstb, xc, newton, hl)
 
 def _mix(mol, conv='loose', cycle=5, level_shift=0.0,
-         skipstb=False, xc=None, newton=False):
+         skipstb=False, xc=None, newton=False, hl=[0,0]):
     t1 = time.time()
     if xc is None: 
         mf = scf.RHF(mol)
@@ -135,12 +135,19 @@ def _mix(mol, conv='loose', cycle=5, level_shift=0.0,
     mf.kernel() # Guess by 1e is poor,
     #dm, mo_coeff, mo_energy, mo_occ = init_guess_by_1e(mf)
     print('**** generating mix guess ****')
-    dm_mix = init_guess_mixed(mf.mo_coeff, mf.mo_occ)
+    dm_mix, mo_mix = init_guess_mixed(mf.mo_coeff, mf.mo_occ, ho=hl[0], lu=hl[1])
     if xc is None:
         mf_mix = scf.UHF(mol)
     else:
         mf_mix = dft.UKS(mol)
         mf_mix.xc = xc
+    if cycle == 0:
+        mf_mix.mo_coeff = mo_mix
+        nelec = mf_mix.nelec
+        mf_mix.mo_occ = np.zeros((2, mo_mix[0].shape[1]))
+        mf_mix.mo_occ[0,:nelec[0]] = 1
+        mf_mix.mo_occ[1,:nelec[1]] = 1
+    #    return mf_mix
     #mf_mix.verbose = 4
     if conv == 'loose':
         mf_mix.conv_tol = 1e-3
@@ -327,7 +334,7 @@ def init_guess_by_1e(rhf, mol=None):
     mo_occ = rhf.get_occ(mo_energy, mo_coeff)
     return rhf.make_rdm1(mo_coeff, mo_occ), mo_coeff, mo_energy, mo_occ
 
-def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4):
+def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4, ho=0, lu=0):
     ''' Generate density matrix with broken spatial and spin symmetry by mixing
     HOMO and LUMO orbitals following ansatz in Szabo and Ostlund, Sec 3.8.7.
     
@@ -349,6 +356,8 @@ def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4):
             homo_idx=i
             lumo_idx=i+1
 
+    homo_idx += ho
+    lumo_idx += lu
     psi_homo=mo_coeff[:, homo_idx]
     psi_lumo=mo_coeff[:, lumo_idx]
     
@@ -367,7 +376,7 @@ def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4):
     Cb[:,lumo_idx] =  np.sin(q)*psi_homo + np.cos(q)*psi_lumo
 
     dm = scf.uhf.make_rdm1( (Ca,Cb), (mo_occ,mo_occ) )
-    return dm
+    return dm, (Ca, Cb)
 
 def flipspin(xyz, bas, highspin, flipstyle='lmo', loc='pm', fliporb=[-1], site=None, cycle=50):
     mol = gto.Mole()
