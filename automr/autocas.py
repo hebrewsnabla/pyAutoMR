@@ -360,12 +360,12 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = do_suhf(mf)
         else:
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf, thresh=unothresh)
+        nacto0 = nacto
         if lmo:
             mf, npair = loc_asrot(mf, nacto, (nacta, nactb), ndb, localize=lmo)
             if gvb:
                 if nacta - nactb != 0:
                     raise NotImplementedError('GVB for nopen > 0 not implemented')
-                nacto0 = nacto
                 mf, gvbno, noon, npair = do_gvb(mf, npair, ndb)
                 nacto = npair*2
                 nacta = nactb = npair
