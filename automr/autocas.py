@@ -337,7 +337,7 @@ def sort_mo(mf, sort, ncore, base=1):
     return mf
 
 def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, 
-            gvb=False, suhf=False, lmo=False, no=(None,None), sort=None, 
+            gvb=False, suhf=False, unothresh=1.98, lmo=False, no=(None,None), sort=None, 
             dry=False, symmetry=None):
     '''
         mf: RHF/UHF object
@@ -359,7 +359,7 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
         if suhf:
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = do_suhf(mf)
         else:
-            mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
+            mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf, thresh=unothresh)
         if lmo:
             mf, npair = loc_asrot(mf, nacto, (nacta, nactb), ndb, localize=lmo)
             if gvb:
