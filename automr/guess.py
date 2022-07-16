@@ -1,4 +1,5 @@
-from pyscf import gto, scf, dft, lib
+from pyscf import gto, scf, dft, lib, qmmm
+from pyscf.lib import logger
 from pyscf.lo import PM, Boys
 import numpy as np
 try:
@@ -60,7 +61,6 @@ def from_fchk(xyz, bas, fch, cycle=None, xc=None):
     #    mol.atom = f.read()
     #print(mol.atom)
     mol.basis = bas
-    #mol.output = 'test.pylog'
     mol.verbose = 4
     mol.build()
     mf = _from_fchk(mol, fch, xc)
@@ -231,7 +231,7 @@ def from_frag_tight(xyz, bas, frags, chgs, spins, newton):
 
 
 
-def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
+def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen=False, bgchg=None):
     mol = gto.Mole()
     mol.atom = xyz
     mol.basis = bas
@@ -241,11 +241,12 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
     mol.build()
     
     t1 = time.time() 
-    dm, mo, occ = guess_frag(mol, frags, chgs, spins)
-    print('Frag guess orb alpha')
-    dump_mat.dump_mo(mol, mo[0])
-    print('Frag guess orb beta')
-    dump_mat.dump_mo(mol, mo[1])
+    dm, mo, occ = guess_frag(mol, frags, chgs, spins, rmdegen=rmdegen, bgchg=bgchg)
+    if verbose > 4:
+        print('Frag guess orb alpha')
+        dump_mat.dump_mo(mol, mo[0])
+        print('Frag guess orb beta')
+        dump_mat.dump_mo(mol, mo[1])
     if xc is None:
         mf = scf.UHF(mol)
     else:
@@ -262,12 +263,23 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4):
     print('time for guess: %.3f' % (t2-t1))
     return mf
 
+#def make_bgchg(atom, chgs):
+#    return 
 
-def guess_frag(mol, frags, chgs, spins):
+def guess_frag(mol, frags, chgs, spins, rmdegen=False, bgchg=None):
     '''
     frags: e.g. [[0], [1]] for N2
     '''
     #mol.build()
+    if rmdegen:
+         if bgchg is not None:
+             mul_chg = bgchg
+         else:
+             mol2 = mol.copy()
+             mol2.set(basis = 'def2-svp', verbose = 0).build()
+             mf2 = scf.HF(mol2).set(conv_tol = 1e-4).run()
+             pop, mul_chg = mf2.mulliken_pop()
+    
     print('**** generating fragment guess ****')
     atom = mol.format_atom(mol.atom, unit=1)
     #print(atom)
@@ -277,8 +289,15 @@ def guess_frag(mol, frags, chgs, spins):
     atoma = [atom[i] for i in fraga]
     atomb = [atom[i] for i in fragb]
     print('fragments:', atoma, atomb)
-    ca_a, cb_a, na_a, nb_a = do_uhf(atoma, mol.basis, chga, spina)
-    ca_b, cb_b, na_b, nb_b = do_uhf(atomb, mol.basis, chgb, spinb)
+    if rmdegen:
+        bgcoord_a = atomb
+        bgcoord_b = atoma
+        bgchg_a = np.array([mul_chg[i] for i in fragb])
+        bgchg_b = np.array([mul_chg[i] for i in fraga])
+    else:
+        bgcoord_a = bgcoord_b = bgchg_a = bgchg_b = None
+    ca_a, cb_a, na_a, nb_a = do_uhf(atoma, mol.basis, chga, spina, bgcoord_a, bgchg_a)
+    ca_b, cb_b, na_b, nb_b = do_uhf(atomb, mol.basis, chgb, spinb, bgcoord_b, bgchg_b)
     print('       na   nb')
     print('atom1  %2d   %2d' % (na_a, nb_a))
     print('atom2  %2d   %2d' % (na_b, nb_b))
@@ -306,15 +325,25 @@ def guess_frag(mol, frags, chgs, spins):
     #print(dm.shape)
     return dm, mo, occ
     
-def do_uhf(atoma, basisa, chga, spina):
+def do_uhf(atoma, basisa, chga, spina, bg_coord=None, bg_chg = None):
     mola = gto.Mole()
     mola.atom = atoma
     mola.basis = basisa
     mola.charge = chga
     mola.spin = spina
+    #mola.verbose = 4
     mola.build()
     mfa = scf.UHF(mola)
+    if bg_coord is not None:
+        mfa = qmmm.mm_charge(mfa, bg_coord, bg_chg)
+        #mfa.dump_flags(verbose=5)
+        logger.note(mfa, 'Charge      Location')
+        coords = mfa.mm_mol.atom_coords()
+        charges = mfa.mm_mol.atom_charges()
+        for i, z in enumerate(charges):
+            logger.note(mfa, '%.9g    %s', z, coords[i])
     mfa.kernel()
+    mfa.mulliken_pop()
     #print(mfa.nelec)
     ca, cb = mfa.mo_coeff
     na, nb = mfa.nelec
