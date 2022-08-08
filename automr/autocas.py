@@ -5,30 +5,31 @@ import numpy as np
 import scipy
 from functools import partial, reduce
 try:
-    from lo import pm
+    #from lo import pm
     from auto_pair import pair_by_tdm
     #from assoc_rot import assoc_rot
 except:
-    print('Warning: lo/auto_pair not found. Orbital localization is disabled. Install MOKIT if you need that.')
+    print('Warning: auto_pair not found. Install MOKIT if you need that.')
 from pyscf.lo import PM
 from pyscf.lo.boys import dipole_integral
 from automr import dump_mat, bridge, cidump
-from automr.util import check_uno
+from automr.util import check_uno, chemcore
 import sys, os
-try:
-    from pyphf import suscf
-except:
-    print('Warning: pyphf not found. SUHF is disabled. Install ExSCF if you need that.')
-try:
-    import nof
-except:
-    print('Warning: pyNOF not found. GVB is disabled. Install pyNOF if you need that.')
+#try:
+#    from pyphf import suscf
+#except:
+#    print('Warning: pyphf not found. SUHF is disabled. Install ExSCF if you need that.')
+#try:
+#    import nof
+#except:
+#    print('Warning: pyNOF not found. GVB is disabled. Install pyNOF if you need that.')
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
 np.set_printoptions(precision=6, linewidth=160, suppress=True)
 
 def do_suhf(mf):
+    from pyphf import suscf
     mol = mf.mol 
     #mo = mf.mo_coeff
     #S = mol.intor_symmetric('int1e_ovlp')
@@ -91,12 +92,20 @@ def get_uno(mf, st='st2', uks=False, thresh=1.98):
     nacta = (nacto + nopen)//2
     nactb = (nacto - nopen)//2
     print('nacto, nacta, nactb: %d %d %d' % (nacto, nacta, nactb))
+    #print(mf.mo_occ[0], mf.mo_occ[1])
     if uks:
         mf = mf.to_rks()
     else:
         mf = mf.to_rhf()
     mf.mo_coeff = unos
+    #if mf.mo_occ[0] == mf.mo_occ[1]:
+    if mf.mo_occ is None:
+        mf.mo_occ = mf.mo_occ[0] + mf.mo_occ[1]
+    #else:
+    #    mf.mo_occ = np.zeros(unos.shape[1])
+    #    mf.mo_occ[
     #mf.mo_occ = noon
+    print(mf.mo_occ)
     print('UNO in active space')
     dump_mat.dump_mo(mol, unos[:,ndb:ndb+nacto], ncol=10)
     return mf, unos, noon, nacto, (nacta, nactb), ndb, nex
@@ -146,7 +155,7 @@ def get_uno_st1(mo, mo_occ, S, thresh=0.98):
 
     return unos, noon, nacto
 
-def get_locorb(mf, localize='pm1', pair=True):
+def get_locorb(mf, localize='pm', pair=True):
     mol = mf.mol
     mo = mf.mo_coeff
     nbf = mf.mo_coeff.shape[0]
@@ -174,7 +183,8 @@ def get_locorb(mf, localize='pm1', pair=True):
     npair = np.sum(mf2.mo_occ==0)
     print('npair', npair)
     idx2 = np.count_nonzero(mf.mo_occ)
-    idx1 = idx2 - npair
+    ncore = chemcore(mol)
+    idx1 = min(idx2 - npair, ncore)
     idx3 = idx2 + npair
     print('MOs after projection')
     dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
@@ -184,19 +194,21 @@ def get_locorb(mf, localize='pm1', pair=True):
         mf = loc(mf, occ_idx, vir_idx, localize)
     if pair:
         mo_dipole = dipole_integral(mol, mf.mo_coeff)
-        ncore = idx1
+        #ncore = idx1
         nopen = np.sum(mf.mo_occ==1)
         nalpha = idx2
         #nvir_lmo = npair
         alpha_coeff = pair_by_tdm(ncore, npair, nopen, nalpha, npair, nbf, nif, mf.mo_coeff, mo_dipole)
         mf.mo_coeff = alpha_coeff.copy()
         print('MOs after pairing')
+        ncore = idx2 - npair
         dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,idx1:idx3], ncol=10)
-    return mf, alpha_coeff, npair, ncore
+    return mf, mf.mo_coeff, npair, ncore
 
-def loc(mf, occ_idx, vir_idx, localize='pm1'):
+def loc(mf, occ_idx, vir_idx, localize='pm'):
     mol = mf.mol
     if localize=='pm1':
+        from lo import pm
         S = mol.intor_symmetric('int1e_ovlp')
         nbf = mf.mo_coeff.shape[0]
         nif = mf.mo_coeff.shape[1]
@@ -209,10 +221,10 @@ def loc(mf, occ_idx, vir_idx, localize='pm1'):
     mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
     mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
     print('MOs after PM localization')
-    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,range(occ_idx[0], vir_idx[-1]+1)], ncol=10)
+    dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,slice(occ_idx.start, vir_idx.stop)], ncol=10)
     return mf
 
-def loc_asrot(mf, nacto, nelecact, ncore, localize='pm1'):
+def loc_asrot(mf, nacto, nelecact, ncore, localize='pm'):
     #idx2 = idx[0] + npair - 1
     #idx3 = idx2 + idx[2]
     #npair = min(npair,3)
@@ -269,6 +281,7 @@ def do_gvb_qchem(mf, npair):
     return mf, gvbno, npair
 
 def do_gvb(mf, npair, ndb):
+    import nof
     thenof = nof.SOPNOF(mf, npair*2, npair*2)
     thenof.verbose = 5
     #thenof.mo_occ = noon / 2
@@ -324,11 +337,13 @@ def sort_mo(mf, sort, ncore, base=1):
     return mf
 
 def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True, 
-            gvb=False, suhf=False, lmo=False, no=(None,None), sort=None, 
+            gvb=False, suhf=False, unothresh=1.98, lmo=False, no=(None,None), sort=None, 
             dry=False, symmetry=None):
     '''
         mf: RHF/UHF object
-        lmo: False, 'pm', 'pm1'
+        lmo: False, 
+             'pm',  # PM from pyscf
+             'pm1'  # PM from mokit
     '''
     is_uhf, mf = check_uhf(mf)
     if no[0] is not None:
@@ -344,13 +359,13 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
         if suhf:
             mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = do_suhf(mf)
         else:
-            mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf)
+            mf, unos, unoon, nacto, (nacta, nactb), ndb, nex = get_uno(mf, thresh=unothresh)
+        nacto0 = nacto
         if lmo:
             mf, npair = loc_asrot(mf, nacto, (nacta, nactb), ndb, localize=lmo)
             if gvb:
                 if nacta - nactb != 0:
                     raise NotImplementedError('GVB for nopen > 0 not implemented')
-                nacto0 = nacto
                 mf, gvbno, noon, npair = do_gvb(mf, npair, ndb)
                 nacto = npair*2
                 nacta = nactb = npair

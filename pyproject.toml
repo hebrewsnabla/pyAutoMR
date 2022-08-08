@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "pyAutoMR"
+version = "0.3.0a"
+authors = [
+  { name="Shirong Wang", email="srwang20@fudan.edu.cn" },
+]
+description = "Automatic MR based on PySCF"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX",
+]
+[project.urls]
+"Homepage" = "https://github.com/hebrewsnabla/pyAutoMR"
+"Bug Tracker" = "https://github.com/hebrewsnabla/pyAutoMR/issues"
