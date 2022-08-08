@@ -1,4 +1,5 @@
 from pyscf import gto, scf, dft
+from pyscf.scf import stability
 import numpy as np
 try:
     from fch2py import fch2py
@@ -6,7 +7,7 @@ try:
     from rwwfn import read_eigenvalues_from_fch as readeig
 except:
     print('fch2py, rwwfn not found. Interface with fch is disabled. Install MOKIT if you need that.')
-from automr import stability, dump_mat, autocas
+from automr import dump_mat, autocas
 import time
 import copy
 
@@ -174,30 +175,43 @@ def check_uhf2(mf):
         #mf = mf.to_rhf()
     return is_uhf, mf
 
-def check_stab(mf_mix, newton=False, res=False):
-    if res:
+def check_stab(mf_mix, newton=False, goal='uhf', debug=False):
+    if goal=='rhf':
         stab = stability.rhf_internal
-        if mf_mix.mol.spin is not 0:
+        if mf_mix.mol.spin != 0:
             stab = stability.rohf_internal
         is_uhf, mf_mix = check_uhf2(mf_mix)
         if is_uhf:
             raise ValueError('UHF/UKS wavefunction detected. RHF/RKS is required for res=True')
-    else:
+    elif goal=='uhf':
         stab = stability.uhf_internal
-    mf_mix.verbose = 9
-    mo, stable = stab(mf_mix)
+    elif goal=='ghf':
+        stab = stability.ghf_stability
+    elif goal=='cghf':
+        if mf_mix.mo_coeff.dtype is not np.complex:
+            dm_c = mf_mix.make_rdm1() + 0j
+            dm_c = dm_c*np.sqrt(2)/2 + dm_c*1.0j*np.sqrt(2)/2
+            #dm_c[0,:] += 0.1j
+            #dm_c[:,0] -= 0.1j
+            mf_mix.kernel(dm0=dm_c)
+        stab = stability.ghf_stability
+
+    if debug: mf_mix.verbose = 9
+    mo, stable = stab(mf_mix, return_status=True)
+    if newton:
+        mf_mix=mf_mix.newton()
     cyc = 0
     while(not stable and cyc < 10):
-        mf_mix.verbose = 4
+        print('Stability Opt Attempt %d' %cyc)
+        if debug: mf_mix.verbose = 4
+        mf_mix.mo_coeff = mo
         dm_new = mf_mix.make_rdm1(mo, mf_mix.mo_occ)
-        if newton:
-            mf_mix=mf_mix.newton()
         mf_mix.kernel(dm0=dm_new)
-        mf_mix.verbose = 9
-        mo, stable = stab(mf_mix)
+        if debug: mf_mix.verbose = 9
+        mo, stable = stab(mf_mix, return_status=True)
         cyc += 1
     if not stable:
-        raise RuntimeError('Stablility Opt failed after %d attempts.' % cyc)
+        raise RuntimeError('Stability Opt failed after %d attempts.' % cyc)
     if not mf_mix.converged:
         print('Warning: SCF finally not converged')
     mf_mix.mo_coeff = mo
