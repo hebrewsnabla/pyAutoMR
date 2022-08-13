@@ -1,6 +1,5 @@
 import numpy as np
 from pyscf import gto
-import basis_set_exchange
 
 def check_uno(noon, thresh=1.98):
     ndb = np.count_nonzero(noon > thresh)
@@ -27,4 +26,5 @@ def chemcore(mol):
     return core
 
 def bse_bas(bas, elem):
+    import basis_set_exchange
     return gto.load(basis_set_exchange.api.get_basis(bas, elements=elem, fmt='nwchem'), elem)
