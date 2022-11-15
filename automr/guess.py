@@ -106,8 +106,8 @@ def _from_fchk(mol, fch, xc=None, no=False):
     
     return mf
 
-def mix_tight(xyz, bas, charge=0, xc=None):
-    return mix(xyz, bas, charge, 'tight', xc=xc)
+def mix_tight(xyz, bas, charge=0, *args, **kwargs):
+    return mix(xyz, bas, charge=charge, conv='tight', **kwargs)
 
 def mix(xyz, bas, charge=0, *args, **kwargs
 ):
@@ -246,7 +246,7 @@ def check_stab(mf_mix, newton=False, goal='uhf', debug=False):
     mf_mix.mo_coeff = mo
     return mf_mix
 
-def from_frag_tight(xyz, bas, frags, chgs, spins, newton):
+def from_frag_tight(xyz, bas, frags, chgs, spins, newton=False, **kwargs):
     if not isinstance(spins[0], list):
         spins = [spins]
     lowest_mf = None
@@ -254,7 +254,7 @@ def from_frag_tight(xyz, bas, frags, chgs, spins, newton):
     lowest_spin = None
     for s in spins:
         print('Attempt spins ', s)
-        mf = from_frag(xyz, bas, frags, chgs, s, cycle=70)
+        mf = from_frag(xyz, bas, frags, chgs, s, cycle=70, **kwargs)
         mf = check_stab(mf, newton=newton)
         if mf.e_tot < lowest_e:
             lowest_e = mf.e_tot
@@ -263,7 +263,7 @@ def from_frag_tight(xyz, bas, frags, chgs, spins, newton):
     print('Lowest UHF energy %.6f from spin guess ' % lowest_e, lowest_spin)
     return lowest_mf
     
-def from_frag(xyz, bas, *args, **kwargs):
+def from_frag(xyz, bas, frags, chgs, spins, **kwargs):
     mol = gto.Mole()
     mol.atom = xyz
     mol.basis = bas
@@ -271,7 +271,7 @@ def from_frag(xyz, bas, *args, **kwargs):
     mol.charge = sum(chgs)
     mol.spin = sum(spins)
     mol.build()
-    return _from_frag(mol, *args, **kwargs) 
+    return _from_frag(mol, frags, chgs, spins, **kwargs) 
 
 
 def _from_frag(mol_or_mf, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen=False, bgchg=None):
