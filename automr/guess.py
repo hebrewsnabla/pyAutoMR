@@ -109,8 +109,8 @@ def _from_fchk(mol, fch, xc=None, no=False):
 def mix_tight(xyz, bas, charge=0, xc=None):
     return mix(xyz, bas, charge, 'tight', xc=xc)
 
-def mix(xyz, bas, charge=0, conv='loose', cycle=5, level_shift=0.0, 
-        skipstb=False, xc=None, newton=False, hl=[0,0]):
+def mix(xyz, bas, charge=0, *args, **kwargs
+):
     mol = gto.Mole()
     mol.atom = xyz
     #with open(xyz, 'r') as f:
@@ -121,10 +121,15 @@ def mix(xyz, bas, charge=0, conv='loose', cycle=5, level_shift=0.0,
     #mol.output = 'test.pylog'
     mol.verbose = 4
     mol.build()
-    return _mix(mol, conv, cycle, level_shift, skipstb, xc, newton, hl)
+    return _mix(mol, 
+#conv=conv, cycle=cycle, level_shift=level_shift,
+#                     skipstb=skipstb, xc=xc, newton=newton, mix_param=mix_param, hl=hl, field=field
+*args, **kwargs)
 
-def _mix(mol, conv='loose', cycle=5, level_shift=0.0,
-         skipstb=False, xc=None, newton=False, hl=[0,0]):
+def _mix(mol, 
+        conv='loose', cycle=5, level_shift=0.0, 
+        skipstb=False, xc=None, newton=False, mix_param=np.pi/4, hl=[[0,0]], field=(0.0, 0.0, 0.0)
+):
     t1 = time.time()
     if xc is None: 
         mf = scf.RHF(mol)
@@ -132,11 +137,20 @@ def _mix(mol, conv='loose', cycle=5, level_shift=0.0,
         mf = dft.RKS(mol)
         mf.xc = xc
     mf.conv_tol = 1e-5
+    if field[0] != 0.0 or field[1] != 0.0 or field[2] != 0.0:
+        mf = apply_field(mf, field)
     #mf.verbose = 4
     mf.kernel() # Guess by 1e is poor,
     #dm, mo_coeff, mo_energy, mo_occ = init_guess_by_1e(mf)
     print('**** generating mix guess ****')
-    dm_mix, mo_mix = init_guess_mixed(mf.mo_coeff, mf.mo_occ, ho=hl[0], lu=hl[1])
+    mo_mix = mf.mo_coeff
+    nocc = mol.nelectron//2
+    print('mo_e', mf.mo_energy[nocc-4:nocc+4])
+    dump_mat.dump_mo(mol, mo_mix[:,nocc-4:nocc+4], ncol=8)
+    for hlitem in hl:
+        dm_mix, mo_mix = init_guess_mixed(mo_mix, mf.mo_occ, ho=hlitem[0], lu=hlitem[1], mix_param=mix_param)
+    dump_mat.dump_mo(mol, mo_mix[0][:,nocc-4:nocc+4], ncol=8)
+    dump_mat.dump_mo(mol, mo_mix[1][:,nocc-4:nocc+4], ncol=8)
     if xc is None:
         mf_mix = scf.UHF(mol)
     else:
@@ -146,8 +160,9 @@ def _mix(mol, conv='loose', cycle=5, level_shift=0.0,
         mf_mix.mo_coeff = mo_mix
         nelec = mf_mix.nelec
         mf_mix.mo_occ = np.zeros((2, mo_mix[0].shape[1]))
-        mf_mix.mo_occ[0,:nelec[0]] = 1
-        mf_mix.mo_occ[1,:nelec[1]] = 1
+        mf_mix.mo_occ[0,:nelec[0]] = 1.0
+        mf_mix.mo_occ[1,:nelec[1]] = 1.0
+        mf_mix.mo_energy = np.zeros((2, mo_mix[0].shape[1]))
     #    return mf_mix
     #mf_mix.verbose = 4
     if conv == 'loose':
@@ -172,6 +187,12 @@ def _mix(mol, conv='loose', cycle=5, level_shift=0.0,
     #mf.max_cycle = 0
     #mf_mix.kernel(dm)
     return mf_mix
+
+def apply_field(mf, f):
+    h2 = mf.get_hcore() + np.einsum('x,xij->ij', f, mf.mol.intor('int1e_r', comp=3))
+    get_h2 = lambda *args : h2
+    mf.get_hcore = get_h2
+    return mf
 
 def check_uhf2(mf):
     ss, s = mf.spin_square()
@@ -242,10 +263,7 @@ def from_frag_tight(xyz, bas, frags, chgs, spins, newton):
     print('Lowest UHF energy %.6f from spin guess ' % lowest_e, lowest_spin)
     return lowest_mf
     
-
-
-
-def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen=False, bgchg=None):
+def from_frag(xyz, bas, *args, **kwargs):
     mol = gto.Mole()
     mol.atom = xyz
     mol.basis = bas
@@ -253,9 +271,19 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen
     mol.charge = sum(chgs)
     mol.spin = sum(spins)
     mol.build()
+    return _from_frag(mol, *args, **kwargs) 
+
+
+def _from_frag(mol_or_mf, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen=False, bgchg=None):
     
     t1 = time.time() 
-    dm, mo, occ = guess_frag(mol, frags, chgs, spins, rmdegen=rmdegen, bgchg=bgchg)
+    dm, mo, occ = guess_frag(mol_or_mf, frags, chgs, spins, rmdegen=rmdegen, bgchg=bgchg)
+    if isinstance(mol_or_mf, gto.Mole):
+        mol = mol_or_mf
+    else:
+        mol1 = mol_or_mf[0].mol
+        mol2 = mol_or_mf[1].mol
+        mol = gto.conc_mol(mol1, mol2)
     if verbose > 4:
         print('Frag guess orb alpha')
         dump_mat.dump_mo(mol, mo[0])
@@ -266,6 +294,7 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen
     else:
         mf = dft.UKS(mol)
         mf.xc = xc
+    mf.mo_coeff = mo
     mf.verbose = verbose
     #mf.conv_tol = 1e-2
     mf.max_cycle = cycle
@@ -280,12 +309,16 @@ def from_frag(xyz, bas, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen
 #def make_bgchg(atom, chgs):
 #    return 
 
-def guess_frag(mol, frags, chgs, spins, rmdegen=False, bgchg=None):
+def guess_frag(mol_or_mf, frags, chgs, spins, rmdegen=False, bgchg=None):
     '''
+    mol_or_mf: 
+        if mol inputted, it will be fragmented by frags, chgs, spins
+        otherwise, it should be a list of mf
     frags: e.g. [[0], [1]] for N2
     '''
     #mol.build()
     if rmdegen:
+         mol = mol_or_mf
          if bgchg is not None:
              mul_chg = bgchg
          else:
@@ -295,23 +328,31 @@ def guess_frag(mol, frags, chgs, spins, rmdegen=False, bgchg=None):
              pop, mul_chg = mf2.mulliken_pop()
     
     print('**** generating fragment guess ****')
-    atom = mol.format_atom(mol.atom, unit=1)
-    #print(atom)
-    fraga, fragb = frags
-    chga, chgb = chgs
-    spina, spinb = spins
-    atoma = [atom[i] for i in fraga]
-    atomb = [atom[i] for i in fragb]
-    print('fragments:', atoma, atomb)
-    if rmdegen:
-        bgcoord_a = atomb
-        bgcoord_b = atoma
-        bgchg_a = np.array([mul_chg[i] for i in fragb])
-        bgchg_b = np.array([mul_chg[i] for i in fraga])
+    if isinstance(mol_or_mf, gto.Mole):
+        mol = mol_or_mf
+        atom = mol.format_atom(mol.atom, unit=1)
+        #print(atom)
+        fraga, fragb = frags
+        chga, chgb = chgs
+        spina, spinb = spins
+        atoma = [atom[i] for i in fraga]
+        atomb = [atom[i] for i in fragb]
+        print('fragments:', atoma, atomb)
+        if rmdegen:
+            bgcoord_a = atomb
+            bgcoord_b = atoma
+            bgchg_a = np.array([mul_chg[i] for i in fragb])
+            bgchg_b = np.array([mul_chg[i] for i in fraga])
+        else:
+            bgcoord_a = bgcoord_b = bgchg_a = bgchg_b = None
+        ca_a, cb_a, na_a, nb_a = do_uhf(atoma, mol.basis, chga, spina, bgcoord_a, bgchg_a)
+        ca_b, cb_b, na_b, nb_b = do_uhf(atomb, mol.basis, chgb, spinb, bgcoord_b, bgchg_b)
     else:
-        bgcoord_a = bgcoord_b = bgchg_a = bgchg_b = None
-    ca_a, cb_a, na_a, nb_a = do_uhf(atoma, mol.basis, chga, spina, bgcoord_a, bgchg_a)
-    ca_b, cb_b, na_b, nb_b = do_uhf(atomb, mol.basis, chgb, spinb, bgcoord_b, bgchg_b)
+        mflist = mol_or_mf
+        ca_a, cb_a = mflist[0].mo_coeff
+        ca_b, cb_b = mflist[1].mo_coeff
+        na_a, nb_a = mflist[0].nelec
+        na_b, nb_b = mflist[1].nelec
     print('       na   nb')
     print('atom1  %2d   %2d' % (na_a, nb_a))
     print('atom2  %2d   %2d' % (na_b, nb_b))
@@ -377,7 +418,7 @@ def init_guess_by_1e(rhf, mol=None):
     mo_occ = rhf.get_occ(mo_energy, mo_coeff)
     return rhf.make_rdm1(mo_coeff, mo_occ), mo_coeff, mo_energy, mo_occ
 
-def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4, ho=0, lu=0):
+def init_guess_mixed(mo_coeff, mo_occ, mix_param=np.pi/4, ho=0, lu=0):
     ''' Generate density matrix with broken spatial and spin symmetry by mixing
     HOMO and LUMO orbitals following ansatz in Szabo and Ostlund, Sec 3.8.7.
     
@@ -401,14 +442,19 @@ def init_guess_mixed(mo_coeff, mo_occ, mixing_parameter=np.pi/4, ho=0, lu=0):
 
     homo_idx += ho
     lumo_idx += lu
-    psi_homo=mo_coeff[:, homo_idx]
-    psi_lumo=mo_coeff[:, lumo_idx]
-    
-    Ca=copy.deepcopy(mo_coeff)
-    Cb=copy.deepcopy(mo_coeff)
+    if isinstance(mo_coeff, tuple):
+        psi_homo=mo_coeff[0][:, homo_idx]
+        psi_lumo=mo_coeff[0][:, lumo_idx]
+        Ca=copy.deepcopy(mo_coeff[0])
+        Cb=copy.deepcopy(mo_coeff[1])
+    else:
+        psi_homo=mo_coeff[:, homo_idx]
+        psi_lumo=mo_coeff[:, lumo_idx]
+        Ca=copy.deepcopy(mo_coeff)
+        Cb=copy.deepcopy(mo_coeff)
 
     #mix homo and lumo of alpha and beta coefficients
-    q=mixing_parameter
+    q=mix_param
     angle = q / np.pi
     print('rotating angle: %.2f pi' % angle)
 
