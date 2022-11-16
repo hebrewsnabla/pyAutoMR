@@ -19,7 +19,7 @@ jobs:
         run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Install tools
-        run: pip install build 
+        run: sudo pip install build 
 
       - name: Build
         run: |
