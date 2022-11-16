@@ -24,7 +24,11 @@ jobs:
       - name: Build
         run: |
           python -m build
-          echo "[disutils]\nindex-servers=pypi\n[pypi]\nusername=__token__\npassword=${{ secrets.SECRETS }}" > ~/.pypirc
+          echo "[disutils]"                       > ~/.pypirc
+          echo "index-servers=pypi"              >> ~/.pypirc
+          echo "[pypi]"                          >> ~/.pypirc
+          echo "username=__token__"              >> ~/.pypirc
+          echo "password=${{ secrets.SECRETS }}" >> ~/.pypirc
           cat ~/.pypirc
           twine upload dist/* --config-file ~/.pypirc --skip-existing
       #- name: Upload
