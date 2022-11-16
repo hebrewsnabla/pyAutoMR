@@ -1,5 +1,19 @@
 
-version 0.3.0 (Jun 13, 2022)
+version 0.3.0-rc1 (Nov 16, 2022)
+--------------------------
+Features
+* allow mixing HOMO-n and LUMO+m, and mixing multiple pairs of orbitals
+* add unothresh in autocas
+* add rmdegen in from_frag
+* allow GHF in check_stab
+Improvements
+* improve api of mix, from_frag, etc.
+Fix
+* fix bug in act_user
+* resolve bse dependency
+
+version 0.3.0a (Jun 22, 2022)
+--------------------------
 * GVB interface to pyNOF
 * new strategies:
   + UNO -> PM LMO -> assoc. rot. -> GVB -> CASSCF
@@ -10,13 +24,16 @@ version 0.3.0 (Jun 13, 2022)
 * add chemcore
 * add flipspin guess
 * improve efficiency of cidump
+* upload to pypi
 
 version 0.2.2 (Feb 24, 2022)
+--------------------------
 * allow symmetry in autocas
 * allow reading natural orbital with from_fch_noiter
 * allow user-defined thresh in get_uno
 
 version 0.2.1 (Jan 26, 2022)
+--------------------------
 * allow SOSCF in check_stab
 * support for RHF/RKS, ROHF/ROKS in check_stab
 * support for UKS in from_fch_simp
@@ -24,6 +41,7 @@ version 0.2.1 (Jan 26, 2022)
 * fix bug in cidump
 
 version 0.2.0 (Aug 29, 2021)
+--------------------------
 * move everything to pyAutoMR.automr
 * UHF -> SUHF -> CASSCF
 * from_frag_tight for trying multiple frag guesses
