@@ -54,7 +54,8 @@ mf2 = autocas.cas(mf)
 ```
 
 ## Tutorials
-* [UHF case](https://blog-quoi.readthedocs.io/en/latest/mr_tutor.html#uhf-case)
+* [Tutorial: Symmetry-broken wavefunction](https://blog.shi-rong.wang/pyautomr_1.html)
+* [Auto CASSCF: UHF case](https://blog.shi-rong.wang/mr_practice/mr_tutor.html#uhf-case)
 
 ## TODO
 * TDDFT NO -> CASSCF
