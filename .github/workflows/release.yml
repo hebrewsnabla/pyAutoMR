@@ -25,7 +25,7 @@ jobs:
         run: |
           python -m build
           echo "[disutils]\nindex-servers=pypi\n[pypi]\nusername=__token__\npassword=${{ secrets.SECRETS }}" > ~/.pypirc
-          twine upload dist/* --config-file ~/.pypirc --non-interactive --skip-existing
+          twine upload dist/* --config-file ~/.pypirc --skip-existing
       #- name: Upload
       #  uses: yaananth/twine-upload@v1
       #  env:
