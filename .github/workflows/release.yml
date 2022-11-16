@@ -19,17 +19,18 @@ jobs:
         run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Install tools
-        run: sudo pip install build 
+        run: pip install build twine
 
       - name: Build
         run: |
           python -m build
-          #twine upload dist/* -u wsr
-      - name: Upload
-        uses: yaananth/twine-upload@v1
-        env:
-          RUNNER: ${{ toJson(runner) }}
-          SECRETS: ${{ toJson(secrets) }}
+          echo "[disutils]\nindex-servers=pypi\n[pypi]\nusername=__token__\npassword=${{ secrets.SECRETS }}" > ~/.pypirc
+          twine upload dist/* --non-interactive --skip-existing
+      #- name: Upload
+      #  uses: yaananth/twine-upload@v1
+      #  env:
+      #    RUNNER: ${{ toJson(runner) }}
+      #    SECRETS: ${{ toJson(secrets) }}
 
       - name: Create release
         uses: "marvinpinto/action-automatic-releases@latest"
