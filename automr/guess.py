@@ -145,10 +145,14 @@ def _mix(mol,
     print('**** generating mix guess ****')
     mo_mix = mf.mo_coeff
     nocc = mol.nelectron//2
+    print('RHF MO energy and HOMO-3~LUMO+3 before mixing')
     print('mo_e', mf.mo_energy[nocc-4:nocc+4])
     dump_mat.dump_mo(mol, mo_mix[:,nocc-4:nocc+4], ncol=8)
+    if not isinstance(hl[0], list):
+        hl = [hl]
     for hlitem in hl:
         dm_mix, mo_mix = init_guess_mixed(mo_mix, mf.mo_occ, ho=hlitem[0], lu=hlitem[1], mix_param=mix_param)
+    print('After mixing')
     dump_mat.dump_mo(mol, mo_mix[0][:,nocc-4:nocc+4], ncol=8)
     dump_mat.dump_mo(mol, mo_mix[1][:,nocc-4:nocc+4], ncol=8)
     if xc is None:
@@ -172,21 +176,22 @@ def _mix(mol,
         mf_mix.level_shift = level_shift
         mf_mix.max_cycle = 100
     mf_mix.kernel(dm0=dm_mix)
-    if not mf_mix.converged and conv == 'tight':
+    mf_mix = postscf_check(mf_mix, conv, skipstb, newton)
+
+    t2 = time.time()
+    print('time for guess: %.3f' % (t2-t1))
+    return mf_mix
+
+def postscf_check(mf, conv, skipstb, newton):
+    if not mf.converged and conv == 'tight':
         raise RuntimeError('UHF not converged')
-    ss, s = mf_mix.spin_square()
+    ss, s = mf.spin_square()
     if s < 0.1:
         print('Warning: S too small, symmetry breaking may be failed')
     
     if conv == 'tight' and not skipstb:
-        mf_mix = check_stab(mf_mix, newton)
-
-    t2 = time.time()
-    print('time for guess: %.3f' % (t2-t1))
-    #dm = mf.make_rdm1()
-    #mf.max_cycle = 0
-    #mf_mix.kernel(dm)
-    return mf_mix
+        mf = check_stab(mf, newton)
+    return mf
 
 def apply_field(mf, f):
     h2 = mf.get_hcore() + np.einsum('x,xij->ij', f, mf.mol.intor('int1e_r', comp=3))
@@ -274,7 +279,9 @@ def from_frag(xyz, bas, frags, chgs, spins, **kwargs):
     return _from_frag(mol, frags, chgs, spins, **kwargs) 
 
 
-def _from_frag(mol_or_mf, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdegen=False, bgchg=None):
+def _from_frag(mol_or_mf, frags, chgs, spins, 
+               conv='loose', cycle=2, level_shift=0.0, 
+               skipstb=False, xc=None, newton=False, verbose=4, rmdegen=False, bgchg=None):
     
     t1 = time.time() 
     dm, mo, occ = guess_frag(mol_or_mf, frags, chgs, spins, rmdegen=rmdegen, bgchg=bgchg)
@@ -296,12 +303,14 @@ def _from_frag(mol_or_mf, frags, chgs, spins, cycle=2, xc=None, verbose=4, rmdeg
         mf.xc = xc
     mf.mo_coeff = mo
     mf.verbose = verbose
-    #mf.conv_tol = 1e-2
-    mf.max_cycle = cycle
+    if conv == 'loose':
+        mf.conv_tol = 1e-3
+        mf.max_cycle = cycle
+    elif conv == 'tight':
+        mf.level_shift = level_shift
+        mf.max_cycle = 100
     mf.kernel(dm0 = dm)
-    ss, s = mf.spin_square()
-    if s < 0.1:
-        print('Warning: S too small, symmetry breaking may be failed')
+    mf = postscf_check(mf, conv, skipstb, newton)
     t2 = time.time()
     print('time for guess: %.3f' % (t2-t1))
     return mf

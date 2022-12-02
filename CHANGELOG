@@ -1,4 +1,8 @@
 
+version 0.3.0-rc9 (Nov 16, 2022)
+--------------------------
+* GitHub Actions for auto-release and pypi upload
+
 version 0.3.0-rc1 (Nov 16, 2022)
 --------------------------
 Features
