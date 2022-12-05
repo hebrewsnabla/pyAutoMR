@@ -1,5 +1,10 @@
 # pyAutoMR
 
+[![Latest Version](https://img.shields.io/github/v/release/hebrewsnabla/pyAutoMR)](https://github.com/hebrewsnabla/pyAutoMR/releases/latest)
+[![pypi version](https://img.shields.io/pypi/v/pyAutoMR.svg)](https://pypi.python.org/pypi/pyAutoMR)
+[![Downloads](https://pepy.tech/badge/pyAutoMR/month)](https://pepy.tech/project/pyAutoMR)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/pyAutoMR.svg?label=PyPI%20downloads)](https://pypi.org/project/pyAutoMR/)
+
 The method used by this program is quite similar to [MOKIT](https://gitlab.com/jxzou/mokit). However, we try to do everything with PySCF and without Gaussian.
 
 This program aims to do:
