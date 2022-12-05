@@ -291,6 +291,7 @@ def _from_frag(mol_or_mf, frags, chgs, spins,
         mol1 = mol_or_mf[0].mol
         mol2 = mol_or_mf[1].mol
         mol = gto.conc_mol(mol1, mol2)
+        mol.spin = mol1.spin + mol2.spin
     if verbose > 4:
         print('Frag guess orb alpha')
         dump_mat.dump_mo(mol, mo[0])
