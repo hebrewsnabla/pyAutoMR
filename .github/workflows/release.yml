@@ -6,6 +6,8 @@ on:
       - master
     tags:
       - v*
+    paths:
+      - 'pyproject.toml'
 
 jobs:
   release:
