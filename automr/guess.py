@@ -302,7 +302,10 @@ def _from_frag(mol_or_mf, frags, chgs, spins,
     else:
         mf = dft.UKS(mol)
         mf.xc = xc
-    mf.mo_coeff = mo
+    if cycle == 0:
+        mf.mo_coeff = mo
+        mf.mo_occ = occ
+        mf.mo_energy = np.zeros((2, mo[0].shape[1]))
     mf.verbose = verbose
     if conv == 'loose':
         mf.conv_tol = 1e-3
