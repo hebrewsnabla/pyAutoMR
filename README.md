@@ -4,6 +4,7 @@
 [![pypi version](https://img.shields.io/pypi/v/pyAutoMR.svg)](https://pypi.python.org/pypi/pyAutoMR)
 [![Downloads](https://pepy.tech/badge/pyAutoMR/month)](https://pepy.tech/project/pyAutoMR)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/pyAutoMR.svg?label=PyPI%20downloads)](https://pypi.org/project/pyAutoMR/)
+![GitHub Downloads][gh-downloads]
 
 The method used by this program is quite similar to [MOKIT](https://gitlab.com/jxzou/mokit). However, we try to do everything with PySCF and without Gaussian.
 
@@ -73,3 +74,11 @@ and cite every program called by pyAutoMR, such as PySCF, MOKIT, mrh, etc.
 
 If you peform calculations involving GVB, please also cite the following two papers
 > DOI: 10.1021/acs.jctc.8b00854; DOI: 10.1021/acs.jpca.0c05216.
+
+
+[![Ko-Fi][kofi-badge]][kofi]
+
+
+[gh-downloads]: https://img.shields.io/github/downloads/hebrewsnabla/pyAutoMR/total?color=pink&label=GitHub%20Downloads
+[kofi-badge]: https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee!-%2346b798.svg
+[kofi]: https://ko-fi.com/srwang
