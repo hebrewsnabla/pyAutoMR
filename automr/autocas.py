@@ -440,3 +440,19 @@ def cas(mf, act_user=None, crazywfn=False, max_memory=2000, natorb=True,
 def nevpt2(mc, root=0):
     nev = mrpt.NEVPT(mc, root=root)
     nev.kernel()
+
+def auto_schedule(mc, startM, maxM, step=500):
+    m = startM
+    mc.fcisolver.clearSchedule()
+    mc.fcisolver.maxM = m
+    mc.fcisolver.generate_schedule()
+    mc.kernel()
+    while(m < maxM ):
+        m += step
+        mc.fcisolver.clearSchedule()
+        mc.fcisolver.startM = m - step
+        mc.fcisolver.maxM = m
+        mc.fcisolver.generate_schedule()
+        mc.fcisolver.extraline = ["fullrestart"]
+        mc.kernel()
+        
