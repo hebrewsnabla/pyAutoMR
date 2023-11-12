@@ -4,9 +4,44 @@ Parse SUPDFT output;
 Interpolate dissociation curve
 """
 
+import argparse
+
+def argument_parse():
+    parser=argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
+                               description='')
+    parser.add_argument("-p","--parse",dest='type',metavar='type',type=str,default='dump',
+                        required=False, #choices=['dh','scf'],
+                        help='')
+    parser.add_argument("-f","--fun",dest='fun',metavar='fun',type=str,
+                        default='suhf',
+                        required=True,
+                        )
+    parser.add_argument("-t","--task",dest='task',metavar='task',type=str,
+                        default='dump',
+                        required=True,)
+    parser.add_argument("-s","--rscale",dest='rscale',metavar='rscale',type=int,
+                        default=100,
+                        required=False,)
+    parser.add_argument("-S","--sub",dest='sub',metavar='sub',type=int,
+                        default=1,
+                        required=False,)
+    parser.add_argument("-m","--mode",dest='mode',metavar='mode',type=str,
+                        default='supd',
+                        required=False,)
+    args=parser.parse_args()
+    return parser, args
+
+parser, args = argument_parse()
 
 import subprocess, sys
 import numpy as np
+
+mode = args.mode
+shift = 0
+if 'dd' in mode:
+    shift += 7
+#if 'mc' in mode:
+#    shift += 9
 
 class suData():
     def __init__(self, data):
@@ -14,13 +49,17 @@ class suData():
         self.j = float(data[3])
         self.k = float(data[4])
         self.c = float(data[5])
-        self.ddxc = float(data[6])
-        self.otx = float(data[13])
-        self.otc = float(data[14])
-        self.otxc = float(data[15])
+        if 'dd' in mode:
+            self.ddxc = float(data[6])
+        self.otx = float(data[6+shift])
+        self.otc = float(data[7+shift])
+        self.otxc = float(data[8+shift])
     
     def sudd(self, hyb):
-        return self.suhf + (self.ddxc - self.k - self.c)*(1.0-hyb)
+        if hasattr(self, 'ddxc'):
+            return self.suhf + (self.ddxc - self.k - self.c)*(1.0-hyb)
+        else:
+            return 0.0
     def supd(self, hyb):
         return self.suhf + (self.otxc - self.k - self.c)*(1.0-hyb)
     def supd_k(self, hyb, k):
@@ -33,15 +72,24 @@ def runcmd(cmd):
          encoding='utf-8').communicate()[0]
     return p
 
-h = float(sys.argv[2])
-k = float(sys.argv[3])
-task = sys.argv[1]
-rscale = float(sys.argv[4])
-sub = bool(sys.argv[5])
+FUN_param = {
+    'suhf': [1.0, 1.0],
+    'pbe': [0.0, 1.0],
+    'pbe0': [0.25, 1.0],
+    'pbe02': [0.25, 2.0]
+}
+def get_param(fun):
+    return FUN_param[fun.lower()]
+
+h, k = get_param(args.fun) #float(sys.argv[2])
+#float(sys.argv[3])
+task = args.task
+rscale = args.rscale #float(sys.argv[4])
+sub = bool(args.sub) #bool(sys.argv[5])
 print("     SUDD    SUPD    SUHF   SUPDk")
 
-filelist = runcmd("ls %s*out" % task).strip().split('\n')
-#print(filelist)
+filelist = runcmd("ls %s" % task).strip().split('\n')
+print(filelist)
 
 #exit()
 
@@ -51,11 +99,12 @@ e_pd = []
 e_su = []
 e_supdk = []
 for s in filelist:
-    r = s.replace(task, '').replace('.out', '')
+    #r = s.replace(task, '').replace('.out', '')
+    r = s.split('_')[1].split('.')[0]
     #print(s, r)
     runcmd("cp %s tmp" % s)
     runcmd("sed -i 's/://' tmp")
-    p = runcmd("grep E_ tmp | awk '{print $2}'")
+    p = runcmd("grep ^E_ tmp | awk '{print $2}'")
     data = p.split('\n')
     #print(data)
     su = suData(data)
@@ -85,7 +134,7 @@ if sub:
         print('%s  %6.3f %6.3f %6.3f %6.3f'%(x_sub[i], 
               e_dd_sub[i], e_pd_sub[i], e_su_sub[i], e_supdk_sub[i]))
 
-#exit()
+exit()
 from scipy.interpolate import make_interp_spline as spl
 from scipy.optimize import root
 def spline_findmin(x, y):

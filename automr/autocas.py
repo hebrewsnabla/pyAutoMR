@@ -23,6 +23,7 @@ import sys, os
 #    import nof
 #except:
 #    print('Warning: pyNOF not found. GVB is disabled. Install pyNOF if you need that.')
+from timing import timing
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
@@ -441,6 +442,7 @@ def nevpt2(mc, root=0):
     nev = mrpt.NEVPT(mc, root=root)
     nev.kernel()
 
+@timing
 def auto_schedule(mc, startM, maxM, step=500):
     m = startM
     mc.fcisolver.clearSchedule()
@@ -455,4 +457,7 @@ def auto_schedule(mc, startM, maxM, step=500):
         mc.fcisolver.generate_schedule()
         mc.fcisolver.extraline = ["fullrestart"]
         mc.kernel()
+    mc.fcisolver.startM = None
+    mc.fcisolver.extraline = []
+
         
