@@ -23,7 +23,7 @@ import sys, os
 #    import nof
 #except:
 #    print('Warning: pyNOF not found. GVB is disabled. Install pyNOF if you need that.')
-from timing import timing
+from automr.timing import timing
 
 print = partial(print, flush=True)
 einsum = partial(np.einsum, optimize=True)
