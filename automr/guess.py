@@ -32,7 +32,8 @@ def gen(xyz, bas, charge, spin, conv='tight', level_shift=0, xc=None):
         mf.conv_tol = 1e-6
         mf.max_cycle = 10
     mf.level_shift = level_shift
-    mf.kernel()
+    if conv != 'noiter':
+        mf.kernel()
 
     return mf
 
