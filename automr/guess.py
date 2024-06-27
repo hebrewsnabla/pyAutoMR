@@ -511,6 +511,8 @@ def _flipspin(mol, highspin, flipstyle='lmo', loc='pm', fliporb=[-1], site=None,
         #loc.pop_method = 'meta-lowdin'
     loc_orb = locl.kernel()
     dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
+    loc_orb = sort_by_moe(mf, loc_orb)
+    dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
     """pm.pop_method = 'mulliken'
     loc_orb = pm.kernel()
     dump_mat.dump_mo(mf.mol, loc_orb, ncol=10)
@@ -569,6 +571,14 @@ def mulliken(mol, mo):
                 print('  %d%2s  %.2f  ' % (s, mol.atom_symbol(s), chg[s]), end='')
         print('')
     return atm_loc
+
+def sort_by_moe(mf, loc_orb):
+    fock_ao = mf.get_fock()
+    fock_ev = np.einsum('mi,mn,ni->i', loc_orb, fock_ao, loc_orb)
+    print('Fock op ev: ', fock_ev)
+    order = np.argsort(fock_ev)
+    new_orb = loc_orb[:, order]
+    return new_orb
 
 def flip_bylmo(mf, act_idx, loc_orb, fliporb):
     mo = mf.mo_coeff
