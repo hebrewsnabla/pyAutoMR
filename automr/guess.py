@@ -129,7 +129,8 @@ def mix(xyz, bas, charge=0, *args, **kwargs
 
 def _mix(mol, 
         conv='loose', cycle=5, level_shift=0.0, 
-        skipstb=False, xc=None, newton=False, mix_param=np.pi/4, hl=[[0,0]], field=(0.0, 0.0, 0.0)
+        skipstb=False, xc=None, newton=False, mix_param=np.pi/4, hl=[[0,0]], field=(0.0, 0.0, 0.0),
+        verbose=4
 ):
     t1 = time.time()
     if xc is None: 
@@ -146,16 +147,18 @@ def _mix(mol,
     print('**** generating mix guess ****')
     mo_mix = mf.mo_coeff
     nocc = mol.nelectron//2
-    print('RHF MO energy and HOMO-3~LUMO+3 before mixing')
-    print('mo_e', mf.mo_energy[nocc-4:nocc+4])
-    dump_mat.dump_mo(mol, mo_mix[:,nocc-4:nocc+4], ncol=8)
+    if verbose > 3:
+        print('RHF MO energy and HOMO-3~LUMO+3 before mixing')
+        print('mo_e', mf.mo_energy[max(0,nocc-4):nocc+4])
+        dump_mat.dump_mo(mol, mo_mix[:,max(0,nocc-4):nocc+4], ncol=8)
     if not isinstance(hl[0], list):
         hl = [hl]
     for hlitem in hl:
         dm_mix, mo_mix = init_guess_mixed(mo_mix, mf.mo_occ, ho=hlitem[0], lu=hlitem[1], mix_param=mix_param)
-    print('After mixing')
-    dump_mat.dump_mo(mol, mo_mix[0][:,nocc-4:nocc+4], ncol=8)
-    dump_mat.dump_mo(mol, mo_mix[1][:,nocc-4:nocc+4], ncol=8)
+    if verbose > 3:
+        print('After mixing')
+        dump_mat.dump_mo(mol, mo_mix[0][:,max(0,nocc-4):nocc+4], ncol=8)
+        dump_mat.dump_mo(mol, mo_mix[1][:,max(0,nocc-4):nocc+4], ncol=8)
     if xc is None:
         mf_mix = scf.UHF(mol)
     else:
