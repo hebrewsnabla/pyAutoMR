@@ -217,13 +217,24 @@ def loc(mf, occ_idx, vir_idx, localize='pm'):
         occ_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,occ_idx],S,'mulliken')
         vir_loc_orb = pm(mol.nbas,mol._bas[:,0],mol._bas[:,1],mol._bas[:,3],mol.cart,nbf,npair,mf.mo_coeff[:,vir_idx],S,'mulliken')
     elif localize=='pm':
-        occ_loc_orb = PM(mol, mf.mo_coeff[:,occ_idx], mf).kernel()
-        vir_loc_orb = PM(mol, mf.mo_coeff[:,vir_idx], mf).kernel()
+        #occ_loc_orb = PM(mol, mf.mo_coeff[:,occ_idx], mf).kernel()
+        #vir_loc_orb = PM(mol, mf.mo_coeff[:,vir_idx], mf).kernel()
+        occ_loc_orb = pm_wrap(mol, mf.mo_coeff[:,occ_idx], mf)
+        vir_loc_orb = pm_wrap(mol, mf.mo_coeff[:,vir_idx], mf)
     mf.mo_coeff[:,occ_idx] = occ_loc_orb.copy()
     mf.mo_coeff[:,vir_idx] = vir_loc_orb.copy()
     print('MOs after PM localization')
     dump_mat.dump_mo(mf.mol,mf.mo_coeff[:,slice(occ_idx.start, vir_idx.stop)], ncol=10)
     return mf
+
+def pm_wrap(mol, mo, mf):
+    mfl = PM(mol, mo, mf)
+    lo = mfl.kernel(mo)
+    stable, lo_new = mfl.stability_jacobi()
+    while not stable:
+        mfl.kernel(lo_new)
+        stable, lo_new = mfl.stability_jacobi()
+    return lo_new
 
 def loc_asrot(mf, nacto, nelecact, ncore, localize='pm'):
     #idx2 = idx[0] + npair - 1
