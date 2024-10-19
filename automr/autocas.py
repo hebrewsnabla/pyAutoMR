@@ -6,7 +6,7 @@ import scipy
 from functools import partial, reduce
 try:
     #from lo import pm
-    from auto_pair import pair_by_tdm
+    from mokit.lib.auto_pair import pair_by_tdm
     #from assoc_rot import assoc_rot
 except:
     print('Warning: auto_pair not found. Install MOKIT if you need that.')

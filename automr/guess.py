@@ -4,9 +4,9 @@ from pyscf.lib import logger
 from pyscf.lo import PM, Boys
 import numpy as np
 try:
-    from fch2py import fch2py
-    import gaussian
-    from rwwfn import read_eigenvalues_from_fch as readeig
+    from mokit.lib.fch2py import fch2py
+    from mokit.lib import gaussian
+    from mokit.lib.rwwfn import read_eigenvalues_from_fch as readeig
 except:
     print('fch2py, rwwfn not found. Interface with fch is disabled. Install MOKIT if you need that.')
 from automr import dump_mat, autocas
